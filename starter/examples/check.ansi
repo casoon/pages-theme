@@ -1,0 +1,9 @@
+[32m✓[0m  parsed      142 frames        [2m18ms[0m
+[32m✓[0m  resolved    38 sgr sequences  [2m3ms[0m
+[33m![0m  clipped     2 wide glyphs     [2mU+1F680[0m
+[31m✗[0m  contrast    1 pair below 4.5  [2mline 91[0m
+
+[2m──  summary ──────────────────────────────[0m
+   frames   [34m142[0m     bytes    [34m48.2 kB[0m
+   html     [34m61.4 kB[0m scripts  [34m0[0m
+   a11y     [33m1 warning[0m

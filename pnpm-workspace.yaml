@@ -1,0 +1,8 @@
+# The theme is the root package; the starter site previews it and is the template for
+# new project sites (scripts/init-site.sh).
+packages:
+  - "starter/site"
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp

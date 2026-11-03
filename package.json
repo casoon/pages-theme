@@ -44,6 +44,14 @@
     "withastro",
     "casoon"
   ],
+  "scripts": {
+    "dev": "pnpm --filter starter-site dev",
+    "build": "pnpm --filter starter-site build",
+    "preview": "pnpm --filter starter-site preview",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "type-check": "pnpm --filter starter-site type-check"
+  },
   "peerDependencies": {
     "astro": "^7.3.2"
   },
@@ -54,5 +62,9 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
-  }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.4"
+  },
+  "packageManager": "pnpm@10.26.0"
 }

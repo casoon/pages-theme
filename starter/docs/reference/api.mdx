@@ -1,0 +1,51 @@
+---
+title: API reference
+sidebarLabel: API reference
+description: The surface is deliberately small. One renderer, one options struct, two helpers. Full generated docs live on docs.rs and TypeDoc.
+order: 1
+---
+
+## Renderer
+
+<ApiEntry
+  kind="struct"
+  name="Renderer"
+  since="since 0.1"
+  signature={`impl Renderer {
+    pub fn new(options: Options) -> Renderer
+    pub fn render(&self, input: &str) -> Result<String, Error>
+}`}
+  params={[
+    { name: 'options', type: 'Options', desc: 'Resolved configuration. Use Options::default() for the standard palette.' },
+    { name: 'input', type: '&str', desc: 'Raw ANSI text. Invalid sequences are skipped and reported on the warning channel.' },
+  ]}
+>
+  Holds the resolved options and the palette. Cheap to clone, safe to share across threads.
+</ApiEntry>
+
+## Options
+
+<ApiEntry
+  kind="options"
+  name="Options"
+  since="since 0.4"
+  signature={`pub struct Options {
+    pub theme: String,      // "auto" | "light" | "dark"
+    pub wrap: bool,
+    pub max_width: Option<usize>,
+    pub strict_contrast: bool,
+}`}
+  params={[
+    { name: 'theme', type: 'String', desc: 'Palette selection. "auto" emits custom properties for both schemes.' },
+    { name: 'wrap', type: 'bool', desc: 'Soft-wrap long lines instead of producing a horizontal scroller.' },
+    { name: 'max_width', type: 'Option<usize>', desc: 'Hard column limit. Frames wider than this are clipped and flagged.' },
+    { name: 'strict_contrast', type: 'bool', desc: 'Fail the render when a colour pair falls below 4.5:1.' },
+  ]}
+>
+  Every field has a documented default. Unknown fields in the Node binding are rejected rather than ignored.
+</ApiEntry>
+
+<Callout type="deprecated" title="Generated reference">
+  Item-level documentation is not duplicated here. See [docs.rs/runemark](https://docs.rs/runemark)
+  and the TypeDoc build for every type and method.
+</Callout>

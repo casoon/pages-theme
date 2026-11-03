@@ -273,3 +273,8 @@ to it as well.
 - Footer on every page: "Ein Projekt von CASOON · Jörn Seidel", licence, Impressum and
   Datenschutz (casoon.de), the project catalog on casoon.dev.
 - Light and dark theme, following `prefers-color-scheme` until the visitor chooses.
+
+## Maintaining
+
+Development, releases, the rollout to all project sites and setting up a new one:
+[MAINTAINING.md](MAINTAINING.md).

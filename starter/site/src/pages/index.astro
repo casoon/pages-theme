@@ -1,0 +1,259 @@
+---
+import { readFile } from 'node:fs/promises';
+import config from 'virtual:casoon-pages/config';
+import {
+  AnchorGrid,
+  Badge,
+  Badges,
+  BuildOutput,
+  CallToAction,
+  CodeBlock,
+  Facts,
+  Faq,
+  Features,
+  Hero,
+  Install,
+  Integrations,
+  Keymap,
+  Quickstart,
+  ReleaseHighlights,
+  Spotlight,
+  Terminal,
+} from '@casoon/pages-theme/components';
+import Base from '@casoon/pages-theme/layouts/Base.astro';
+import { parseChangelog } from '@casoon/pages-theme/lib/changelog';
+import { url } from '@casoon/pages-theme/url';
+import check from '../../../examples/check.ansi?raw';
+import report from '../../../examples/report.ansi?raw';
+
+// Skip "Unreleased": it has no version to show as "New in v…" yet.
+const latestRelease = config.changelog
+  ? parseChangelog(await readFile(config.changelog, 'utf8')).find(
+      (r) => r.version.toLowerCase() !== 'unreleased'
+    )
+  : undefined;
+
+const mainRs = `use runemark::{Renderer, Options};
+
+fn main() -> anyhow::Result<()> {
+    let ansi = std::fs::read_to_string("report.ansi")?;
+    let html = Renderer::new(Options {
+        theme: "auto".into(),
+        wrap:  true,
+        ..Default::default()
+    })
+    .render(&ansi)?;
+
+    std::fs::write("out.html", html)?;
+    Ok(())
+}`;
+---
+
+<Base>
+  <Hero
+    title="Terminal output that survives the browser."
+    lead="runemark renders ANSI streams — status, reports, diffs, errors — as accessible, script-free HTML. Same renderer in Rust and Node."
+  >
+    <Install
+      commands={[
+        { label: 'cargo', command: 'cargo add runemark' },
+        { label: 'npm', command: 'npm i @casoon/runemark' },
+        { label: 'brew', command: 'brew install casoon/tap/runemark' },
+      ]}
+    />
+    <Badges>
+      <Badge>MIT</Badge>
+      <Badge>crates.io 0.4.2</Badge>
+      <Badge>npm 0.4.2</Badge>
+      <Badge>0 runtime deps</Badge>
+    </Badges>
+    <Terminal slot="output" title="runemark check ./report" dots ansi={check} />
+  </Hero>
+
+  <AnchorGrid
+    items={[
+      {
+        label: 'Rust',
+        title: 'Render from a crate',
+        body: 'Add runemark to Cargo.toml and render ANSI straight from your own binary or test harness.',
+        href: url('docs/getting-started/installation/'),
+        tone: 'accent',
+      },
+      {
+        label: 'Node',
+        title: 'Render from npm',
+        body: 'The same renderer, compiled to a native addon, behind one call in @casoon/runemark.',
+        href: url('docs/getting-started/installation/'),
+        tone: 'accent',
+      },
+      {
+        label: 'CI',
+        title: 'Catch rendering regressions',
+        body: 'Golden fixtures are rendered on every build and diffed byte for byte — see one below.',
+        href: '#build-output',
+        tone: 'brand',
+      },
+      {
+        label: 'Reference',
+        title: 'Every option, documented',
+        body: 'Theme, wrap width, link detection — the full Options reference with defaults.',
+        href: url('docs/reference/api/'),
+        tone: 'brand',
+      },
+    ]}
+  />
+
+  <Facts
+    items={[
+      { value: '0 kB', label: 'client JavaScript on rendered pages' },
+      { value: '142', label: 'golden fixtures in the test suite' },
+      { value: 'AA', label: 'contrast verified in both themes' },
+      { value: '2', label: 'ecosystems, one renderer' },
+    ]}
+  />
+
+  <Features
+    items={[
+      {
+        title: 'ANSI to semantic HTML',
+        body: 'SGR sequences, cursor moves and carriage returns resolve into a flat, screen-reader friendly structure — not a soup of nested spans.',
+      },
+      {
+        title: 'Themeable without inline styles',
+        body: 'Colours map to CSS custom properties, so the same fragment reads correctly in light and dark surroundings.',
+      },
+      {
+        title: 'Deterministic output',
+        body: 'Identical input produces identical bytes. Rendered fixtures are committed and diffed in CI.',
+      },
+      {
+        title: 'Contrast checks built in',
+        body: 'The renderer reports colour pairs below 4.5:1 instead of quietly emitting unreadable output.',
+      },
+    ]}
+  />
+
+  <Spotlight
+    eyebrow="How it resolves"
+    title="One pass, four checks"
+    lead="**runemark walks the stream once.** Every SGR sequence, cursor move and carriage return folds into a flat frame before anything touches HTML."
+    points={[
+      '**Wide glyphs.** Emoji and CJK characters are measured, not assumed to be one column wide.',
+      '**Contrast.** Every colour pair is checked against the background at 4.5:1 before it ships.',
+      '**Determinism.** The same input always walks the same path — no timing-dependent output.',
+    ]}
+    links={[
+      { label: 'Rendering pipeline', href: url('docs/reference/api/') },
+      { label: 'Contrast rules', href: url('docs/reference/components/') },
+    ]}
+  >
+    <Terminal title="runemark check ./report" dots ansi={check} />
+  </Spotlight>
+
+  <div id="build-output">
+    <BuildOutput
+      caption="Every example on this site is produced by the package itself during the build. No stock imagery, no stale screenshots."
+      file="examples/report.ansi"
+    >
+      <Terminal ansi={report} />
+    </BuildOutput>
+  </div>
+
+  <Integrations
+    heading="Renders the colored output of"
+    items={[
+      { icon: 'gh', name: 'GitHub Actions', category: 'CI logs' },
+      { icon: 'gl', name: 'GitLab CI', category: 'CI logs' },
+      { icon: 'rs', name: 'cargo test', category: 'Test runner' },
+      { icon: 'vt', name: 'Vitest', category: 'Test runner' },
+      { icon: 'py', name: 'pytest', category: 'Test runner' },
+      { icon: 'cl', name: 'Clippy', category: 'Linter' },
+    ]}
+  />
+
+  <Features
+    layout="grid"
+    heading="Also in the box"
+    items={[
+      { icon: 'rs', title: 'Rust and Node parity', body: 'One renderer, two bindings, the same golden fixtures.' },
+      { icon: 'λ', title: 'Zero runtime deps', body: 'Nothing to audit downstream of the renderer itself.' },
+      { icon: 'wasm', title: 'WASM fallback', body: 'For targets neither native binding reaches.' },
+      { icon: '✓', title: '142 golden fixtures', body: 'Rendered and diffed on every build, in CI.' },
+      { icon: '⌘', title: 'CLI and library', body: 'Same renderer behind `runemark check` and `render()`.' },
+      { icon: '◐', title: 'Light and dark', body: 'CSS custom properties, no duplicate markup per theme.' },
+    ]}
+  />
+
+  <Quickstart
+    lead="Three steps from install to a rendered page. The full walkthrough lives in the documentation."
+    steps={[
+      'Add the crate or the npm package to your project.',
+      'Pipe any ANSI stream into <code>render()</code>.',
+      'Drop the returned fragment into your page and ship the stylesheet.',
+    ]}
+  >
+    <CodeBlock code={mainRs} lang="rust" title="main.rs" label="Rust" />
+  </Quickstart>
+
+  <Keymap
+    heading="CLI reference"
+    groups={[
+      {
+        heading: 'render',
+        items: [
+          { label: 'Theme', keys: ['--theme'] },
+          { label: 'Wrap width', keys: ['--max-width'] },
+          { label: 'Fail below 4.5:1', keys: ['--strict-contrast'] },
+        ],
+      },
+      {
+        heading: 'check',
+        items: [
+          { label: 'Machine-readable report', keys: ['--format', 'json'] },
+          { label: 'Exit non-zero on warnings', keys: ['--strict'] },
+          { label: 'Suppress the summary', keys: ['--quiet'] },
+        ],
+      },
+    ]}
+  />
+
+  <Facts
+    layout="list"
+    label="Specifications"
+    items={[
+      { label: 'License', value: 'MIT' },
+      { label: 'Rust', value: '1.74 or newer' },
+      { label: 'Node', value: '18 or newer' },
+      { label: 'Platforms', value: 'macOS, Linux, Windows' },
+    ]}
+  />
+
+  {latestRelease && <ReleaseHighlights release={latestRelease} />}
+
+  <Faq
+    items={[
+      {
+        q: 'Do the Rust and Node packages render identically?',
+        a: 'Yes. Node calls the same renderer through a native addon, byte for byte — the golden fixtures in the test suite run against both.',
+      },
+      {
+        q: 'Does it work outside a terminal, on arbitrary ANSI text?',
+        a: 'Yes, as long as it is SGR sequences and cursor movement. runemark does not emulate a full terminal — no alternate screen, no mouse reporting.',
+      },
+      {
+        q: 'What happens to colours that fail contrast?',
+        a: 'By default they render with a warning in the CLI output. --strict-contrast turns that warning into a build failure instead.',
+      },
+      {
+        q: 'Is the output stable across versions?',
+        a: 'Within a major version, yes — identical input produces identical bytes, and that is itself tested in CI.',
+      },
+    ]}
+  />
+
+  <CallToAction
+    title="Render your first report in a minute."
+    href={url('docs/getting-started/quickstart/')}
+    label="Read the quickstart"
+  />
+</Base>
