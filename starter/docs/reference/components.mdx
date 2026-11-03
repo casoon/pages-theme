@@ -1,0 +1,73 @@
+---
+title: Components
+description: Every building block the template provides. Projects compose pages from these; nothing here is project-specific.
+order: 2
+---
+
+## Callouts
+
+<Callout type="note">Neutral information that supports the surrounding paragraph, with a [link to the overview](../../).</Callout>
+<Callout type="tip">An optional shortcut. Safe to skip on a first read.</Callout>
+<Callout type="caution">Something that will break if ignored: breaking changes, data loss. See the [installation notes](../../getting-started/installation/).</Callout>
+<Callout type="deprecated">Still works, scheduled for removal, with the replacement named.</Callout>
+
+## Badges
+
+<p style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+  <Badge>v0.4.2</Badge>
+  <Badge>MIT</Badge>
+  <Badge tone="accent">stable</Badge>
+  <Badge tone="brand">experimental</Badge>
+  <Badge>rust</Badge>
+  <Badge>node</Badge>
+</p>
+
+## Buttons
+
+<p style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+  <Button href="../../">Primary</Button>
+  <Button href="../../" variant="secondary">Secondary</Button>
+  <Button href="../../" variant="quiet">Quiet link →</Button>
+</p>
+
+## Code and terminal
+
+<CodeBlock code={'const html = render(ansi, { theme: "auto" });'} lang="js" title="render.mjs" label="Node" />
+
+<Terminal title="zsh" ansi={'[32m✓[0m 12 passed  [2m0.8s[0m\n[31m✗[0m 1 failed   [2mcontrast.rs:91[0m'} />
+
+<Tabs tabs={[{ id: 'a', label: 'Rust' }, { id: 'b', label: 'Node' }]} label="Language">
+<div slot="a">
+
+```rust
+let html = Renderer::new(Options::default()).render(&ansi)?;
+```
+
+</div>
+<div slot="b">
+
+```js
+const html = render(ansi);
+```
+
+</div>
+</Tabs>
+
+## Type scale
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '14px', padding: '26px', border: '1px solid var(--border)', borderRadius: '14px', background: 'var(--surface)' }}>
+  <div style={{ fontSize: '52px', lineHeight: 1.1, letterSpacing: '-.03em', fontWeight: 600, color: 'var(--heading)' }}>Display 52</div>
+  <div style={{ fontSize: '38px', lineHeight: 1.15, letterSpacing: '-.025em', fontWeight: 600, color: 'var(--heading)' }}>Heading 38</div>
+  <div style={{ fontSize: '25px', letterSpacing: '-.02em', fontWeight: 600, color: 'var(--heading)' }}>Section 25</div>
+  <div>Body 16, Onest, 1.65 line height, measured to roughly 70 characters for comfortable reading.</div>
+  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--muted)' }}>Mono 13, JetBrains Mono, code and metadata</div>
+</div>
+
+## Colour tokens
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
+  <Swatch token="--brand" value="CASOON red" />
+  <Swatch token="--accent" value="project accent" />
+  <Swatch token="--surface" />
+  <Swatch token="--bg-deep" />
+</div>

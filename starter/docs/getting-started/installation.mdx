@@ -1,0 +1,75 @@
+---
+title: Installation
+description: runemark ships as a Rust crate and as a prebuilt Node binding. Both wrap the same renderer, so output is byte-identical across ecosystems.
+order: 1
+---
+
+<Tabs
+  label="Ecosystem"
+  tabs={[
+    { id: 'rust', label: 'Rust' },
+    { id: 'node', label: 'Node' },
+    { id: 'cli', label: 'CLI' },
+  ]}
+>
+<div slot="rust">
+
+```sh
+cargo add runemark
+
+# or, in Cargo.toml
+[dependencies]
+runemark = "0.4"
+```
+
+</div>
+<div slot="node">
+
+```js
+npm i @casoon/runemark
+
+// ESM
+import { render } from "@casoon/runemark";
+```
+
+</div>
+<div slot="cli">
+
+```sh
+brew install casoon/tap/runemark
+
+# verify
+runemark --version
+```
+
+</div>
+</Tabs>
+
+<Callout>
+  The Node package contains prebuilt binaries for linux-x64, darwin-arm64 and win32-x64. Other
+  targets fall back to a WASM build.
+</Callout>
+
+## Requirements
+
+Everything below is verified in CI on every release.
+
+| Runtime | Minimum | Status        |
+| ------- | ------- | ------------- |
+| Rust    | `1.74`  | verified      |
+| Node.js | `20.11` | verified      |
+| Deno    | `2.0`   | planned       |
+| Bun     | –       | not supported |
+
+<Callout type="caution">
+  Versions below 0.4 emitted inline styles. Pages built against them need the new stylesheet
+  before upgrading.
+</Callout>
+
+## Verify the install
+
+<Terminal title="zsh" ansi={'[32m$[0m runemark --version\nrunemark 0.4.2 (rust 1.82, wasm fallback ready)'} />
+
+## Next steps
+
+Continue with the [Quickstart](../quickstart/) to render a first stream.

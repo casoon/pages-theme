@@ -1,0 +1,4 @@
+[1m--- a/src/lib.rs[0m
+[1m+++ b/src/lib.rs[0m
+[31m-let x = 1;[0m
+[32m+let x = 2;[0m

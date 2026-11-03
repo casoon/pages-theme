@@ -1,0 +1,14 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    // Workspace only (removed by scripts/init-site.sh): type-check the theme as well.
+    "../../*.ts",
+    "../../components/**/*",
+    "../../layouts/**/*",
+    "../../lib/**/*",
+    "../../routes/**/*",
+    ".astro/types.d.ts",
+    "**/*"
+  ],
+  "exclude": ["dist"]
+}
