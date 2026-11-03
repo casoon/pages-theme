@@ -11,6 +11,7 @@ of the npm package (`files` in `package.json` lists only the theme).
 | `starter/` | template of a project repo: `site/`, `docs/`, `examples/`, `CHANGELOG.md`, `.github/workflows/pages.yml`; sample content |
 | `scripts/init-site.sh` | sets up the site in a new project repo |
 | `scripts/rollout.sh` | brings every project site to the latest theme version |
+| `scripts/check-site.cjs` | checks a built site: axe, links, scripts, external requests |
 | `.github/workflows/publish.yml` | publishes a version tag to npm |
 
 ## Develop
@@ -59,8 +60,23 @@ scripts/rollout.sh --status   # theme dependency on origin and last Pages run pe
   linked in for the build.
 - Committed are only `site/` (for a workspace site also the root lockfile) and one line in
   `CHANGELOG.md`: `the project site uses the current shared theme (X.Y.Z)`.
+- Before the commit, every site is built and checked with `scripts/check-site.cjs`: axe
+  (WCAG 2.2 AA) in light and dark theme, broken or out-of-base links, scripts beyond the
+  theme's two, requests to other origins. A site with findings is not committed. The check runs
+  here, not in the Pages workflows, so it costs no Actions minutes.
 - A failing repo is reported with its log; the others continue. `THEME_VERSION` pins a version,
   `JOBS` sets how many repos run in parallel (default 4).
+
+## Check one site
+
+```bash
+node scripts/check-site.cjs ~/GitHub/<repo>/site/dist
+```
+
+Serves the build under its base path and crawls every page. A page that runs one own script on
+purpose (a browser module of the project on its regular content) is listed in the site's
+`site/package.json`: `"casoonPagesCheck": { "allowScript": ["interactive/"] }`. Once per
+machine: `pnpm exec playwright install chromium`.
 
 ## New project site
 

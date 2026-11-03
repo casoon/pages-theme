@@ -270,8 +270,8 @@ to it as well.
   in `fonts/OFL.txt`), no CDNs, embeds, analytics or cookies.
 - JavaScript: two small inline scripts (theme before first paint; theme toggle and copy
   buttons). Tabs work without JavaScript. The one exception is a `Demo` stage, see above.
-- Footer on every page: "Ein Projekt von CASOON · Jörn Seidel", licence, Impressum and
-  Datenschutz (casoon.de), the project catalog on casoon.dev.
+- Footer on every page, in the site's language (`lang`): "A CASOON project · Jörn Seidel",
+  licence, imprint and privacy policy (casoon.de), the project catalog on casoon.dev.
 - Light and dark theme, following `prefers-color-scheme` until the visitor chooses.
 
 ## Maintaining

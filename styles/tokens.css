@@ -1,6 +1,6 @@
 /*
- * Design tokens. Brand colours follow casoon.de,
- * adjusted for 4.5:1 text contrast on the page background.
+ * Design tokens. Brand colours follow casoon.de, adjusted for 4.5:1 text contrast on the
+ * page background and on the sand bands (--bg-deep, --bg-sunken).
  * --brand carries CASOON, --accent carries the project (override via the
  * integration's `accent` option).
  */
@@ -19,9 +19,9 @@
   --text: #44423f;
   --heading: #11100e;
   --muted: #5c5a56;
-  --brand: #c13a1a;
+  --brand: #ad3216;
   --brand-soft: rgb(236 74 32 / 0.1);
-  --accent: #c13a1a;
+  --accent: #ad3216;
   --accent-soft: color-mix(in srgb, var(--accent) 10%, transparent);
   --accent-fill: #d4421d;
   --accent-top: #e46140;

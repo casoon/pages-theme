@@ -98,9 +98,14 @@ roll() {
     ' "$wt/site/tsconfig.json"
   fi
   if $in_workspace; then
-    local build=(pnpm --filter ./site build)
-    node -e "process.exit(require('$wt/package.json').scripts?.build ? 0 : 1)" && build=(pnpm build)
-    (cd "$wt" && "${build[@]}") >>"$log" 2>&1 || fail "build"
+    # The root build comes first (packages the site renders with); it may or may not include
+    # the site itself (castwright: pnpm -r build; liveaudit: only the inspector).
+    if node -e "process.exit(require('$wt/package.json').scripts?.build ? 0 : 1)"; then
+      (cd "$wt" && pnpm build) >>"$log" 2>&1 || fail "build"
+    fi
+    if [[ ! -f "$wt/site/dist/index.html" ]]; then
+      (cd "$wt" && pnpm --filter ./site build) >>"$log" 2>&1 || fail "build"
+    fi
   else
     (cd "$wt/site" && pnpm build) >>"$log" 2>&1 || fail "build"
   fi
@@ -111,6 +116,10 @@ roll() {
   fi
   [[ "$(node -p "require('$wt/site/node_modules/@casoon/pages-theme/package.json').version")" == "$version" ]] \
     || fail "installed theme is not $version"
+  # axe (WCAG 2.2 AA, light and dark), links, scripts and external requests on the built site.
+  # Runs here rather than in the Pages workflow, so it costs no Actions minutes.
+  node "$root/scripts/check-site.cjs" "$wt/site/dist" >>"$log" 2>&1 \
+    || fail "site check: $(tail -1 "$log")"
 
   if [[ -f "$wt/CHANGELOG.md" ]]; then
     python3 - "$wt/CHANGELOG.md" "$version" <<'EOF'
