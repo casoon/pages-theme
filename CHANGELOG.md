@@ -6,6 +6,13 @@ site renders.
 
 ## [Unreleased]
 
+## [0.12.10] - 2026-11-11
+
+### Fixed
+
+- **Footer:** links to other sites carry a small arrow icon on the baseline instead of the thin
+  `↗` character.
+
 ## [0.12.9] - 2026-11-11
 
 ### Changed
