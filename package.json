@@ -1,6 +1,6 @@
 {
   "name": "@casoon/pages-theme",
-  "version": "0.12.7",
+  "version": "0.12.8",
   "description": "Shared Astro theme for the GitHub Pages sites of CASOON open-source projects",
   "type": "module",
   "license": "MIT",
@@ -50,7 +50,8 @@
     "preview": "pnpm --filter starter-site preview",
     "check": "biome check .",
     "check:fix": "biome check --write .",
-    "type-check": "pnpm --filter starter-site type-check"
+    "type-check": "pnpm --filter starter-site type-check",
+    "test:accent": "node scripts/test-accent.mjs"
   },
   "peerDependencies": {
     "astro": "^7.3.2"

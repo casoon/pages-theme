@@ -26,10 +26,12 @@ const home = Astro.site && new URL(url(), Astro.site).href;
 const ogImage = Astro.site && new URL(url('og.png'), Astro.site).href;
 const sameAs = [config.website, ...config.packages.map((p) => p.href)].filter(Boolean);
 
+// tokens.css sets --accent with the same selectors and is linked after this inline style, so the
+// selectors repeat :root to outrank it whatever the order in <head> (scripts/test-accent.mjs).
 const accentCss = config.accent
-  ? `:root{--accent:${config.accent.light}}` +
-    `:root[data-theme="dark"]{--accent:${config.accent.dark}}` +
-    `@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:${config.accent.dark}}}`
+  ? `:root:root{--accent:${config.accent.light}}` +
+    `:root:root[data-theme="dark"]{--accent:${config.accent.dark}}` +
+    `@media (prefers-color-scheme:dark){:root:root:not([data-theme="light"]){--accent:${config.accent.dark}}}`
   : '';
 
 const structuredData = {
