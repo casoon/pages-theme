@@ -6,6 +6,13 @@ site renders.
 
 ## [Unreleased]
 
+## [0.12.11] - 2026-11-11
+
+### Added
+
+- **Components:** `Flow` shows the path from input to result in 3–5 stages, each naming its
+  artifact (a file, a command, an output folder).
+
 ## [0.12.10] - 2026-11-11
 
 ### Fixed

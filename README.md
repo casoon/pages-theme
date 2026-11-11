@@ -136,6 +136,7 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Facts` | Verifiable key figures; `layout="grid"` (tiles) or `"list"` (spec sheet) |
 | `Features` | Core points; `layout="numbered"` (3–5 items) or `"grid"` (an icon-tile catalog) |
 | `Spotlight` | Repeatable two-column feature section — eyebrow, title, lead, bullets, links, beside a media slot |
+| `Flow` | 3–5 stages from input to result, each with its artifact (`index.md`, `dist/`) in a mono chip |
 | `Integrations` | Grid of what the project plugs into: icon tile, name, category |
 | `FileSet` | The files a run produced: `tabs`, `grid` or `rail` view |
 | `BuildOutput` | One real build output on the start page |

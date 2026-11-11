@@ -11,6 +11,7 @@ import {
   Facts,
   Faq,
   Features,
+  Flow,
   Hero,
   Install,
   Integrations,
@@ -149,6 +150,18 @@ fn main() -> anyhow::Result<()> {
   >
     <Terminal title="runemark check ./report" dots ansi={check} />
   </Spotlight>
+
+  <Flow
+    eyebrow="From stream to page"
+    title="Captured once, readable everywhere."
+    lead="runemark sits between the command that prints colours and the page that shows them. **Nothing runs in the reader's browser.**"
+    stages={[
+      { label: 'Capture', artifact: 'report.ansi', title: 'Record the output', body: 'Pipe any command into a file, colours and cursor moves included.' },
+      { label: 'Render', artifact: 'runemark render', title: 'Turn it into HTML', body: 'One pass resolves every escape sequence into a flat fragment.' },
+      { label: 'Embed', artifact: 'out.html', title: 'Drop it in a page', body: 'Static markup plus one stylesheet, themed by CSS custom properties.' },
+      { label: 'Read', artifact: 'your-docs.com', title: 'Open in a browser', body: 'Accessible, searchable text — no terminal emulator, no `<canvas>`.' },
+    ]}
+  />
 
   <div id="build-output">
     <BuildOutput
