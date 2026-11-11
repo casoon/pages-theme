@@ -6,6 +6,19 @@ site renders.
 
 ## [Unreleased]
 
+## [0.12.9] - 2026-11-11
+
+### Changed
+
+- **Footer:** the project name leads in large type above its description, the link columns sit
+  beside it with small captions and mark links to other sites, and the CASOON logo moves into
+  the bottom line next to "A CASOON project".
+
+### Fixed
+
+- **Call to action:** a short title stays on one line on wide screens and a longer one breaks
+  into two lines of even length, instead of breaking after about 14 characters.
+
 ## [0.12.8] - 2026-11-11
 
 ### Changed
