@@ -1,0 +1,156 @@
+---
+/**
+ * The path from input to result in 3–5 stages, left to right: what goes in, what the project
+ * does with it, where it ends up. Each stage names its artifact (`index.md`, `.md → .html`,
+ * `dist/`) in a mono chip, so the flow reads as concrete files and commands, not a diagram of
+ * buzzwords. An optional eyebrow, title and lead head the section. `body` accepts the
+ * changelog's inline Markdown subset.
+ */
+import { inlineMarkdown } from '../lib/changelog';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  stages: { label: string; artifact: string; title: string; body: string }[];
+}
+
+const { eyebrow, title, lead, stages } = Astro.props;
+---
+
+<section class="flow">
+  {
+    (eyebrow || title || lead) && (
+      <header>
+        {eyebrow && <p class="cp-label">{eyebrow}</p>}
+        {title && <h2>{title}</h2>}
+        {lead && <p class="lead" set:html={inlineMarkdown(lead)} />}
+      </header>
+    )
+  }
+  <ol style={`--stages: ${stages.length}`}>
+    {
+      stages.map((stage, i) => (
+        <li>
+          <p class="label">
+            <span aria-hidden="true">{String(i + 1).padStart(2, '0')} / </span>
+            {stage.label}
+          </p>
+          <code class="artifact">{stage.artifact}</code>
+          <h3>{stage.title}</h3>
+          <p class="body" set:html={inlineMarkdown(stage.body)} />
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .flow {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+  header {
+    max-width: 720px;
+    margin-bottom: 44px;
+  }
+  h2 {
+    margin: 0 0 20px;
+    color: var(--heading);
+    font-size: clamp(32px, 4vw, 50px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .lead {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  .lead :global(strong) {
+    color: var(--heading);
+  }
+  ol {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 26px 22px 28px;
+    border-radius: var(--r-card);
+    background: var(--bg-deep);
+  }
+  /* Connector to the next stage: below on narrow screens, to the right on wide ones. */
+  li:not(:last-child)::after {
+    content: '↓';
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent-fill);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1;
+    transform: translateX(-50%);
+  }
+  @media (min-width: 900px) {
+    ol {
+      grid-template-columns: repeat(var(--stages), minmax(0, 1fr));
+    }
+    li:not(:last-child)::after {
+      content: '→';
+      top: 50%;
+      right: -17px;
+      bottom: auto;
+      left: auto;
+      transform: translateY(-50%);
+    }
+  }
+  .label {
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .artifact {
+    max-width: 100%;
+    margin-bottom: 22px;
+    padding: 6px 10px;
+    overflow-wrap: anywhere;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--heading);
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+  }
+  h3 {
+    margin: 0 0 8px;
+    color: var(--heading);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .body {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.56;
+  }
+  .body :global(code) {
+    font-size: 0.9em;
+  }
+</style>
