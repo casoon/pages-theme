@@ -6,6 +6,8 @@ site renders.
 
 ## [Unreleased]
 
+## [0.12.12] - 2026-11-11
+
 ### Changed
 
 - **Assets:** The CASOON logo and the favicon are turquoise (`#028baa`) instead of red.
