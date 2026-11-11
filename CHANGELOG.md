@@ -6,6 +6,18 @@ site renders.
 
 ## [Unreleased]
 
+## [0.12.8] - 2026-11-11
+
+### Changed
+
+- **Contributors:** `pnpm test:accent` builds the starter site with `accent` set and checks the
+  colour the page computes in light, dark and with the theme toggle.
+
+### Fixed
+
+- **Colours:** the `accent` option takes effect; before, the theme's own `--accent` overrode the
+  project colour in every colour scheme.
+
 ## [0.12.7] - 2026-11-03
 
 ### Changed

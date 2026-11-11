@@ -27,8 +27,9 @@ pnpm install
 pnpm dev
 ```
 
-`pnpm build`, `pnpm check` (Biome) and `pnpm type-check` (`astro check`, theme included) run
-from the root.
+`pnpm build`, `pnpm check` (Biome), `pnpm type-check` (`astro check`, theme included) and
+`pnpm test:accent` (the `accent` option in a real build, needs Playwright's Chromium) run from
+the root.
 
 ## Release
 
