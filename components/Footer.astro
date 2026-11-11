@@ -148,9 +148,21 @@ const columns = [
   ul a:hover {
     text-decoration-color: currentColor;
   }
+  /* Small arrow drawn as a mask: the ↗ glyph of the text fonts sits thin and off the baseline. */
   ul a[href^='http']::after {
-    content: ' ↗' / '';
-    color: var(--muted);
+    content: '';
+    display: inline-block;
+    width: 0.6em;
+    height: 0.6em;
+    margin-left: 0.4em;
+    background: var(--muted);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 8 8 2M3.5 2H8v4.5'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+    vertical-align: 0.05em;
+    transition: background-color 0.2s;
+  }
+  ul a[href^='http']:hover::after {
+    background: currentColor;
   }
   .bottom {
     display: flex;
