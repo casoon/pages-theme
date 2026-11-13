@@ -28,6 +28,9 @@ const {
   tone = 'plain',
 } = Astro.props;
 const hasSource = Astro.slots.has('source');
+// An eyebrow that starts with "CASOON" marks the project as one of the family: it is set as a
+// badge with the logo mark, and the rest ("Open Source", "Proof of Concept") follows it.
+const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
 ---
 
 <section class:list={['hero', `is-${layout}`, tone === 'invert' && 'invert']}>
@@ -35,7 +38,21 @@ const hasSource = Astro.slots.has('source');
     layout === 'split' && (
       <div class="inner">
         <div>
-          <p class="eyebrow">{eyebrow}</p>
+          <p class:list={['eyebrow', family && 'family']}>
+            {family ? (
+              <>
+                <span class="mark" aria-hidden="true">
+                  <svg viewBox="110 92 280 316">
+                    <path d="M169.49,108.38c-13.22,7.76-23.78,18.14-31.69,31.15-7.9,13.01-11.85,27.49-11.85,43.44v135.58c0,15.52,3.95,29.71,11.85,42.57,7.9,12.86,18.47,23.1,31.69,30.72,13.22,7.62,27.88,11.42,43.97,11.42h160.59v-45.48h-160.59c-11.64,0-21.55-3.91-29.75-11.74-8.19-7.83-12.28-17.21-12.28-28.13v-134.93c0-11.35,4.09-21.01,12.28-28.99,8.19-7.98,18.11-11.96,29.75-11.96h160.59v-45.26h-160.59c-16.09,0-30.75,3.88-43.97,11.64Z" />
+                  </svg>
+                </span>
+                <span class="name">CASOON</span>
+                {family[1] && <span class="rest">{family[1]}</span>}
+              </>
+            ) : (
+              eyebrow
+            )}
+          </p>
           <h1>{title}</h1>
           <p class="lead">{lead}</p>
           <slot />
@@ -53,7 +70,21 @@ const hasSource = Astro.slots.has('source');
     layout === 'stack' && (
       <div class="inner">
         <div class="head">
-          <p class="eyebrow">{eyebrow}</p>
+          <p class:list={['eyebrow', family && 'family']}>
+            {family ? (
+              <>
+                <span class="mark" aria-hidden="true">
+                  <svg viewBox="110 92 280 316">
+                    <path d="M169.49,108.38c-13.22,7.76-23.78,18.14-31.69,31.15-7.9,13.01-11.85,27.49-11.85,43.44v135.58c0,15.52,3.95,29.71,11.85,42.57,7.9,12.86,18.47,23.1,31.69,30.72,13.22,7.62,27.88,11.42,43.97,11.42h160.59v-45.48h-160.59c-11.64,0-21.55-3.91-29.75-11.74-8.19-7.83-12.28-17.21-12.28-28.13v-134.93c0-11.35,4.09-21.01,12.28-28.99,8.19-7.98,18.11-11.96,29.75-11.96h160.59v-45.26h-160.59c-16.09,0-30.75,3.88-43.97,11.64Z" />
+                  </svg>
+                </span>
+                <span class="name">CASOON</span>
+                {family[1] && <span class="rest">{family[1]}</span>}
+              </>
+            ) : (
+              eyebrow
+            )}
+          </p>
           <h1>{title}</h1>
           <p class="lead">{lead}</p>
         </div>
@@ -85,7 +116,21 @@ const hasSource = Astro.slots.has('source');
   {
     layout === 'editorial' && (
       <div class="inner">
-        <p class="eyebrow">{eyebrow}</p>
+        <p class:list={['eyebrow', family && 'family']}>
+          {family ? (
+            <>
+              <span class="mark" aria-hidden="true">
+                <svg viewBox="110 92 280 316">
+                  <path d="M169.49,108.38c-13.22,7.76-23.78,18.14-31.69,31.15-7.9,13.01-11.85,27.49-11.85,43.44v135.58c0,15.52,3.95,29.71,11.85,42.57,7.9,12.86,18.47,23.1,31.69,30.72,13.22,7.62,27.88,11.42,43.97,11.42h160.59v-45.48h-160.59c-11.64,0-21.55-3.91-29.75-11.74-8.19-7.83-12.28-17.21-12.28-28.13v-134.93c0-11.35,4.09-21.01,12.28-28.99,8.19-7.98,18.11-11.96,29.75-11.96h160.59v-45.26h-160.59c-16.09,0-30.75,3.88-43.97,11.64Z" />
+                </svg>
+              </span>
+              <span class="name">CASOON</span>
+              {family[1] && <span class="rest">{family[1]}</span>}
+            </>
+          ) : (
+            eyebrow
+          )}
+        </p>
         <h1>{title}</h1>
         <div class="row">
           <p class="lead">{lead}</p>
@@ -132,6 +177,73 @@ const hasSource = Astro.slots.has('source');
     height: 6px;
     border-radius: 50%;
     background: var(--accent-fill);
+  }
+  /* Family badge: logo mark, the name in wide caps, then the rest after a hairline. A slow
+     sheen crosses it now and then. */
+  .eyebrow.family {
+    position: relative;
+    display: inline-flex;
+    gap: 0;
+    padding: 5px 18px 5px 5px;
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    line-height: 1;
+  }
+  .eyebrow.family::before {
+    content: none;
+  }
+  .eyebrow.family::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.5) 50%, transparent 65%);
+    translate: -100% 0;
+    animation: family-sheen 7s ease-in-out 1.5s infinite;
+    pointer-events: none;
+  }
+  @keyframes family-sheen {
+    0% {
+      translate: -100% 0;
+    }
+    25%,
+    100% {
+      translate: 100% 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eyebrow.family::after {
+      content: none;
+    }
+  }
+  .mark {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #028baa;
+  }
+  .mark svg {
+    width: 13px;
+    height: 13px;
+    fill: #fff;
+  }
+  .name {
+    margin-left: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+  }
+  .rest {
+    margin-left: 12px;
+    padding-left: 12px;
+    border-left: 1px solid var(--border-strong);
+    color: var(--text);
+    font-weight: 500;
   }
   h1 {
     margin: 0 0 28px;

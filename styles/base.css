@@ -305,3 +305,10 @@ h2.cp-label::before {
   border: 0;
   border-top: 1px solid var(--border);
 }
+
+/* Space between the hero's sand ground and whatever a site places right after it. The theme
+   sections listed here bring their own top padding; everything else — a site's own aside, card
+   or section, and Spotlight — would otherwise sit flush against the hero's lower edge. */
+main > .hero + :not(.facts, .features, .anchor-grid, .faq, .flow, .integrations) {
+  margin-top: clamp(40px, 6vw, 72px);
+}
