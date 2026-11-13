@@ -39,7 +39,7 @@
 
   --font-sans: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --header-h: 62px;
+  --header-h: 66px;
   --max: 1100px;
 
   /* Terminal surface: dark in both themes. */

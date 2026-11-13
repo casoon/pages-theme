@@ -6,6 +6,13 @@ site renders.
 
 ## [Unreleased]
 
+## [0.12.14] - 2026-11-13
+
+### Changed
+
+- **Header:** The header pill is as wide as the hero (1240px instead of 1000px) and a little taller; menu entries get a soft background on hover and for the current page, and the GitHub link carries an arrow in its own white circle.
+- **Hero:** The CASOON family badge is smaller and quieter: no shadow, a lighter outline, and the part after the hairline in a muted tone.
+
 ## [0.12.13] - 2026-11-13
 
 ### Changed
