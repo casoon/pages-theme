@@ -6,6 +6,16 @@ site renders.
 
 ## [Unreleased]
 
+## [0.12.13] - 2026-11-13
+
+### Changed
+
+- **Hero:** An eyebrow that starts with `CASOON` (the default `CASOON Open Source` among them) is set as a family badge with the logo mark instead of a dot.
+
+### Fixed
+
+- **Hero:** A site's own block right after the hero — an aside, a card, a `Spotlight` — no longer sits flush against the hero's lower edge.
+
 ## [0.12.12] - 2026-11-11
 
 ### Changed
