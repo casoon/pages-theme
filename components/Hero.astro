@@ -184,13 +184,12 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
     position: relative;
     display: inline-flex;
     gap: 0;
-    padding: 5px 18px 5px 5px;
+    padding: 3px 12px 3px 3px;
     overflow: hidden;
-    border: 1px solid var(--border-strong);
+    border: 1px solid var(--border);
     border-radius: 999px;
-    background: var(--surface);
-    box-shadow: var(--shadow);
-    font-size: 13px;
+    background: color-mix(in srgb, var(--surface) 60%, transparent);
+    font-size: 11px;
     letter-spacing: 0.06em;
     line-height: 1;
   }
@@ -201,7 +200,7 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.5) 50%, transparent 65%);
+    background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.3) 50%, transparent 65%);
     translate: -100% 0;
     animation: family-sheen 7s ease-in-out 1.5s infinite;
     pointer-events: none;
@@ -223,26 +222,26 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
   .mark {
     display: grid;
     place-items: center;
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background: #028baa;
   }
   .mark svg {
-    width: 13px;
-    height: 13px;
+    width: 9px;
+    height: 9px;
     fill: #fff;
   }
   .name {
-    margin-left: 10px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
+    margin-left: 8px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
   }
   .rest {
-    margin-left: 12px;
-    padding-left: 12px;
-    border-left: 1px solid var(--border-strong);
-    color: var(--text);
+    margin-left: 9px;
+    padding-left: 9px;
+    border-left: 1px solid var(--border);
+    color: var(--muted);
     font-weight: 500;
   }
   h1 {
