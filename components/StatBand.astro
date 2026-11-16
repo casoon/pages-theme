@@ -56,6 +56,20 @@ const { items, label } = Astro.props;
   div:last-child {
     padding-right: 0;
   }
+  @media (max-width: 520px) {
+    dl {
+      grid-template-columns: 1fr;
+    }
+    div,
+    div:first-child,
+    div:last-child {
+      padding: 28px 0;
+    }
+    div + div {
+      border-left: 0;
+      border-top: 1px solid var(--border-strong);
+    }
+  }
   dt {
     color: var(--muted);
     font-size: 14px;

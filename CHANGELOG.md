@@ -6,6 +6,12 @@ site renders.
 
 ## [Unreleased]
 
+## [0.13.1] - 2026-11-16
+
+### Fixed
+
+- **StatBand:** On a phone the figures stack as one column without the left hairline and indent; a hairline above each separates them.
+
 ## [0.13.0] - 2026-11-16
 
 ### Added
