@@ -1,0 +1,145 @@
+---
+/**
+ * A branch as a medium for `Split`: one start, two to four ways, one shared result. Not `Flow`
+ * (a straight run of stages as a section of its own). The DOM order is start, ways, result;
+ * the arrows are decoration. `result` is a plain string.
+ */
+interface Props {
+  start: { title: string; body: string };
+  paths: { label: string; title: string; body: string }[];
+  result?: string;
+}
+
+const { start, paths, result } = Astro.props;
+const arrow = 'M12 2v22M5 17l7 7 7-7';
+---
+
+<div class="flowpanel">
+  <div class="start">
+    <p class="start-title">{start.title}</p>
+    <p class="start-body">{start.body}</p>
+  </div>
+  <div class="arrows" aria-hidden="true" style={`--n: ${paths.length}`}>
+    {
+      paths.map(() => (
+        <svg viewBox="0 0 24 28" width="24" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d={arrow} />
+        </svg>
+      ))
+    }
+  </div>
+  <ul class="paths">
+    {
+      paths.map((path) => (
+        <li>
+          <span class="label">{path.label}</span>
+          <span class="title">{path.title}</span>
+          <span class="body">{path.body}</span>
+        </li>
+      ))
+    }
+  </ul>
+  {
+    result && (
+      <p class="result">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 9h14M5 15h14" />
+        </svg>
+        <span>{result}</span>
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .flowpanel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: clamp(18px, 3vw, 32px);
+    border-radius: 32px;
+    background: var(--bg-deep);
+  }
+  .start {
+    align-self: center;
+    width: min(360px, 100%);
+    box-sizing: border-box;
+    padding: 16px 20px;
+    border-radius: var(--r-step);
+    background: var(--ink);
+    color: var(--bg);
+    text-align: center;
+  }
+  .start-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .start-body {
+    margin: 0;
+    font-size: 14px;
+  }
+  .arrows {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    gap: 12px;
+    justify-items: center;
+    color: var(--muted);
+  }
+  .paths {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .paths li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 18px;
+    border-radius: var(--r-step);
+    background: var(--surface);
+    box-shadow: 0 2px 0 var(--shadow-hard);
+  }
+  .label {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .title {
+    color: var(--heading);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .body {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .result {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 6px 0 0;
+    padding: 14px 18px;
+    border-radius: var(--r-step);
+    background: var(--accent-fill);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .result svg {
+    flex: none;
+  }
+  /* The arrows only make sense while the ways sit in one row. */
+  @media (max-width: 560px) {
+    .arrows {
+      display: none;
+    }
+  }
+</style>

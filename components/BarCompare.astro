@@ -1,0 +1,193 @@
+---
+/**
+ * Measurements as pairs of bars, two series per measurement. The bar is `value` over the
+ * largest value of the component (at least 4 px wide); the number shown is `display`, so the
+ * theme formats nothing. Every value is text beside its bar, and the two series differ in
+ * lightness, not only in hue. The default slot is the footnote (device, date, method link).
+ */
+interface Props {
+  title: string;
+  series: [string, string];
+  rows: { label: string; values: [number, number]; display: [string, string] }[];
+  facts?: { label: string; value: string }[];
+}
+
+const { title, series, rows, facts } = Astro.props;
+const max = Math.max(...rows.flatMap((row) => row.values), Number.MIN_VALUE);
+const pct = (v: number) => `${((v / max) * 100).toFixed(2)}%`;
+const hasNote = Astro.slots.has('default');
+---
+
+<figure class="barcompare">
+  <figcaption>
+    <span class="title">{title}</span>
+    <span class="legend">
+      <span><i class="swatch s0" aria-hidden="true"></i>{series[0]}</span>
+      <span><i class="swatch s1" aria-hidden="true"></i>{series[1]}</span>
+    </span>
+  </figcaption>
+  <div class="rows">
+    {
+      rows.map((row) => (
+        <div class="row">
+          <span class="label">{row.label}</span>
+          {row.values.map((value, i) => (
+            <div class="line">
+              <div class="track">
+                <div class={`bar s${i}`} style={`width: ${pct(value)}`} />
+              </div>
+              <span class="num">
+                <span class="visually-hidden">{series[i]}: </span>
+                {row.display[i]}
+              </span>
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+  {
+    facts && facts.length > 0 && (
+      <dl class="facts">
+        {facts.map((fact) => (
+          <div>
+            <dt>{fact.label}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+  {
+    hasNote && (
+      <p class="note">
+        <slot />
+      </p>
+    )
+  }
+</figure>
+
+<style>
+  .barcompare {
+    box-sizing: border-box;
+    min-width: 0;
+    margin: 0;
+    padding: clamp(20px, 3vw, 32px);
+    border-radius: var(--r-card);
+    background: var(--surface);
+    box-shadow: 2px 2px 0 var(--shadow-hard);
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 20px;
+    margin-bottom: 28px;
+  }
+  .title {
+    color: var(--heading);
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+  .s0 {
+    background: var(--ink);
+  }
+  .s1 {
+    background: var(--accent-top);
+  }
+  .rows {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .label {
+    color: var(--heading);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .track {
+    flex: 1;
+    height: 14px;
+    border-radius: 4px;
+    background: var(--bg);
+  }
+  .bar {
+    min-width: 4px;
+    height: 100%;
+    border-radius: 4px;
+  }
+  .num {
+    flex: none;
+    width: 72px;
+    color: var(--heading);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-align: right;
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    gap: 16px 24px;
+    margin: 28px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  dt {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+  dd {
+    margin: 2px 0 0;
+    color: var(--heading);
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .note {
+    margin: 20px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .note :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>
