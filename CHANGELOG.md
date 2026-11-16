@@ -6,6 +6,13 @@ site renders.
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-11-16
+
+### Added
+
+- **Components:** `StatBand`, `SectionIntro`, `Split`, `FlowPanel`, `BarCompare`, `ElementList`, `Showcase`, `Compare`, `AudienceList` and `Tradeoffs` — lighter, alternating content blocks for a start page, as an alternative to the `Features` and `Facts` card grids. Nothing existing changes.
+- **CodeBlock:** The optional `marks` prop sets numbered dots at the end of lines, to go with the numbered points of a `Split`. Without it the block renders as before.
+
 ## [0.12.14] - 2026-11-13
 
 ### Changed

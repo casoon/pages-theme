@@ -1,0 +1,72 @@
+---
+/**
+ * Key figures as one row with hairlines, right under the hero. The lighter sibling of
+ * `Facts layout="grid"`: no tiles, just value over label. `label` names the region (default
+ * "Key facts"); give it on a page that has more than one.
+ */
+import config from 'virtual:casoon-pages/config';
+import { t } from '../lib/i18n';
+
+interface Props {
+  items: { value: string; label: string }[];
+  label?: string;
+}
+
+const { items, label } = Astro.props;
+---
+
+<section class="statband" aria-label={label ?? t(config.lang).keyFacts}>
+  <dl>
+    {
+      items.map((item) => (
+        <div>
+          <dt>{item.label}</dt>
+          <dd>{item.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  .statband {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    margin: 0;
+    border-bottom: 1px solid var(--border-strong);
+  }
+  div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 40px 24px 36px;
+  }
+  div + div {
+    border-left: 1px solid var(--border-strong);
+  }
+  div:first-child {
+    padding-left: 0;
+  }
+  div:last-child {
+    padding-right: 0;
+  }
+  dt {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  dd {
+    margin: 0;
+    color: var(--heading);
+    font-size: clamp(40px, 5vw, 56px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+</style>

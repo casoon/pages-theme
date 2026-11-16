@@ -136,6 +136,16 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Facts` | Verifiable key figures; `layout="grid"` (tiles) or `"list"` (spec sheet) |
 | `Features` | Core points; `layout="numbered"` (3–5 items) or `"grid"` (an icon-tile catalog) |
 | `Spotlight` | Repeatable two-column feature section — eyebrow, title, lead, bullets, links, beside a media slot |
+| `StatBand` | Key figures as one row with hairlines, under the hero; the lighter sibling of `Facts layout="grid"` |
+| `SectionIntro` | Section head: `h2` left, a placing paragraph right |
+| `Split` | Repeatable open row: text with index, note, ticked or `numbered` points and links beside a medium; `reverse` swaps sides |
+| `FlowPanel` | A branch as a medium for `Split`: one start, two to four ways, one result |
+| `BarCompare` | Measurements as pairs of bars, every value also as text; default slot is the footnote |
+| `ElementList` | Term in mono plus explanation, as rows between hairlines (`<dl>`) |
+| `Showcase` | Dark panel (dark in both themes) with a large image or video |
+| `Compare` | Comparison `<table>` with the last column raised; scrolls sideways under 760 px |
+| `AudienceList` | Editorial list: heading left, term + text rows right (`<dl>`) |
+| `Tradeoffs` | Lowered panel for honest limits |
 | `Flow` | 3–5 stages from input to result, each with its artifact (`index.md`, `dist/`) in a mono chip |
 | `Integrations` | Grid of what the project plugs into: icon tile, name, category |
 | `FileSet` | The files a run produced: `tabs`, `grid` or `rail` view |
@@ -144,7 +154,7 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Keymap` | Keyboard shortcuts or CLI flags, grouped cards of label + `<kbd>` keys |
 | `ReleaseHighlights` | Teaser of one changelog release on the start page |
 | `Faq` | Native `<details>` accordion, no JS |
-| `CodeBlock` | Build-time highlighting (Shiki, theme-aware), copy button |
+| `CodeBlock` | Build-time highlighting (Shiki, theme-aware), copy button; `marks` sets numbered dots at line ends to go with `Split numbered` |
 | `Terminal` | `ansi` prop (converted at build time) or pre-rendered HTML as slot |
 | `Callout` | `note`, `tip`, `caution`, `deprecated` |
 | `Tabs` | CSS-only tabs, one named slot per tab id |

@@ -12,9 +12,30 @@ interface Props {
   /** Language label shown right in the bar. */
   label?: string;
   copy?: boolean;
+  /**
+   * Numbered dots at the end of a line (1-based `line`), `aria-hidden`; they belong to the
+   * numbered points of a `Split` beside the block. Without it the block renders as before.
+   */
+  marks?: { line: number; n: number }[];
 }
 
-const { code, lang = 'text', title, label, copy = true } = Astro.props;
+const { code, lang = 'text', title, label, copy = true, marks } = Astro.props;
+const transformers = marks?.length
+  ? [
+      {
+        line(node: { children: unknown[] }, line: number) {
+          for (const mark of marks.filter((m) => m.line === line)) {
+            node.children.push({
+              type: 'element',
+              tagName: 'span',
+              properties: { class: 'mark', 'aria-hidden': 'true' },
+              children: [{ type: 'text', value: String(mark.n) }],
+            });
+          }
+        },
+      },
+    ]
+  : undefined;
 const s = t(config.lang);
 
 let hash = 5381;
@@ -38,7 +59,7 @@ const id = `code-${hash.toString(36)}`;
       </figcaption>
     )
   }
-  <div id={id}><Code code={code} lang={lang as never} theme="css-variables" /></div>
+  <div id={id}><Code code={code} lang={lang as never} theme="css-variables" transformers={transformers as never} /></div>
 </figure>
 
 <style>
@@ -80,5 +101,19 @@ const id = `code-${hash.toString(36)}`;
   }
   .copy[hidden] {
     display: none;
+  }
+  .codeblock :global(.mark) {
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 14px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    user-select: none;
   }
 </style>

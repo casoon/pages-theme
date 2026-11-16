@@ -1,0 +1,67 @@
+---
+/**
+ * A term in mono beside its explanation, as rows between hairlines (a `<dl>`). For the
+ * elements, options or commands a section talks about. `body` takes the changelog's inline
+ * Markdown subset.
+ */
+import { inlineMarkdown } from '../lib/changelog';
+
+interface Props {
+  items: { term: string; body: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="elements">
+  {
+    items.map((item) => (
+      <div>
+        <dt>{item.term}</dt>
+        <dd set:html={inlineMarkdown(item.body)} />
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .elements {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 24px;
+    padding: 14px 0;
+    border-top: 1px solid var(--border-strong);
+  }
+  div:last-child {
+    border-bottom: 1px solid var(--border-strong);
+  }
+  dt {
+    flex: 0 0 190px;
+    color: var(--heading);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  dd {
+    flex: 1 1 240px;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  dd :global(strong) {
+    color: var(--heading);
+    font-weight: 600;
+  }
+  dd :global(code) {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--code-bg);
+    font-size: 0.9em;
+  }
+</style>

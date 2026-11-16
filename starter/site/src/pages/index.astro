@@ -3,23 +3,33 @@ import { readFile } from 'node:fs/promises';
 import config from 'virtual:casoon-pages/config';
 import {
   AnchorGrid,
+  AudienceList,
   Badge,
   Badges,
+  BarCompare,
   BuildOutput,
   CallToAction,
   CodeBlock,
+  Compare,
+  ElementList,
   Facts,
   Faq,
   Features,
   Flow,
+  FlowPanel,
   Hero,
   Install,
   Integrations,
   Keymap,
   Quickstart,
   ReleaseHighlights,
+  SectionIntro,
+  Showcase,
+  Split,
   Spotlight,
+  StatBand,
   Terminal,
+  Tradeoffs,
 } from '@casoon/pages-theme/components';
 import Base from '@casoon/pages-theme/layouts/Base.astro';
 import { parseChangelog } from '@casoon/pages-theme/lib/changelog';
@@ -194,6 +204,144 @@ fn main() -> anyhow::Result<()> {
       { icon: '✓', title: '142 golden fixtures', body: 'Rendered and diffed on every build, in CI.' },
       { icon: '⌘', title: 'CLI and library', body: 'Same renderer behind `runemark check` and `render()`.' },
       { icon: '◐', title: 'Light and dark', body: 'CSS custom properties, no duplicate markup per theme.' },
+    ]}
+  />
+
+  <StatBand
+    label="runemark in numbers"
+    items={[
+      { value: '142', label: 'golden fixtures, diffed on every build' },
+      { value: '2', label: 'bindings: Rust and Node' },
+      { value: '0', label: 'runtime dependencies' },
+      { value: '4.5:1', label: 'minimum contrast, checked per colour pair' },
+    ]}
+  />
+
+  <SectionIntro
+    title="One renderer. Every place the output ends up."
+    lead="Most tools colour a terminal and leave the page to guess. runemark starts from the other end: **a flat frame first, HTML second.**"
+  />
+
+  <Split
+    index="01"
+    eyebrow="Rendering"
+    title="The CLI and the library agree."
+    lead="Both call the same renderer, so a report looks the same in CI, in a docs page and in a test."
+    note="Pass `--strict-contrast` and a pair below 4.5:1 fails the build."
+    links={[{ label: 'Rendering pipeline', href: url('docs/reference/api/') }]}
+  >
+    <FlowPanel
+      start={{ title: 'ANSI stream', body: 'a file, a pipe or a string' }}
+      paths={[
+        { label: 'CLI', title: 'runemark render', body: 'In a build step or a CI job.' },
+        { label: 'Library', title: 'Rust or Node', body: 'In your own program.' },
+        { label: 'WASM', title: 'The fallback', body: 'Where no native binding reaches.' },
+      ]}
+      result="Every path has to produce the same bytes as the golden fixtures."
+    />
+  </Split>
+
+  <Split
+    index="02"
+    reverse
+    eyebrow="Cost"
+    title="Rendered once, not in the reader's browser."
+    lead="The work happens in the build. The page ships static markup and one stylesheet."
+    points={[
+      '**No script.** Nothing runs when the page loads.',
+      '**Small.** The output is text with a few spans.',
+    ]}
+  >
+    <BarCompare
+      title="Page weight for one report"
+      series={['runemark', 'A terminal emulator in the page']}
+      rows={[
+        { label: 'Transferred', values: [4, 310], display: ['4 KiB', '310 KiB'] },
+        { label: 'Scripted at load', values: [0, 180], display: ['0 ms', '180 ms'] },
+      ]}
+      facts={[{ label: 'Scripts on the page', value: '0' }]}
+    >
+      Sample figures for the starter site only.
+    </BarCompare>
+  </Split>
+
+  <Split
+    index="03"
+    reverse
+    numbered
+    eyebrow="Usage"
+    title="Three lines from file to page."
+    lead="The renderer takes options once and renders as often as you like."
+    points={[
+      'Read the ANSI text.',
+      'Render it with the options.',
+      'Write the file.',
+    ]}
+  >
+    <CodeBlock
+      code={mainRs}
+      lang="rust"
+      title="src/main.rs"
+      marks={[
+        { line: 4, n: 1 },
+        { line: 10, n: 2 },
+        { line: 12, n: 3 },
+      ]}
+    />
+  </Split>
+
+  <Split
+    index="04"
+    eyebrow="Markup"
+    title="A table where a table is meant."
+    lead="Output keeps its structure, so a reader with a screen reader gets real elements."
+  >
+    <ElementList
+      items={[
+        { term: '<pre>', body: 'Terminal output is **read**: plain text, copy and paste, browser find.' },
+        { term: '<table>', body: 'A report with columns is **a table**, not aligned spaces.' },
+      ]}
+    />
+  </Split>
+
+  <Showcase
+    eyebrow="Showcase"
+    title="A page that is only output."
+    lead="Every example on this site is produced by the package itself during the build."
+    link={{ label: 'See the showcase', href: url('showcase/') }}
+  >
+    <Terminal ansi={report} />
+  </Showcase>
+
+  <Compare
+    title="Next to an emulator in the page"
+    lead="The differences in one table."
+    columns={['A terminal emulator in the page', 'runemark']}
+    rows={[
+      { topic: 'Where it runs', other: 'In the reader\'s browser', own: 'In your build' },
+      { topic: 'Output', other: 'A canvas or nested divs', own: 'Text a screen reader can read' },
+      { topic: 'Colours', other: 'Whatever the stream says', own: 'Checked against 4.5:1' },
+    ]}
+    link={{ label: 'What sets it apart', href: url('docs/') }}
+  />
+
+  <AudienceList
+    heading="Who it is for"
+    items={[
+      { title: 'Docs authors', body: 'Show real command output without screenshots that go stale.' },
+      { title: 'CI maintainers', body: 'Publish a coloured log as a readable page.' },
+      { title: 'Readers with a screen reader', body: 'Output that is text, not pixels.' },
+    ]}
+  />
+
+  <Tradeoffs
+    eyebrow="The price"
+    title="What you give up"
+    lead="This design has a price, and it is better read here than found later."
+    items={[
+      'It is not a terminal: no alternate screen, no mouse reporting.',
+      'The page shows a frame, not a live session.',
+      'Wide glyphs are measured by a table that is updated with Unicode.',
     ]}
   />
 

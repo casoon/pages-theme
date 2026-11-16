@@ -1,0 +1,123 @@
+---
+/**
+ * A lowered panel for honest limits: what the project does not do or costs. Title and lead
+ * left, a grid of short statements right. `lead` and `items` take the changelog's inline
+ * Markdown subset.
+ */
+import { inlineMarkdown } from '../lib/changelog';
+
+interface Props {
+  title: string;
+  items: string[];
+  lead?: string;
+  eyebrow?: string;
+}
+
+const { title, items, lead, eyebrow } = Astro.props;
+---
+
+<section class="tradeoffs">
+  <div class="panel">
+    <div class="head">
+      {
+        eyebrow && (
+          <p class="eyebrow">
+            <span class="dot" aria-hidden="true" />
+            {eyebrow}
+          </p>
+        )
+      }
+      <h2>{title}</h2>
+      {lead && <p class="lead" set:html={inlineMarkdown(lead)} />}
+    </div>
+    <ul>
+      {
+        items.map((item) => (
+          <li>
+            <span class="dash" aria-hidden="true" />
+            <span set:html={inlineMarkdown(item)} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .tradeoffs {
+    max-width: calc(var(--max) + 160px);
+    margin: 0 auto 128px;
+    padding: 0 24px;
+  }
+  .panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 72px;
+    padding: clamp(32px, 5vw, 72px);
+    border-radius: clamp(32px, 4.2vw, var(--r-panel));
+    background: var(--bg-sunken);
+  }
+  .head {
+    flex: 1 1 280px;
+    min-width: 0;
+  }
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
+    color: var(--heading);
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-fill);
+  }
+  h2 {
+    margin: 0 0 16px;
+    color: var(--heading);
+    font-size: clamp(28px, 3.1vw, 40px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+  }
+  .lead {
+    margin: 0;
+    color: var(--heading);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  ul {
+    display: grid;
+    flex: 2 1 480px;
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    gap: 28px 40px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    color: var(--heading);
+    font-size: 16px;
+    line-height: 1.55;
+    list-style: none;
+  }
+  li {
+    display: flex;
+    gap: 14px;
+  }
+  .dash {
+    flex: none;
+    width: 14px;
+    height: 2px;
+    margin-top: 12px;
+    background: var(--heading);
+  }
+  li :global(code) {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--code-bg);
+    font-size: 0.9em;
+  }
+</style>
