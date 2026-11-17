@@ -2,7 +2,7 @@
 /**
  * Verifiable key figures. Real numbers only.
  * `layout="grid"` (default): a tile per fact, the value large. `layout="list"`: one card, a
- * label/value row per fact — for a spec sheet (license, runtime, platforms) rather than a
+ * label/value row per fact, filling its container — for a spec sheet (license, runtime, platforms) rather than a
  * dashboard of numbers.
  */
 import config from 'virtual:casoon-pages/config';
@@ -82,8 +82,6 @@ const { items, layout = 'grid', label } = Astro.props;
 
   /* Spec sheet: one card, a label/value row per fact. */
   .is-list dl {
-    max-width: 440px;
-    margin-inline: auto;
     padding: 4px 24px;
     border-radius: var(--r-card);
     background: var(--surface);

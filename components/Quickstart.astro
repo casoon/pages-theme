@@ -41,12 +41,18 @@ const { steps, lead = s.quickstartLead, title = s.quickstartTitle, size = 'secti
 <style>
   .quickstart {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 48px;
     align-items: start;
     max-width: var(--max);
     margin: 0 auto;
     padding: 0 24px var(--section-y);
+  }
+  /* The code column is the wider one: lines of code need the room. */
+  @media (min-width: 860px) {
+    .quickstart {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
   }
   h2 {
     margin: 0 0 14px;
