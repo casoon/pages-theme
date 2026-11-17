@@ -132,7 +132,7 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Hero` | Title, lead, default slot (install, badges), `output` slot (real output); `layout`, `command` and `tone` pick the variant |
 | `AnchorGrid` | Card grid under the hero, each linking to a section further down or out to a doc |
 | `Install` | Install command per ecosystem, CSS-only tabs, copy button; long commands wrap at spaces and after a `/` |
-| `Badge`, `Badges` | Static badges (no external badge services) |
+| `Badge`, `Badges` | Static badges (no external badge services); `tone` `solid`, `soft` or `muted` marks result classes |
 | `Facts` | Verifiable key figures; `layout="grid"` (tiles) or `"list"` (spec sheet) |
 | `Features` | Core points; `layout="numbered"` (3–5 items) or `"grid"` (an icon-tile catalog) |
 | `Spotlight` | Repeatable two-column feature section — eyebrow, title, lead, bullets, links, beside a media slot |
@@ -146,6 +146,9 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Compare` | Comparison `<table>` with the last column raised; scrolls sideways under 760 px |
 | `AudienceList` | Editorial list: heading left, term + text rows right (`<dl>`) |
 | `Tradeoffs` | Lowered panel for honest limits |
+| `Section` | Neutral section frame: heading, lead, slot, `width` (`narrow`, `default`, `wide`); the theme's spacing |
+| `Figure` | Image in a frame with a caption; fills its container (full section width, or the medium of a `Split`) |
+| `SpecList` | Term/value rows over the full width between hairlines (`<dl>`), for the data sheet of a page |
 | `Flow` | 3–5 stages from input to result, each with its artifact (`index.md`, `dist/`) in a mono chip |
 | `Integrations` | Grid of what the project plugs into: icon tile, name, category |
 | `FileSet` | The files a run produced: `tabs`, `grid` or `rail` view |
@@ -154,7 +157,7 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Keymap` | Keyboard shortcuts or CLI flags, grouped cards of label + `<kbd>` keys |
 | `ReleaseHighlights` | Teaser of one changelog release on the start page |
 | `Faq` | Native `<details>` accordion, no JS |
-| `CodeBlock` | Build-time highlighting (Shiki, theme-aware), copy button; `marks` sets numbered dots at line ends to go with `Split numbered` |
+| `CodeBlock` | Build-time highlighting (Shiki, theme-aware), copy button; `marks` sets numbered dots at line ends to go with `Split numbered`; `wrap` wraps long lines |
 | `Terminal` | `ansi` prop (converted at build time) or pre-rendered HTML as slot |
 | `Callout` | `note`, `tip`, `caution`, `deprecated` |
 | `Tabs` | CSS-only tabs, one named slot per tab id |
@@ -163,9 +166,12 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `ExamplePanel` | Input next to output; used by the showcase routes |
 | `Demo` | Stage for the project running live in the page; see „Live demo" |
 
+Section components share one rhythm: the space below each is `--section-y`, and the heading is
+`--h-section` or, with `size="sub"`, the smaller `--h-sub`.
+
 `@casoon/pages-theme/ansi` exports `ansiToHtml` and `escapeAnsi` for projects without their
 own renderer. `ansiToHtml` renders the 16-colour palette as classes (so the theme's colours
-apply) and 256-colour and 24-bit colour — foreground and background — as inline styles. `@casoon/pages-theme/layouts/Base.astro` wraps custom pages in the frame, and
+apply) and 256-colour and 24-bit colour — foreground and background — as inline styles. `@casoon/pages-theme/layouts/Base.astro` wraps custom pages in the frame; `layouts/Page.astro` adds a plain content page on top of it (breadcrumb, title, lead, `width`, body set like the docs); and
 `@casoon/pages-theme/url` exports `url()` — a project page that links or loads something
 site-internal needs it, because the base path changes per project.
 
