@@ -86,9 +86,9 @@ const List = numbered ? 'ol' : 'ul';
     flex-wrap: wrap;
     align-items: center;
     gap: 48px 72px;
-    max-width: calc(var(--max) + 160px);
+    max-width: var(--max-wide);
     margin: 0 auto;
-    padding: 0 24px var(--section-y);
+    padding: 0 var(--gutter) var(--section-y);
   }
   .reverse {
     flex-direction: row-reverse;

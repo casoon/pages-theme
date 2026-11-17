@@ -47,6 +47,10 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --header-h: 66px;
   --max: 1100px;
+  /* Wide column of the start page (Hero, Split, Spotlight, Showcase, Tradeoffs, Section wide):
+     their text edge lines up at every width. --gutter is its inner padding. */
+  --max-wide: 1240px;
+  --gutter: 40px;
 
   /* Terminal surface: dark in both themes. */
   --term-bg: #15171a;
@@ -86,6 +90,12 @@
   --astro-code-token-parameter: var(--heading);
   --astro-code-token-punctuation: var(--text);
   --astro-code-token-link: var(--accent);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 24px;
+  }
 }
 
 /* Dark: explicit choice, or system preference when nothing is stored. Keep both blocks identical. */

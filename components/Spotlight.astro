@@ -57,7 +57,7 @@ const { eyebrow, title, lead, points, links, reverse = false, size = 'section' }
     display: grid;
     gap: 44px;
     align-items: center;
-    max-width: calc(var(--max) + 160px);
+    max-width: calc(var(--max-wide) - 2 * var(--gutter));
     margin: 0 auto var(--section-y);
     padding: 80px;
     border-radius: var(--r-panel);
@@ -68,6 +68,11 @@ const { eyebrow, title, lead, points, links, reverse = false, size = 'section' }
       margin-inline: 8px;
       padding: 56px 24px;
       border-radius: 32px;
+    }
+  }
+  @media (min-width: 901px) and (max-width: 1240px) {
+    .spotlight {
+      margin-inline: var(--gutter);
     }
   }
   @media (min-width: 900px) {

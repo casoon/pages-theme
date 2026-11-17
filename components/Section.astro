@@ -49,7 +49,8 @@ const { title, lead, eyebrow, id, width = 'default', size = 'section' } = Astro.
     max-width: calc(760px + 48px);
   }
   .is-wide {
-    max-width: calc(1320px + 48px);
+    max-width: var(--max-wide);
+    padding-inline: var(--gutter);
   }
   header {
     margin-bottom: 32px;

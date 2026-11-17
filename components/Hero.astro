@@ -157,9 +157,9 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
   }
   .inner {
     position: relative;
-    max-width: 1240px;
+    max-width: var(--max-wide);
     margin: 0 auto;
-    padding: 88px 40px 140px;
+    padding: 88px var(--gutter) 96px;
   }
   .eyebrow {
     display: flex;
@@ -414,7 +414,7 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
 
   @media (max-width: 640px) {
     .inner {
-      padding: 56px 20px 120px;
+      padding: 56px 20px 80px;
     }
     .is-stack .actions {
       margin-top: 26px;

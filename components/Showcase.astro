@@ -42,16 +42,16 @@ const { title, lead, eyebrow, link } = Astro.props;
     align-items: center;
     gap: 40px 56px;
     box-sizing: border-box;
-    max-width: calc(var(--max) + 160px);
+    max-width: calc(var(--max-wide) - 2 * var(--gutter));
     margin: 0 auto var(--section-y);
     padding: clamp(32px, 5.5vw, 80px);
     border-radius: clamp(32px, 4.2vw, var(--r-panel));
     background: #11100e;
     color: #cbc9c5;
   }
-  @media (max-width: 1340px) {
+  @media (max-width: 1240px) {
     .showcase {
-      margin-inline: 24px;
+      margin-inline: var(--gutter);
     }
   }
   .text {
