@@ -24,6 +24,7 @@ export { default as Hero } from './Hero.astro';
 export { default as Install } from './Install.astro';
 export { default as Integrations } from './Integrations.astro';
 export { default as Keymap } from './Keymap.astro';
+export { default as LinkRow } from './LinkRow.astro';
 export { default as Quickstart } from './Quickstart.astro';
 export { default as ReleaseHighlights } from './ReleaseHighlights.astro';
 export { default as Section } from './Section.astro';

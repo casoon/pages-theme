@@ -8,23 +8,27 @@ const s = t(config.lang);
 const IMPRESSUM = `${CASOON_URL}impressum/`;
 const DATENSCHUTZ = `${CASOON_URL}datenschutz/`;
 
+const projectLinks = [
+  ...(config.website ? [{ label: s.website(config.name), href: config.website }] : []),
+  { label: s.documentation, href: url('docs/') },
+  ...(config.demo ? [{ label: config.demo, href: url('demo/') }] : []),
+  ...(config.hasShowcase ? [{ label: s.showcase, href: url('showcase/') }] : []),
+  ...(config.changelog ? [{ label: s.changelog, href: url('changelog/') }] : []),
+];
+const packageLinks = [
+  ...(config.repo ? [{ label: 'GitHub', href: `https://github.com/${config.repo}` }] : []),
+  ...config.packages,
+];
+// A "Project" column of one entry reads as a gap: its link joins "Packages", one column.
+const merged = projectLinks.length <= 1;
+
 const columns = [
-  {
-    title: s.footerProject,
-    links: [
-      ...(config.website ? [{ label: s.website(config.name), href: config.website }] : []),
-      { label: s.documentation, href: url('docs/') },
-      ...(config.hasShowcase ? [{ label: s.showcase, href: url('showcase/') }] : []),
-      ...(config.changelog ? [{ label: s.changelog, href: url('changelog/') }] : []),
-    ],
-  },
-  {
-    title: s.footerPackages,
-    links: [
-      ...(config.repo ? [{ label: 'GitHub', href: `https://github.com/${config.repo}` }] : []),
-      ...config.packages,
-    ],
-  },
+  ...(merged
+    ? [{ title: s.footerProject, links: [...projectLinks, ...packageLinks] }]
+    : [
+        { title: s.footerProject, links: projectLinks },
+        { title: s.footerPackages, links: packageLinks },
+      ]),
   {
     title: 'CASOON',
     links: [
