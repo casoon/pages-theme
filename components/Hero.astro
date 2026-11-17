@@ -3,7 +3,10 @@
  * Start-page hero in three layouts:
  *   split     — text beside the `output` slot (default)
  *   stack     — centred text, then a band: `source` slot → `command` → `output` slot
- *   editorial — full-width title, lead beside the default slot, `output` slot below
+ *   editorial — full-width title, lead beside the default slot, `output` slot below;
+ *               `bleed` runs the output down out of the hero
+ * The optional `caption` slot sets one line under the `output` (split and editorial), e.g. a
+ * link to the live demo.
  * `tone="invert"` puts any of them on a dark brand ground.
  */
 import config from 'virtual:casoon-pages/config';
@@ -17,6 +20,11 @@ interface Props {
   /** Shown between the `source` and `output` slots of the stack layout, e.g. `astro build`. */
   command?: string;
   tone?: 'plain' | 'invert';
+  /**
+   * `layout="editorial"` only: the output leaves the hero at the bottom — no bottom padding, no
+   * bottom corners or border, a fade into the surface colour above the edge.
+   */
+  bleed?: boolean;
 }
 
 const {
@@ -26,14 +34,16 @@ const {
   layout = 'split',
   command,
   tone = 'plain',
+  bleed = false,
 } = Astro.props;
 const hasSource = Astro.slots.has('source');
+const hasCaption = Astro.slots.has('caption');
 // An eyebrow that starts with "CASOON" marks the project as one of the family: it is set as a
 // badge with the logo mark, and the rest ("Open Source", "Proof of Concept") follows it.
 const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
 ---
 
-<section class:list={['hero', `is-${layout}`, tone === 'invert' && 'invert']}>
+<section class:list={['hero', `is-${layout}`, tone === 'invert' && 'invert', layout === 'editorial' && bleed && 'bleed']}>
   {
     layout === 'split' && (
       <div class="inner">
@@ -57,10 +67,17 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
           <p class="lead">{lead}</p>
           <slot />
         </div>
-        <div class="output glow">
-          <div class="glow-inner">
-            <slot name="output" />
+        <div class="output-col">
+          <div class="output glow">
+            <div class="glow-inner">
+              <slot name="output" />
+            </div>
           </div>
+          {hasCaption && (
+            <p class="caption">
+              <slot name="caption" />
+            </p>
+          )}
         </div>
       </div>
     )
@@ -140,7 +157,13 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
         </div>
         <div class="output">
           <slot name="output" />
+          {bleed && <div class="fade" aria-hidden="true" />}
         </div>
+        {hasCaption && (
+          <p class="caption">
+            <slot name="caption" />
+          </p>
+        )}
       </div>
     )
   }
@@ -296,8 +319,20 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
       rotate: 360deg;
     }
   }
-  .output {
+  .output,
+  .output-col {
     min-width: 0;
+  }
+  .caption {
+    margin: 16px 0 0;
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+  .caption :global(a) {
+    color: var(--heading);
+  }
+  .caption :global(a:hover) {
+    color: var(--accent);
   }
 
   /* Text gets a little more than half and a slightly smaller title, so a title of about 40
@@ -393,6 +428,38 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
   }
   .is-editorial .actions {
     flex: 0 1 470px;
+  }
+
+  /* bleed: the output runs out of the bottom edge of the hero, a fade into the surface above it. */
+  .is-editorial.bleed .inner {
+    padding-bottom: 0;
+  }
+  .is-editorial.bleed .row {
+    margin-bottom: 40px;
+  }
+  .bleed .output {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-bottom: 0;
+    border-radius: var(--r-card) var(--r-card) 0 0;
+    background: var(--surface);
+  }
+  .bleed .output :global(.terminal),
+  .bleed .output :global(figure) {
+    border: 0;
+    border-radius: 0;
+  }
+  .bleed .output :global(img),
+  .bleed .output :global(picture) {
+    display: block;
+  }
+  .fade {
+    position: absolute;
+    inset: auto 0 0;
+    height: 72px;
+    background: linear-gradient(to bottom, transparent, var(--surface));
+    pointer-events: none;
   }
 
   /* Dark brand ground. Child components follow through the tokens. */
