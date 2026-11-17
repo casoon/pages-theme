@@ -104,6 +104,11 @@ const id = `code-${hash.toString(36)}`;
   .copy[hidden] {
     display: none;
   }
+  /* A line that scrolls shows a scrollbar, also where the system hides overlay scrollbars. */
+  .codeblock :global(pre) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
   .wrap :global(pre) {
     white-space: pre-wrap;
     overflow-wrap: anywhere;

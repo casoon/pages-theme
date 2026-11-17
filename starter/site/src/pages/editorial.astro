@@ -1,0 +1,20 @@
+---
+import { Badge, Badges, Hero, Install, Terminal } from '@casoon/pages-theme/components';
+import Base from '@casoon/pages-theme/layouts/Base.astro';
+import check from '../../../examples/check.ansi?raw';
+---
+
+<Base title="Editorial hero with bleed">
+  <Hero
+    layout="editorial"
+    bleed
+    title="Output that runs off the bottom edge."
+    lead="With bleed the output leaves the hero at the bottom: no padding below, no bottom corners, a fade into the surface."
+  >
+    <Install commands={[{ label: 'cargo', command: 'cargo add runemark' }]} />
+    <Badges>
+      <Badge>MIT</Badge>
+    </Badges>
+    <Terminal slot="output" title="runemark check ./report" dots ansi={check} />
+  </Hero>
+</Base>

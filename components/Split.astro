@@ -7,6 +7,7 @@
  * points as 1/2/3 (they can match `marks` of a `CodeBlock` in the slot) instead of ticks.
  */
 import { inlineMarkdown } from '../lib/changelog';
+import LinkRow from './LinkRow.astro';
 
 interface Props {
   title: string;
@@ -18,6 +19,8 @@ interface Props {
   numbered?: boolean;
   links?: { label: string; href: string }[];
   reverse?: boolean;
+  /** Vertical alignment of text and medium: `center` (default) or `start` for a tall medium. */
+  align?: 'center' | 'start';
 }
 
 const {
@@ -30,11 +33,12 @@ const {
   numbered = false,
   links,
   reverse = false,
+  align = 'center',
 } = Astro.props;
 const List = numbered ? 'ol' : 'ul';
 ---
 
-<section class:list={['split', reverse && 'reverse']}>
+<section class:list={['split', reverse && 'reverse', align === 'start' && 'align-start']}>
   <div class="text">
     {
       (index || eyebrow) && (
@@ -65,15 +69,7 @@ const List = numbered ? 'ol' : 'ul';
         </List>
       )
     }
-    {
-      links && links.length > 0 && (
-        <div class="links">
-          {links.map((link) => (
-            <a href={link.href}>{link.label} →</a>
-          ))}
-        </div>
-      )
-    }
+    {links && links.length > 0 && <LinkRow links={links} />}
   </div>
   <div class="media">
     <slot />
@@ -86,9 +82,12 @@ const List = numbered ? 'ol' : 'ul';
     flex-wrap: wrap;
     align-items: center;
     gap: 48px 72px;
-    max-width: calc(var(--max) + 160px);
+    max-width: var(--max-wide);
     margin: 0 auto;
-    padding: 0 24px var(--section-y);
+    padding: 0 var(--gutter) var(--section-y);
+  }
+  .align-start {
+    align-items: flex-start;
   }
   .reverse {
     flex-direction: row-reverse;
@@ -193,19 +192,6 @@ const List = numbered ? 'ol' : 'ul';
   }
   .is-numbered .mark::before {
     content: counter(point);
-  }
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px 26px;
-  }
-  .links a {
-    color: var(--heading);
-    font-size: 14.5px;
-    font-weight: 600;
-  }
-  .links a:hover {
-    color: var(--accent);
   }
   @media (max-width: 900px) {
     .split {

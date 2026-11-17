@@ -1,36 +1,61 @@
 ---
 /**
- * An image in a frame with a caption beneath. It fills its container: put it in a `Section`
- * for the full section width, or in the medium slot of a `Split` to sit beside text. Give
- * `width` and `height` (the file's pixels) so the page does not jump while it loads.
+ * A picture or a drawing in a frame, with an optional title above and a caption beneath. It
+ * fills its container: put it in a `Section` for the full section width, or in the medium slot
+ * of a `Split` to sit beside text. For an image give `src`, `alt` and `width` and `height` (the
+ * file's pixels) so the page does not jump while it loads; for a drawing (inline SVG, see the
+ * `--diagram-*` tokens) put it in the default slot, which is then the figure. `ground="sand"`
+ * sets the frame on the sand colour (`--bg-deep`) with padding, the usual ground of a diagram.
  * `caption` takes the changelog's inline Markdown subset.
  */
 import { inlineMarkdown } from '../lib/changelog';
 
 interface Props {
-  src: string;
+  /** The image. Left out: the default slot is the figure. */
+  src?: string;
   /** Describes what the image shows; `""` only for a purely decorative image. */
-  alt: string;
+  alt?: string;
+  /** Heading of the figure, inside the frame above the picture. */
+  title?: string;
   caption?: string;
   width?: number;
   height?: number;
+  /** Frame ground: `surface` (default, white) or `sand` (`--bg-deep`, padded). */
+  ground?: 'surface' | 'sand';
   /** Load the image straight away (above the fold). Default: lazy. */
   eager?: boolean;
 }
 
-const { src, alt, caption, width, height, eager = false } = Astro.props;
+const {
+  src,
+  alt = '',
+  title,
+  caption,
+  width,
+  height,
+  ground = 'surface',
+  eager = false,
+} = Astro.props;
+const padded = ground === 'sand' || Boolean(title) || !src;
 ---
 
 <figure class="figure">
-  <div class="frame">
-    <img
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      loading={eager ? 'eager' : 'lazy'}
-      decoding="async"
-    />
+  <div class:list={['frame', ground === 'sand' && 'is-sand', padded && 'is-padded']}>
+    {title && <p class="title">{title}</p>}
+    {
+      src ? (
+        <img
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+        />
+      ) : (
+        <slot />
+      )
+    }
   </div>
   {caption && <figcaption set:html={inlineMarkdown(caption)} />}
 </figure>
@@ -47,10 +72,31 @@ const { src, alt, caption, width, height, eager = false } = Astro.props;
     background: var(--surface);
     box-shadow: 2px 2px 0 var(--shadow-hard);
   }
+  .is-sand {
+    background: var(--bg-deep);
+  }
+  .is-padded {
+    padding: clamp(20px, 3vw, 32px);
+  }
+  .title {
+    margin: 0 0 16px;
+    color: var(--heading);
+    font-size: 17px;
+    font-weight: 600;
+  }
   img {
     display: block;
     width: 100%;
     height: auto;
+  }
+  .is-padded img {
+    border-radius: 8px;
+  }
+  .frame :global(svg) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-inline: auto;
   }
   figcaption {
     margin-top: 12px;

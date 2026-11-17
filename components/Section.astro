@@ -6,6 +6,7 @@
  * start at `h3`.
  */
 import { inlineMarkdown } from '../lib/changelog';
+import LinkRow from './LinkRow.astro';
 
 interface Props {
   title?: string;
@@ -17,9 +18,11 @@ interface Props {
   width?: 'default' | 'narrow' | 'wide';
   /** Heading level: `section` (default) or the smaller `sub`. */
   size?: 'section' | 'sub';
+  /** Text links with an arrow below the slot (`LinkRow`). */
+  links?: { label: string; href: string }[];
 }
 
-const { title, lead, eyebrow, id, width = 'default', size = 'section' } = Astro.props;
+const { title, lead, eyebrow, id, width = 'default', size = 'section', links } = Astro.props;
 ---
 
 <section
@@ -36,7 +39,10 @@ const { title, lead, eyebrow, id, width = 'default', size = 'section' } = Astro.
       </header>
     )
   }
-  <div class="body"><slot /></div>
+  <div class="body">
+    <slot />
+    {links && links.length > 0 && <LinkRow links={links} />}
+  </div>
 </section>
 
 <style>
@@ -49,7 +55,8 @@ const { title, lead, eyebrow, id, width = 'default', size = 'section' } = Astro.
     max-width: calc(760px + 48px);
   }
   .is-wide {
-    max-width: calc(1320px + 48px);
+    max-width: var(--max-wide);
+    padding-inline: var(--gutter);
   }
   header {
     margin-bottom: 32px;

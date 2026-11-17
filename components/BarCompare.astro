@@ -3,7 +3,8 @@
  * Measurements as pairs of bars, two series per measurement. The bar is `value` over the
  * largest value of the component (at least 4 px wide); the number shown is `display`, so the
  * theme formats nothing. Every value is text beside its bar, and the two series differ in
- * lightness, not only in hue. The default slot is the footnote (device, date, method link).
+ * lightness, not only in hue. `facts` sit in a grid of 2, 3, 4 or 6 tiles; any other count (5, 7 …)
+ * would leave a field empty, so it is set as rows, label left and value right. The default slot is the footnote (device, date, method link).
  */
 interface Props {
   title: string;
@@ -16,6 +17,7 @@ const { title, series, rows, facts } = Astro.props;
 const max = Math.max(...rows.flatMap((row) => row.values), Number.MIN_VALUE);
 const pct = (v: number) => `${((v / max) * 100).toFixed(2)}%`;
 const hasNote = Astro.slots.has('default');
+const factsAsList = facts !== undefined && ![1, 2, 3, 4, 6].includes(facts.length);
 ---
 
 <figure class="barcompare">
@@ -48,7 +50,7 @@ const hasNote = Astro.slots.has('default');
   </div>
   {
     facts && facts.length > 0 && (
-      <dl class="facts">
+      <dl class:list={['facts', factsAsList ? 'is-list' : `n-${facts.length}`]}>
         {facts.map((fact) => (
           <div>
             <dt>{fact.label}</dt>
@@ -168,6 +170,43 @@ const hasNote = Astro.slots.has('default');
     margin: 28px 0 0;
     padding-top: 24px;
     border-top: 1px solid var(--border);
+  }
+  .facts.n-2,
+  .facts.n-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .facts.n-3,
+  .facts.n-6 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (max-width: 480px) {
+    .facts.n-3 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .facts.n-6 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* Rows: label left, value right. */
+  .facts.is-list {
+    display: block;
+  }
+  .is-list > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 0;
+    border-top: 1px solid var(--border);
+  }
+  .is-list > div:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .is-list dd {
+    margin: 0;
+    font-size: 17px;
+    text-align: right;
   }
   dt {
     color: var(--muted);
