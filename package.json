@@ -1,6 +1,6 @@
 {
   "name": "@casoon/pages-theme",
-  "version": "0.13.0",
+  "version": "0.13.2",
   "description": "Shared Astro theme for the GitHub Pages sites of CASOON open-source projects",
   "type": "module",
   "license": "MIT",
