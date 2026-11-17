@@ -95,4 +95,9 @@ const { steps, lead = s.quickstartLead, title = s.quickstartTitle, size = 'secti
     gap: 16px;
     min-width: 0;
   }
+  /* A long command wraps here instead of being cut off. */
+  .code :global(.codeblock pre) {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
 </style>
