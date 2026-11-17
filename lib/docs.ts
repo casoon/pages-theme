@@ -22,7 +22,8 @@ export const docHref = (id: string) => url(id === 'index' ? 'docs/' : `docs/${id
 /**
  * Sidebar groups come from the folders in docs/. Group order and labels follow
  * the `docsGroups` option; unlisted folders follow alphabetically. Root-level
- * pages join the first group.
+ * pages join the first group. A folder's own `index.md` has the folder name as
+ * its ID (`docs/a11y/index.md` → `a11y`) and belongs to that folder's group.
  */
 export function buildDocsNav(
   entries: CollectionEntry<'docs'>[],
@@ -30,9 +31,15 @@ export function buildDocsNav(
 ): DocsNavGroup[] {
   const configured = Object.keys(groups);
   const byGroup = new Map<string, CollectionEntry<'docs'>[]>();
+  const folders = new Set(entries.filter((e) => e.id.includes('/')).map((e) => e.id.split('/')[0]));
 
   for (const entry of entries) {
-    const dir = entry.id.includes('/') ? entry.id.split('/')[0] : (configured[0] ?? '');
+    const folderIndex = entry.id !== '' && (entry.id in groups || folders.has(entry.id));
+    const dir = entry.id.includes('/')
+      ? entry.id.split('/')[0]
+      : folderIndex
+        ? entry.id
+        : (configured[0] ?? '');
     byGroup.set(dir, [...(byGroup.get(dir) ?? []), entry]);
   }
 

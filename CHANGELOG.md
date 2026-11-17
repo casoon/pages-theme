@@ -6,6 +6,12 @@ site renders.
 
 ## [Unreleased]
 
+## [0.13.2] - 2026-11-17
+
+### Fixed
+
+- **Docs sidebar:** A folder's own `index.md` (`docs/<group>/index.md`) is listed in that folder's group instead of the first one, so a site with several groups no longer shows every group overview under the first heading.
+
 ## [0.13.1] - 2026-11-16
 
 ### Fixed
