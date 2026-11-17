@@ -40,11 +40,17 @@ const cols = columns.map((c) => (typeof c === 'string' ? { title: c } : c)) as {
 }[];
 const legacy = rows.every((row) => !row.cells);
 const highlight = Astro.props.highlight ?? (legacy && cols.length === 2 ? 1 : undefined);
-const body = rows.map((row) => ({
+const spans = (cells: string[]) => cells.length === 1 && cols.length > 1;
+const cellRows = rows.map((row) => ({
   topic: row.topic,
   cells: (row.cells ?? [row.other ?? '', row.own ?? '']).map((c) => inlineMarkdown(c)),
 }));
-const spans = (cells: string[]) => cells.length === 1 && cols.length > 1;
+// The raised column ends (rounded, with its shadow) at the last row of a run, so a row that
+// spans all columns breaks it cleanly.
+const body = cellRows.map((row, i) => ({
+  ...row,
+  end: !spans(row.cells) && (i === cellRows.length - 1 || spans(cellRows[i + 1].cells)),
+}));
 ---
 
 <section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="compare">
@@ -75,7 +81,7 @@ const spans = (cells: string[]) => cells.length === 1 && cols.length > 1;
                 <td colspan={cols.length} class="span" set:html={row.cells[0]} />
               ) : (
                 row.cells.map((cell, i) => (
-                  <td class:list={[i === highlight && 'hl']} set:html={cell} />
+                  <td class:list={[i === highlight && 'hl', i === highlight && row.end && 'end']} set:html={cell} />
                 ))
               )}
             </tr>
@@ -221,8 +227,9 @@ const spans = (cells: string[]) => cells.length === 1 && cols.length > 1;
   tbody tr:last-child td {
     border-bottom: 0;
   }
-  tbody tr:last-child td.hl {
+  td.hl.end {
     padding-bottom: 22px;
+    border-bottom: 0;
     border-radius: 0 0 var(--r-card) var(--r-card);
     box-shadow: 0 2px 0 var(--shadow-hard);
   }
