@@ -129,7 +129,7 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 
 | Component | Use |
 | --- | --- |
-| `Hero` | Title, lead, default slot (install, badges), `output` slot (real output); `layout`, `command` and `tone` pick the variant |
+| `Hero` | Title, lead, default slot (install, badges), `output` slot (real output), `caption` slot (one line under it, split layout); `layout`, `command`, `tone` and `bleed` pick the variant |
 | `AnchorGrid` | Card grid under the hero, each linking to a section further down or out to a doc |
 | `Install` | Install command per ecosystem, CSS-only tabs, copy button; long commands wrap at spaces and after a `/` |
 | `Badge`, `Badges` | Static badges (no external badge services); `tone` `solid`, `soft` or `muted` marks result classes |
@@ -138,16 +138,17 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Spotlight` | Repeatable two-column feature section — eyebrow, title, lead, bullets, links, beside a media slot |
 | `StatBand` | Key figures as one row with hairlines, under the hero; the lighter sibling of `Facts layout="grid"` |
 | `SectionIntro` | Section head: `h2` left, a placing paragraph right |
-| `Split` | Repeatable open row: text with index, note, ticked or `numbered` points and links beside a medium; `reverse` swaps sides |
+| `Split` | Repeatable open row: text with index, note, ticked or `numbered` points and links beside a medium; `reverse` swaps sides, `align="start"` tops text and a tall medium |
 | `FlowPanel` | A branch as a medium for `Split`: one start, two to four ways, one result |
-| `BarCompare` | Measurements as pairs of bars, every value also as text; default slot is the footnote |
+| `BarCompare` | Measurements as pairs of bars, every value also as text; `facts` as a grid (2, 3, 4, 6) or rows (other counts); default slot is the footnote |
 | `ElementList` | Term in mono plus explanation, as rows between hairlines (`<dl>`) |
 | `Showcase` | Dark panel (dark in both themes) with a large image or video |
-| `Compare` | Comparison `<table>` with the last column raised; scrolls sideways under 760 px |
+| `Compare` | Comparison `<table>` of two to four columns (`{ title, label?, badge? }`), `highlight` raises one, a one-cell row spans all; a list per topic under 700 px |
 | `AudienceList` | Editorial list: heading left, term + text rows right (`<dl>`) |
 | `Tradeoffs` | Lowered panel for honest limits |
-| `Section` | Neutral section frame: heading, lead, slot, `width` (`narrow`, `default`, `wide`); the theme's spacing |
-| `Figure` | Image in a frame with a caption; fills its container (full section width, or the medium of a `Split`) |
+| `Section` | Neutral section frame: heading, lead, slot, `links`, `width` (`narrow`, `default`, `wide`); the theme's spacing |
+| `LinkRow` | A row of text links with an arrow, the quiet way on from a section; `Split` and `Section` use it for `links` |
+| `Figure` | Image or drawing (default slot) in a frame with title and caption, `ground="sand"` for a diagram; fills its container (full section width, or the medium of a `Split`) |
 | `SpecList` | Term/value rows over the full width between hairlines (`<dl>`), for the data sheet of a page |
 | `Flow` | 3–5 stages from input to result, each with its artifact (`index.md`, `dist/`) in a mono chip |
 | `Integrations` | Grid of what the project plugs into: icon tile, name, category |
@@ -165,6 +166,12 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Swatch` | Colour token preview |
 | `ExamplePanel` | Input next to output; used by the showcase routes |
 | `Demo` | Stage for the project running live in the page; see „Live demo" |
+
+Start-page widths are two tokens: `--max` (1100 px) for reading-width blocks and `--max-wide`
+(1240 px, inner padding `--gutter`) for `Hero`, `Split`, `Spotlight`, `Showcase`, `Tradeoffs` and
+`Section width="wide"`, so their text edge lines up. Drawings take `--diagram-node`,
+`--diagram-line` and `--diagram-accent` (derived from `--ink`, `--border-strong` and `--accent`)
+and `--heading` for text, so they follow the theme.
 
 Section components share one rhythm: the space below each is `--section-y`, and the heading is
 `--h-section` or, with `size="sub"`, the smaller `--h-sub`.
@@ -187,7 +194,7 @@ files.
 | Artefacts | `layout="split"` (default) | `FileSet view="grid"` — one card per file |
 | Pipeline | `layout="stack" command="<cmd>"` plus a `source` slot | `FileSet view="tabs"` — one pane per file |
 | Colour field | `tone="invert"` on any layout | `Terminal`, or whatever the project shows |
-| Editorial | `layout="editorial"` | `FileSet view="rail"` — names and one line each |
+| Editorial | `layout="editorial"` | `FileSet view="rail"` — names and one line each; with `bleed` the output runs down out of the hero (no bottom padding, corners or border, a 72 px fade into `--surface`) |
 
 The split layout gives the text column a little more than half from 900 px up, with a title
 size that fits about 40 characters on two lines at 1440 px; below 900 px text and output stack.

@@ -82,6 +82,7 @@ fn main() -> anyhow::Result<()> {
       <Badge>0 runtime deps</Badge>
     </Badges>
     <Terminal slot="output" title="runemark check ./report" dots ansi={check} />
+    <a slot="caption" href={url('showcase/')}>See more output in the showcase →</a>
   </Hero>
 
   <AnchorGrid
@@ -262,7 +263,13 @@ fn main() -> anyhow::Result<()> {
         { label: 'Transferred', values: [4, 310], display: ['4 KiB', '310 KiB'] },
         { label: 'Scripted at load', values: [0, 180], display: ['0 ms', '180 ms'] },
       ]}
-      facts={[{ label: 'Scripts on the page', value: '0' }]}
+      facts={[
+        { label: 'Scripts on the page', value: '0' },
+        { label: 'Requests', value: '2' },
+        { label: 'Stylesheet', value: '3 KiB' },
+        { label: 'Fonts', value: 'system' },
+        { label: 'Cookies', value: '0' },
+      ]}
     >
       Sample figures for the starter site only.
     </BarCompare>
@@ -295,6 +302,7 @@ fn main() -> anyhow::Result<()> {
 
   <Split
     index="04"
+    align="start"
     eyebrow="Markup"
     title="A table where a table is meant."
     lead="Output keeps its structure, so a reader with a screen reader gets real elements."
@@ -347,6 +355,52 @@ fn main() -> anyhow::Result<()> {
       'Wide glyphs are measured by a table that is updated with Unicode.',
     ]}
   />
+
+  <Section
+    title="Where the work happens"
+    lead="`Compare` takes two to four columns. One of them can be raised, and a row with one cell spans all of them."
+    links={[
+      { label: 'Rendering pipeline', href: url('docs/reference/api/') },
+      { label: 'Editorial hero with bleed', href: url('editorial/') },
+    ]}
+  >
+    <Compare
+      size="sub"
+      columns={[
+        { title: 'Your build', label: 'Build' },
+        { title: 'The page', label: 'Browser' },
+        { title: 'Both', label: 'Split', badge: 'Start here' },
+      ]}
+      highlight={2}
+      rows={[
+        { topic: 'Where it runs', cells: ['**Once**, in CI', 'Every visit', 'Render in CI, hydrate nothing'] },
+        { topic: 'Cost to the reader', cells: ['0 ms', '**180 ms** of script', '0 ms'] },
+        { topic: 'Editing', cells: ['Edit the ANSI file and rebuild; the same holds for all three.'] },
+      ]}
+    />
+    <Figure
+      ground="sand"
+      title="One report, from stream to page"
+      caption="The path of one report. Colours come from the `--diagram-*` tokens, so the drawing follows the theme."
+    >
+      <svg viewBox="0 0 720 120" role="img" aria-label="report.ansi goes through runemark render to out.html, which is embedded in the page">
+        <g fill="var(--diagram-node)" stroke="var(--diagram-line)" stroke-width="1.5">
+          <rect x="8" y="30" width="180" height="60" rx="12" />
+          <rect x="270" y="30" width="180" height="60" rx="12" />
+          <rect x="532" y="30" width="180" height="60" rx="12" stroke="var(--diagram-accent)" stroke-width="2" />
+        </g>
+        <g stroke="var(--diagram-line)" stroke-width="1.5" fill="none">
+          <path d="M188 60h72m-10 -6l10 6l-10 6" />
+          <path d="M450 60h72m-10 -6l10 6l-10 6" />
+        </g>
+        <g fill="var(--heading)" font-family="var(--font-mono)" font-size="15" text-anchor="middle">
+          <text x="98" y="66">report.ansi</text>
+          <text x="360" y="66">runemark render</text>
+          <text x="622" y="66">out.html</text>
+        </g>
+      </svg>
+    </Figure>
+  </Section>
 
   <Section
     id="sheet"

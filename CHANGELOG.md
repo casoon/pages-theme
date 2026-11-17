@@ -6,6 +6,27 @@ site renders.
 
 ## [Unreleased]
 
+### Added
+
+- **Compare:** Two to four columns: `columns` as a list of `{ title, label?, badge? }`, rows as `{ topic, cells }`, `highlight` for the index of the raised column (none when left out). A row with one cell spans all columns; cells take inline Markdown. The two-column form (`columns: [string, string]`, `other`/`own`) stays valid and keeps its last column raised.
+- **Compare:** Under 700 px the table is replaced by a list: per topic a heading, beneath it the cells with their column titles, the raised one on a white surface. Nothing scrolls sideways.
+- **Hero:** `bleed` for `layout="editorial"`: the output runs out of the bottom edge (no bottom padding, corners or border, a 72 px fade into `--surface`).
+- **Hero:** A `caption` slot sets one line under the `output` of the split layout, e.g. a link to the live demo.
+- **Figure:** A drawing (inline SVG) in the default slot instead of an image, `title`, and `ground="sand"` for a frame on `--bg-deep`.
+- **LinkRow:** Text links with an arrow as a building block; `Section` takes `links` and `Split` uses it for its own.
+- **Split:** `align="start"` tops text and medium, for a tall medium.
+- **Tokens:** `--max-wide` and `--gutter` for the wide start-page column; `--diagram-node`, `--diagram-line` and `--diagram-accent` for drawings.
+- **Footer:** The demo page (`demo`) is listed under Project.
+
+### Changed
+
+- **Defaults:** `Hero`, `Split`, `Spotlight`, `Showcase`, `Tradeoffs` and `Section width="wide"` share the width `--max-wide` (1240 px) and the padding `--gutter` (40 px, 24 px on a phone), so their text edge lines up at 1440 px. `Split` and `Tradeoffs` were 1260 px wide with 24 px padding, `Showcase` and `Spotlight` 1260 px, `Section width="wide"` 1368 px; their text edge moves on every site.
+- **Defaults:** The bottom padding of `Hero` is 96 px instead of 140 px (80 px instead of 120 px on a phone), so the next block starts higher on every site.
+- **Facts:** `layout="list"` fills its container instead of a 440 px card; the width is up to the place it is set in (the medium of a `Split`, say).
+- **BarCompare:** `facts` sit in a grid of 2, 3, 4 or 6 tiles; any other count (5, 7 …) is set as rows, label left and value right, instead of leaving a field empty.
+- **Quickstart:** The code column is wider than the text column (5fr/7fr from 860 px); `CodeBlock` shows a thin scrollbar where a line scrolls.
+- **Footer:** A Project column of one link is merged with Packages into one column.
+
 ## [0.14.0] - 2026-11-17
 
 ### Added
