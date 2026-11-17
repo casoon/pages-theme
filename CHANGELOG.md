@@ -6,6 +6,8 @@ site renders.
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-11-17
+
 ### Added
 
 - **Components:** `Section` (neutral section frame: heading, lead, slot, `width` of `narrow`, `default` or `wide`), `Figure` (image in a frame with a caption) and `SpecList` (term/value rows over the full width), to replace what project sites rebuilt locally.
