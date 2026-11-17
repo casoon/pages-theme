@@ -6,16 +6,20 @@ import { t } from '../lib/i18n';
 interface Props {
   items: { q: string; a: string }[];
   heading?: string;
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
 const s = t(config.lang);
-const { items, heading = s.faqHeading } = Astro.props;
-// Two columns, filled top to bottom.
-const half = Math.ceil(items.length / 2);
-const columns = [items.slice(0, half), items.slice(half)].filter((col) => col.length > 0);
+const { items, heading = s.faqHeading, size = 'section' } = Astro.props;
+// Two columns, filled top to bottom. An odd count would leave an empty field in the frame, so
+// it stays one column.
+const half = items.length / 2;
+const columns =
+  items.length > 1 && items.length % 2 === 0 ? [items.slice(0, half), items.slice(half)] : [items];
 ---
 
-<section class="faq">
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="faq">
   <h2>{heading}</h2>
   <div class="frame">
     {
@@ -40,13 +44,13 @@ const columns = [items.slice(0, half), items.slice(half)].filter((col) => col.le
   .faq {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 80px 24px;
+    padding: 0 24px var(--section-y);
   }
   h2 {
     max-width: 12ch;
     margin: 0 0 40px;
     color: var(--heading);
-    font-size: clamp(34px, 4.4vw, 50px);
+    font-size: var(--h-size, var(--h-section));
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.1;

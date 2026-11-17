@@ -5,18 +5,31 @@
  * for more items — an icon tile per entry (`icon`, a short mono label) instead of the index.
  */
 import config from 'virtual:casoon-pages/config';
+import { inlineMarkdown } from '../lib/changelog';
 import { t } from '../lib/i18n';
 
 interface Props {
   items: { title: string; body: string; icon?: string }[];
   heading?: string;
   layout?: 'numbered' | 'grid';
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
-const { items, heading = t(config.lang).featuresHeading, layout = 'numbered' } = Astro.props;
+const {
+  items,
+  heading = t(config.lang).featuresHeading,
+  layout = 'numbered',
+  size = 'section',
+} = Astro.props;
+// Columns follow the count, so the last row is never one orphan: 4 → 2 + 2, 5 → 3 + 2, 6 → 3 + 3.
+// Narrow containers still drop to fewer columns (the minimum width in the CSS).
+const cols = [1, 1, 2, 3, 2, 3, 3, 4, 4][items.length] ?? 3;
 ---
 
-<section class:list={['features', `is-${layout}`]}>
+<section
+  style={`--cols: ${cols};${size === 'sub' ? ' --h-size: var(--h-sub);' : ''}`}
+  class:list={['features', `is-${layout}`]}>
   <h2 class="cp-label">{heading}</h2>
   <ul>
     {
@@ -35,7 +48,7 @@ const { items, heading = t(config.lang).featuresHeading, layout = 'numbered' } =
           )}
           <div>
             <h3>{ft.title}</h3>
-            <p>{ft.body}</p>
+            <p set:html={inlineMarkdown(ft.body)} />
           </div>
         </li>
       ))
@@ -47,7 +60,7 @@ const { items, heading = t(config.lang).featuresHeading, layout = 'numbered' } =
   .features {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 80px 24px;
+    padding: 0 24px var(--section-y);
   }
   ul {
     margin: 0;
@@ -57,7 +70,10 @@ const { items, heading = t(config.lang).featuresHeading, layout = 'numbered' } =
   /* Large light numerals. */
   .is-numbered ul {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(max(min(240px, 100%), calc((100% - (var(--cols) - 1) * 10px) / var(--cols))), 1fr)
+    );
     gap: 10px;
   }
   .is-numbered li {
@@ -77,8 +93,12 @@ const { items, heading = t(config.lang).featuresHeading, layout = 'numbered' } =
     letter-spacing: -0.02em;
     line-height: 1;
   }
+  li > div {
+    min-width: 0;
+  }
   h3 {
     margin: 0 0 8px;
+    overflow-wrap: anywhere;
     color: var(--heading);
     font-size: 22px;
     font-weight: 600;
@@ -88,12 +108,23 @@ const { items, heading = t(config.lang).featuresHeading, layout = 'numbered' } =
     margin: 0;
     font-size: 16px;
     line-height: 1.56;
+    overflow-wrap: anywhere;
+  }
+  p :global(code) {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--code-bg);
+    color: var(--heading);
+    font-size: 0.9em;
   }
 
   /* Catalog: cream, ink and accent cards in turn. */
   .is-grid ul {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(max(min(280px, 100%), calc((100% - (var(--cols) - 1) * 10px) / var(--cols))), 1fr)
+    );
     gap: 10px;
   }
   .is-grid li {

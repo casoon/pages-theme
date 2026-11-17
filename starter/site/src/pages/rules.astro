@@ -1,0 +1,38 @@
+---
+import { Badge, SpecList } from '@casoon/pages-theme/components';
+import Page from '@casoon/pages-theme/layouts/Page.astro';
+import { url } from '@casoon/pages-theme/url';
+---
+
+<Page
+  title="Contrast rule"
+  description="A plain content page: breadcrumb, title and lead, set like the docs."
+  crumbs={[{ label: 'Rules', href: url('') }]}
+>
+  <SpecList
+    items={[
+      { term: 'Rule', value: '`contrast-min`' },
+      { term: 'Level', value: 'WCAG 2.2 AA' },
+      { term: 'Check', value: 'Every colour pair against the background' },
+    ]}
+  />
+
+  <h2>Result classes</h2>
+  <p>
+    A result is one of three classes. The badge differs in weight, not only in colour.
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Class</th><th scope="col">Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><Badge tone="solid">Automatic</Badge></td><td>The tool decides without help.</td></tr>
+      <tr><td><Badge tone="soft">Hint only</Badge></td><td>The tool points at it; a person decides.</td></tr>
+      <tr><td><Badge>Manual</Badge></td><td>Only a person can check it.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Notes</h2>
+  <h3>Wide glyphs</h3>
+  <p>Emoji and CJK characters are measured, not assumed to be one column wide.</p>
+</Page>

@@ -1,0 +1,72 @@
+---
+/**
+ * An image in a frame with a caption beneath. It fills its container: put it in a `Section`
+ * for the full section width, or in the medium slot of a `Split` to sit beside text. Give
+ * `width` and `height` (the file's pixels) so the page does not jump while it loads.
+ * `caption` takes the changelog's inline Markdown subset.
+ */
+import { inlineMarkdown } from '../lib/changelog';
+
+interface Props {
+  src: string;
+  /** Describes what the image shows; `""` only for a purely decorative image. */
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+  /** Load the image straight away (above the fold). Default: lazy. */
+  eager?: boolean;
+}
+
+const { src, alt, caption, width, height, eager = false } = Astro.props;
+---
+
+<figure class="figure">
+  <div class="frame">
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+  </div>
+  {caption && <figcaption set:html={inlineMarkdown(caption)} />}
+</figure>
+
+<style>
+  /* Zero specificity: in the docs, `.cp-prose > figure` sets the space below. */
+  :where(.figure) {
+    margin: 0;
+  }
+  .frame {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--r-step);
+    background: var(--surface);
+    box-shadow: 2px 2px 0 var(--shadow-hard);
+  }
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  figcaption {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  figcaption :global(code) {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--code-bg);
+    font-size: 0.9em;
+  }
+  figcaption :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+</style>

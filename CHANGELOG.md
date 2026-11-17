@@ -6,6 +6,25 @@ site renders.
 
 ## [Unreleased]
 
+### Added
+
+- **Components:** `Section` (neutral section frame: heading, lead, slot, `width` of `narrow`, `default` or `wide`), `Figure` (image in a frame with a caption) and `SpecList` (term/value rows over the full width), to replace what project sites rebuilt locally.
+- **Layouts:** `layouts/Page.astro`, a plain content page with breadcrumb (`crumbs`), title, lead (`description`) and `width`; the body is set like the docs (`.cp-prose`: headings, lists, tables, code).
+- **Badge:** The tones `solid` and `soft` next to `muted`, for result classes such as Automatic / Hint only / Manual; the three differ in weight, not only in colour.
+- **CodeBlock:** The `wrap` prop wraps long lines instead of scrolling sideways.
+- **Headings:** Every component with a section heading takes `size="section"` (default) or `size="sub"`: `Features`, `BuildOutput`, `ReleaseHighlights`, `Keymap`, `Faq`, `Quickstart`, `Flow`, `Compare`, `AudienceList`, `SectionIntro`, `Spotlight` and `Section`.
+
+### Changed
+
+- **Defaults:** `ReleaseHighlights` shows 3 entries instead of 6 (`max`), and an entry is cut after three lines; the changelog link beside the heading has the rest.
+- **Defaults:** Section headings share two sizes, `--h-section` (34–50 px) and `--h-sub` (28–40 px). `Quickstart` was 30 px and `Flow` and `Spotlight` started at 32 px; they now use the section size like the others (`size="sub"` for the smaller one). `Split`, `Showcase` and `Tradeoffs` use `--h-sub`.
+- **Defaults:** The space below a section is one token, `--section-y` (64–112 px), instead of 0 to 128 px of padding per component; sections no longer carry top padding. Page rhythm changes on every site, and a site's own block between theme sections needs no extra margin.
+- **Features:** The column count follows the item count (4 as 2 + 2, 5 as 3 + 2, 6 as 3 + 3) instead of `auto-fit`; long words and paths wrap inside the card. `body` is inline Markdown now (`code`, **bold**, links), so a backtick in an existing body renders as code.
+- **Facts:** In `layout="grid"` the value sits at the top at a fixed position and the label of any length beneath it, so the figures line up across tiles.
+- **Keymap:** A long key sequence wraps below the label instead of leaving the card.
+- **Faq:** An odd number of questions stays one column instead of leaving an empty field in the frame.
+- **Quickstart:** A long command wraps in its code block instead of being cut off.
+
 ## [0.13.2] - 2026-11-17
 
 ### Fixed

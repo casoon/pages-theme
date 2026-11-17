@@ -9,13 +9,15 @@ interface Props {
   steps: string[];
   lead?: string;
   title?: string;
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
 const s = t(config.lang);
-const { steps, lead = s.quickstartLead, title = s.quickstartTitle } = Astro.props;
+const { steps, lead = s.quickstartLead, title = s.quickstartTitle, size = 'section' } = Astro.props;
 ---
 
-<section class="quickstart">
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="quickstart">
   <div>
     <h2>{title}</h2>
     <p class="lead">{lead}</p>
@@ -44,14 +46,15 @@ const { steps, lead = s.quickstartLead, title = s.quickstartTitle } = Astro.prop
     align-items: start;
     max-width: var(--max);
     margin: 0 auto;
-    padding: 0 24px 96px;
+    padding: 0 24px var(--section-y);
   }
   h2 {
     margin: 0 0 14px;
     color: var(--heading);
-    font-size: 30px;
+    font-size: var(--h-size, var(--h-section));
     font-weight: 600;
     letter-spacing: -0.02em;
+    line-height: 1.1;
   }
   .lead {
     margin: 0 0 24px;
@@ -91,5 +94,10 @@ const { steps, lead = s.quickstartLead, title = s.quickstartTitle } = Astro.prop
     flex-direction: column;
     gap: 16px;
     min-width: 0;
+  }
+  /* A long command wraps here instead of being cut off. */
+  .code :global(.codeblock pre) {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
 </style>

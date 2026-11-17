@@ -8,13 +8,15 @@ interface Props {
   caption: string;
   file: string;
   heading?: string;
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
 const s = t(config.lang);
-const { caption, file, heading = s.buildOutputHeading } = Astro.props;
+const { caption, file, heading = s.buildOutputHeading, size = 'section' } = Astro.props;
 ---
 
-<section class="build">
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="build">
   <div class="head">
     <h2 class="cp-label">{heading}</h2>
     {config.hasShowcase && <a href={url('showcase/')}>{s.allExamples} →</a>}
@@ -32,7 +34,7 @@ const { caption, file, heading = s.buildOutputHeading } = Astro.props;
   .build {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 0 24px 80px;
+    padding: 0 24px var(--section-y);
   }
   .head {
     display: flex;

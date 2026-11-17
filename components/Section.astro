@@ -1,0 +1,97 @@
+---
+/**
+ * A neutral section frame: an optional heading with an eyebrow and a lead above the default
+ * slot, with the theme's width and spacing — for a section no other component fits. `lead`
+ * takes the changelog's inline Markdown subset. The heading is an `h2`; blocks inside the slot
+ * start at `h3`.
+ */
+import { inlineMarkdown } from '../lib/changelog';
+
+interface Props {
+  title?: string;
+  lead?: string;
+  eyebrow?: string;
+  /** Anchor for links to the section. */
+  id?: string;
+  /** Content width: `default` (the theme's `--max`), `narrow` (a reading column) or `wide`. */
+  width?: 'default' | 'narrow' | 'wide';
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
+}
+
+const { title, lead, eyebrow, id, width = 'default', size = 'section' } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['section', `is-${width}`]}
+  style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined}
+>
+  {
+    (title || lead) && (
+      <header>
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {title && <h2>{title}</h2>}
+        {lead && <p class="lead" set:html={inlineMarkdown(lead)} />}
+      </header>
+    )
+  }
+  <div class="body"><slot /></div>
+</section>
+
+<style>
+  .section {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px var(--section-y);
+  }
+  .is-narrow {
+    max-width: calc(760px + 48px);
+  }
+  .is-wide {
+    max-width: calc(1320px + 48px);
+  }
+  header {
+    margin-bottom: 32px;
+  }
+  /* Blocks in the slot sit one rhythm apart. */
+  .body {
+    display: grid;
+    gap: 28px;
+  }
+  .eyebrow {
+    margin: 0 0 16px;
+    color: var(--heading);
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+  h2 {
+    margin: 0;
+    color: var(--heading);
+    font-size: var(--h-size, var(--h-section));
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+  .lead {
+    max-width: 62ch;
+    margin: 16px 0 0;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  .lead :global(strong) {
+    color: var(--heading);
+  }
+  .lead :global(code) {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--code-bg);
+    font-size: 0.9em;
+  }
+  .lead :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+</style>

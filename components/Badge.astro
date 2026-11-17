@@ -1,7 +1,12 @@
 ---
-/** Static badge: version, licence, registry, status. No external badge services. */
+/**
+ * Static badge: version, licence, registry, status. No external badge services.
+ * `muted`, `accent`, `brand` colour the text. For a result class (e.g. Automatic / Hint only /
+ * Manual) three levels of emphasis that do not rely on colour alone: `solid` (filled), `soft`
+ * (tinted) and `muted` (outline only).
+ */
 interface Props {
-  tone?: 'muted' | 'accent' | 'brand';
+  tone?: 'muted' | 'accent' | 'brand' | 'solid' | 'soft';
 }
 
 const { tone = 'muted' } = Astro.props;
@@ -27,5 +32,15 @@ const { tone = 'muted' } = Astro.props;
   }
   .brand {
     color: var(--brand);
+  }
+  .solid {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .soft {
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent);
   }
 </style>

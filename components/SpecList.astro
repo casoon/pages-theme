@@ -1,0 +1,67 @@
+---
+/**
+ * Term/value rows over the full width between hairlines (a `<dl>`) — the data sheet of a
+ * page, such as a rule's id, level and scope. Unlike `Facts layout="list"` it is not a card
+ * and takes the width of its container. `value` takes the changelog's inline Markdown subset.
+ */
+import { inlineMarkdown } from '../lib/changelog';
+
+interface Props {
+  items: { term: string; value: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="speclist">
+  {
+    items.map((item) => (
+      <div>
+        <dt>{item.term}</dt>
+        <dd set:html={inlineMarkdown(item.value)} />
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  :where(.speclist) {
+    margin: 0;
+  }
+  .speclist {
+    border-bottom: 1px solid var(--border-strong);
+  }
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 24px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border-strong);
+  }
+  dt {
+    flex: 0 0 190px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  dd {
+    flex: 1 1 240px;
+    min-width: 0;
+    margin: 0;
+    color: var(--heading);
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  dd :global(code) {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--code-bg);
+    font-size: 0.9em;
+  }
+  dd :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+</style>

@@ -12,6 +12,8 @@ interface Props {
   /** Language label shown right in the bar. */
   label?: string;
   copy?: boolean;
+  /** Wrap long lines instead of scrolling sideways (a long command stays fully visible). */
+  wrap?: boolean;
   /**
    * Numbered dots at the end of a line (1-based `line`), `aria-hidden`; they belong to the
    * numbered points of a `Split` beside the block. Without it the block renders as before.
@@ -19,7 +21,7 @@ interface Props {
   marks?: { line: number; n: number }[];
 }
 
-const { code, lang = 'text', title, label, copy = true, marks } = Astro.props;
+const { code, lang = 'text', title, label, copy = true, wrap = false, marks } = Astro.props;
 const transformers = marks?.length
   ? [
       {
@@ -43,7 +45,7 @@ for (const ch of code) hash = ((hash * 33) ^ ch.charCodeAt(0)) >>> 0;
 const id = `code-${hash.toString(36)}`;
 ---
 
-<figure class="codeblock">
+<figure class:list={['codeblock', wrap && 'wrap']}>
   {
     (title || label || copy) && (
       <figcaption>
@@ -101,6 +103,10 @@ const id = `code-${hash.toString(36)}`;
   }
   .copy[hidden] {
     display: none;
+  }
+  .wrap :global(pre) {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
   .codeblock :global(.mark) {
     display: inline-grid;

@@ -15,12 +15,14 @@ import { url } from '../lib/url';
 interface Props {
   release: Release;
   heading?: string;
-  /** Cap on how many of the release's entries to show. Default 6. */
+  /** Cap on how many of the release's entries to show. Default 3; the rest is in the changelog. */
   max?: number;
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
 const s = t(config.lang);
-const { release, heading = s.newIn(release.version), max = 6 } = Astro.props;
+const { release, heading = s.newIn(release.version), max = 3, size = 'section' } = Astro.props;
 const tone = (kind: string) =>
   ['breaking', 'removed', 'security'].includes(kind)
     ? 'brand'
@@ -30,7 +32,7 @@ const tone = (kind: string) =>
 const changes = release.changes.slice(0, max);
 ---
 
-<section class="release-highlights">
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="release-highlights">
   <div class="head">
     <h2 class="cp-label">{heading}</h2>
     {config.changelog && <a href={url('changelog/')}>{s.changelog} →</a>}
@@ -40,7 +42,7 @@ const changes = release.changes.slice(0, max);
       changes.map((change) => (
         <li>
           <span class:list={['dot', tone(change.kind)]} aria-hidden="true" />
-          <span set:html={change.html} />
+          <span class="text" set:html={change.html} />
         </li>
       ))
     }
@@ -51,7 +53,7 @@ const changes = release.changes.slice(0, max);
   .release-highlights {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 0 24px 80px;
+    padding: 0 24px var(--section-y);
   }
   .head {
     display: flex;
@@ -97,6 +99,14 @@ const changes = release.changes.slice(0, max);
   }
   .dot.brand {
     background: var(--brand);
+  }
+  /* An entry shows its first lines; the whole text is in the changelog. */
+  .text {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
   }
   li :global(strong) {
     color: var(--heading);
