@@ -5,7 +5,7 @@
  *   stack     — centred text, then a band: `source` slot → `command` → `output` slot
  *   editorial — full-width title, lead beside the default slot, `output` slot below;
  *               `bleed` runs the output down out of the hero
- * The optional `caption` slot sets one line under the `output` (split and editorial), e.g. a
+ * The optional `caption` slot sets one line under the `output` (split layout), e.g. a
  * link to the live demo.
  * `tone="invert"` puts any of them on a dark brand ground.
  */
@@ -159,11 +159,6 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
           <slot name="output" />
           {bleed && <div class="fade" aria-hidden="true" />}
         </div>
-        {hasCaption && (
-          <p class="caption">
-            <slot name="caption" />
-          </p>
-        )}
       </div>
     )
   }
