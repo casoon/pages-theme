@@ -25,8 +25,10 @@ const { items } = Astro.props;
 </dl>
 
 <style>
+  :where(.speclist) {
+    margin: 0;
+  }
   .speclist {
-    margin: 0 0 22px;
     border-bottom: 1px solid var(--border-strong);
   }
   div {
@@ -56,5 +58,10 @@ const { items } = Astro.props;
     border-radius: 5px;
     background: var(--code-bg);
     font-size: 0.9em;
+  }
+  dd :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
   }
 </style>

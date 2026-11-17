@@ -15,6 +15,7 @@ import {
   Facts,
   Faq,
   Features,
+  Figure,
   Flow,
   FlowPanel,
   Hero,
@@ -23,8 +24,10 @@ import {
   Keymap,
   Quickstart,
   ReleaseHighlights,
+  Section,
   SectionIntro,
   Showcase,
+  SpecList,
   Split,
   Spotlight,
   StatBand,
@@ -344,6 +347,28 @@ fn main() -> anyhow::Result<()> {
       'Wide glyphs are measured by a table that is updated with Unicode.',
     ]}
   />
+
+  <Section
+    id="sheet"
+    title="One page of facts"
+    lead={`\`Section\` frames what no other block fits; \`Figure\` and \`SpecList\` fill it. More on the [rules page](${url('rules/')}).`}
+    size="sub"
+  >
+    <Figure
+      src={url('sample-output.svg')}
+      alt="A terminal showing three check results"
+      caption="Output as the renderer prints it: **142 fixtures**, one warning."
+      width={960}
+      height={400}
+    />
+    <SpecList
+      items={[
+        { term: 'Input', value: 'ANSI text from a file, a pipe or a string' },
+        { term: 'Output', value: 'Static HTML, one stylesheet, `0` scripts' },
+        { term: 'Determinism', value: 'Identical input gives identical bytes' },
+      ]}
+    />
+  </Section>
 
   <Quickstart
     lead="Three steps from install to a rendered page. The full walkthrough lives in the documentation."

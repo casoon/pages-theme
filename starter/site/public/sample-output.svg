@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" role="img" aria-label="Sample output">
+  <rect width="960" height="400" fill="#15171a"/>
+  <rect width="960" height="40" fill="#0d0f11"/>
+  <circle cx="24" cy="20" r="6" fill="#8b9297"/>
+  <circle cx="46" cy="20" r="6" fill="#8b9297"/>
+  <circle cx="68" cy="20" r="6" fill="#8b9297"/>
+  <g font-family="ui-monospace, Menlo, monospace" font-size="20" fill="#d8dde2">
+    <text x="32" y="92">$ runemark check ./report</text>
+    <text x="32" y="140" fill="#5fd7a7">ok    142 fixtures rendered</text>
+    <text x="32" y="176" fill="#5fd7a7">ok    contrast 4.5:1 on every pair</text>
+    <text x="32" y="212" fill="#f2c66b">warn  wide glyph in line 18</text>
+    <text x="32" y="276" fill="#8b9297">done in 0.4 s</text>
+  </g>
+</svg>

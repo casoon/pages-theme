@@ -36,7 +36,7 @@ const { title, lead, eyebrow, id, width = 'default', size = 'section' } = Astro.
       </header>
     )
   }
-  <slot />
+  <div class="body"><slot /></div>
 </section>
 
 <style>
@@ -53,6 +53,11 @@ const { title, lead, eyebrow, id, width = 'default', size = 'section' } = Astro.
   }
   header {
     margin-bottom: 32px;
+  }
+  /* Blocks in the slot sit one rhythm apart. */
+  .body {
+    display: grid;
+    gap: 28px;
   }
   .eyebrow {
     margin: 0 0 16px;
@@ -83,5 +88,10 @@ const { title, lead, eyebrow, id, width = 'default', size = 'section' } = Astro.
     border-radius: 5px;
     background: var(--code-bg);
     font-size: 0.9em;
+  }
+  .lead :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
   }
 </style>
