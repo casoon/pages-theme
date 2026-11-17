@@ -1,0 +1,96 @@
+---
+/**
+ * A plain content page: breadcrumb, `h1`, lead, then the body set like the docs (`.cp-prose`:
+ * headings, lists, tables, code). The slot takes Markdown/MDX output or any markup; theme
+ * components such as `SpecList` fit in. `crumbs` are the ancestors (linked); the page's own
+ * title closes the trail as the current page.
+ */
+import config from 'virtual:casoon-pages/config';
+import { t } from '../lib/i18n';
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  /** Meta description and the lead below the title. */
+  description?: string;
+  crumbs?: { label: string; href?: string }[];
+  /** Content width: `default` (a reading column), `wide` for tables or `narrow`. */
+  width?: 'default' | 'narrow' | 'wide';
+}
+
+const { title, description, crumbs = [], width = 'default' } = Astro.props;
+const s = t(config.lang);
+---
+
+<Base title={title} description={description}>
+  <article class:list={['page', `is-${width}`]}>
+    {
+      crumbs.length > 0 && (
+        <nav class="crumb" aria-label={s.breadcrumb}>
+          <ol>
+            {crumbs.map((c) => (
+              <li>{c.href ? <a href={c.href}>{c.label}</a> : c.label}</li>
+            ))}
+            <li aria-current="page">{title}</li>
+          </ol>
+        </nav>
+      )
+    }
+    <h1>{title}</h1>
+    {description && <p class="lead">{description}</p>}
+    <div class="cp-prose"><slot /></div>
+  </article>
+</Base>
+
+<style>
+  .page {
+    max-width: calc(760px + 48px);
+    margin: 0 auto;
+    padding: 40px 24px 96px;
+  }
+  .is-narrow {
+    max-width: calc(640px + 48px);
+  }
+  .is-wide {
+    max-width: calc(1100px + 48px);
+  }
+  .crumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .crumb li + li::before {
+    content: '/';
+    margin-right: 8px;
+  }
+  .crumb a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+  .crumb a:hover {
+    color: var(--heading);
+  }
+  .crumb [aria-current] {
+    color: var(--text);
+  }
+  h1 {
+    margin: 0 0 12px;
+    color: var(--heading);
+    font-size: clamp(28px, 3.4vw, 38px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .lead {
+    margin: 0 0 36px;
+    font-size: 17.5px;
+  }
+</style>
