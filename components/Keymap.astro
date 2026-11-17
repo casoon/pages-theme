@@ -10,12 +10,14 @@ interface Props {
   }[];
   /** Section heading. Omitted: the section carries no heading of its own. */
   heading?: string;
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
-const { groups, heading } = Astro.props;
+const { groups, heading, size = 'section' } = Astro.props;
 ---
 
-<section class="keymap">
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="keymap">
   {heading && <h2 class="cp-label">{heading}</h2>}
   <div class="groups">
     {
@@ -44,7 +46,7 @@ const { groups, heading } = Astro.props;
   .keymap {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 0 24px 80px;
+    padding: 0 24px var(--section-y);
   }
   .keymap > h2 {
     margin: 0 0 20px;

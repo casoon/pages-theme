@@ -88,7 +88,7 @@ const List = numbered ? 'ol' : 'ul';
     gap: 48px 72px;
     max-width: calc(var(--max) + 160px);
     margin: 0 auto;
-    padding: 0 24px 128px;
+    padding: 0 24px var(--section-y);
   }
   .reverse {
     flex-direction: row-reverse;
@@ -117,7 +117,7 @@ const List = numbered ? 'ol' : 'ul';
   h3 {
     margin: 0 0 20px;
     color: var(--heading);
-    font-size: clamp(28px, 3.1vw, 40px);
+    font-size: var(--h-sub);
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.12;

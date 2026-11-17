@@ -15,12 +15,14 @@ interface Props {
   points?: string[];
   links?: { label: string; href: string }[];
   reverse?: boolean;
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
-const { eyebrow, title, lead, points, links, reverse = false } = Astro.props;
+const { eyebrow, title, lead, points, links, reverse = false, size = 'section' } = Astro.props;
 ---
 
-<section class:list={['spotlight', reverse && 'reverse']}>
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class:list={['spotlight', reverse && 'reverse']}>
   <div class="text">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h2>{title}</h2>
@@ -56,7 +58,7 @@ const { eyebrow, title, lead, points, links, reverse = false } = Astro.props;
     gap: 44px;
     align-items: center;
     max-width: calc(var(--max) + 160px);
-    margin: 0 auto 80px;
+    margin: 0 auto var(--section-y);
     padding: 80px;
     border-radius: var(--r-panel);
     background: var(--bg-deep);
@@ -102,7 +104,7 @@ const { eyebrow, title, lead, points, links, reverse = false } = Astro.props;
   h2 {
     margin: 0 0 20px;
     color: var(--heading);
-    font-size: clamp(32px, 4vw, 50px);
+    font-size: var(--h-size, var(--h-section));
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.1;

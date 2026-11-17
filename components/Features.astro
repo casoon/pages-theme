@@ -11,12 +11,19 @@ interface Props {
   items: { title: string; body: string; icon?: string }[];
   heading?: string;
   layout?: 'numbered' | 'grid';
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
-const { items, heading = t(config.lang).featuresHeading, layout = 'numbered' } = Astro.props;
+const {
+  items,
+  heading = t(config.lang).featuresHeading,
+  layout = 'numbered',
+  size = 'section',
+} = Astro.props;
 ---
 
-<section class:list={['features', `is-${layout}`]}>
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class:list={['features', `is-${layout}`]}>
   <h2 class="cp-label">{heading}</h2>
   <ul>
     {
@@ -47,7 +54,7 @@ const { items, heading = t(config.lang).featuresHeading, layout = 'numbered' } =
   .features {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 80px 24px;
+    padding: 0 24px var(--section-y);
   }
   ul {
     margin: 0;

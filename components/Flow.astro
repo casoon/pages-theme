@@ -13,12 +13,14 @@ interface Props {
   title?: string;
   lead?: string;
   stages: { label: string; artifact: string; title: string; body: string }[];
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
-const { eyebrow, title, lead, stages } = Astro.props;
+const { eyebrow, title, lead, stages, size = 'section' } = Astro.props;
 ---
 
-<section class="flow">
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="flow">
   {
     (eyebrow || title || lead) && (
       <header>
@@ -49,7 +51,7 @@ const { eyebrow, title, lead, stages } = Astro.props;
   .flow {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 80px 24px;
+    padding: 0 24px var(--section-y);
   }
   header {
     max-width: 720px;
@@ -58,7 +60,7 @@ const { eyebrow, title, lead, stages } = Astro.props;
   h2 {
     margin: 0 0 20px;
     color: var(--heading);
-    font-size: clamp(32px, 4vw, 50px);
+    font-size: var(--h-size, var(--h-section));
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.1;

@@ -17,10 +17,12 @@ interface Props {
   heading?: string;
   /** Cap on how many of the release's entries to show. Default 6. */
   max?: number;
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
 const s = t(config.lang);
-const { release, heading = s.newIn(release.version), max = 6 } = Astro.props;
+const { release, heading = s.newIn(release.version), max = 6, size = 'section' } = Astro.props;
 const tone = (kind: string) =>
   ['breaking', 'removed', 'security'].includes(kind)
     ? 'brand'
@@ -30,7 +32,7 @@ const tone = (kind: string) =>
 const changes = release.changes.slice(0, max);
 ---
 
-<section class="release-highlights">
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="release-highlights">
   <div class="head">
     <h2 class="cp-label">{heading}</h2>
     {config.changelog && <a href={url('changelog/')}>{s.changelog} →</a>}
@@ -51,7 +53,7 @@ const changes = release.changes.slice(0, max);
   .release-highlights {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 0 24px 80px;
+    padding: 0 24px var(--section-y);
   }
   .head {
     display: flex;

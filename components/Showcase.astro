@@ -43,7 +43,7 @@ const { title, lead, eyebrow, link } = Astro.props;
     gap: 40px 56px;
     box-sizing: border-box;
     max-width: calc(var(--max) + 160px);
-    margin: 0 auto 128px;
+    margin: 0 auto var(--section-y);
     padding: clamp(32px, 5.5vw, 80px);
     border-radius: clamp(32px, 4.2vw, var(--r-panel));
     background: #11100e;
@@ -80,7 +80,7 @@ const { title, lead, eyebrow, link } = Astro.props;
   h3 {
     margin: 0 0 20px;
     color: #fff;
-    font-size: clamp(28px, 3.1vw, 40px);
+    font-size: var(--h-sub);
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.12;

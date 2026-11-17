@@ -10,12 +10,14 @@ interface Props {
   title: string;
   lead: string;
   eyebrow?: string;
+  /** Heading level: `section` (default) or the smaller `sub`. */
+  size?: 'section' | 'sub';
 }
 
-const { title, lead, eyebrow } = Astro.props;
+const { title, lead, eyebrow, size = 'section' } = Astro.props;
 ---
 
-<section class="intro">
+<section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="intro">
   <div class="title">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h2>{title}</h2>
@@ -31,7 +33,7 @@ const { title, lead, eyebrow } = Astro.props;
     gap: 24px 64px;
     max-width: var(--max);
     margin: 0 auto;
-    padding: 112px 24px 72px;
+    padding: var(--section-y) 24px calc(var(--section-y) * 0.6);
   }
   .title {
     flex: 1 1 420px;
@@ -45,7 +47,7 @@ const { title, lead, eyebrow } = Astro.props;
   h2 {
     margin: 0;
     color: var(--heading);
-    font-size: clamp(34px, 4.4vw, 50px);
+    font-size: var(--h-size, var(--h-section));
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.1;

@@ -203,7 +203,7 @@ pre.astro-code {
 h2.cp-label {
   display: block;
   margin: 0 0 40px;
-  font-size: clamp(34px, 4.4vw, 50px);
+  font-size: var(--h-size, var(--h-section));
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -307,8 +307,8 @@ h2.cp-label::before {
 }
 
 /* Space between the hero's sand ground and whatever a site places right after it. The theme
-   sections listed here bring their own top padding; everything else — a site's own aside, card
-   or section, and Spotlight — would otherwise sit flush against the hero's lower edge. */
-main > .hero + :not(.facts, .features, .anchor-grid, .faq, .flow, .integrations) {
+   `Integrations` brings its own top padding (a band with a ground); everything else — the theme
+   sections, a site's own aside or card — would otherwise sit flush against the hero's lower edge. */
+main > .hero + :not(.integrations) {
   margin-top: clamp(40px, 6vw, 72px);
 }
