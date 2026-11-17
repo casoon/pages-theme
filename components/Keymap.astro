@@ -74,9 +74,10 @@ const { groups, heading, size = 'section' } = Astro.props;
   }
   li {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 8px 16px;
     padding: 11px 0;
     border-top: 1px solid var(--border);
     font-size: 14px;
@@ -84,9 +85,12 @@ const { groups, heading, size = 'section' } = Astro.props;
   li:first-child {
     border-top: 0;
   }
+  /* A long key sequence wraps below the label instead of leaving the card. */
   .keys {
     display: flex;
-    flex-shrink: 0;
+    flex-wrap: wrap;
+    min-width: 0;
+    max-width: 100%;
     gap: 4px;
   }
   kbd {
@@ -99,6 +103,7 @@ const { groups, heading, size = 'section' } = Astro.props;
     color: var(--heading);
     font-family: var(--font-mono);
     font-size: 12px;
+    overflow-wrap: anywhere;
     text-align: center;
   }
 </style>

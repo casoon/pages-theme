@@ -55,16 +55,17 @@ const { items, layout = 'grid', label } = Astro.props;
   }
   .is-grid div {
     display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
+    flex-direction: column;
     min-height: clamp(120px, 30vw, 170px);
     padding: 24px;
     border-radius: 12px;
     background: var(--surface);
     box-shadow: 0 2px 0 var(--shadow-hard);
   }
+  /* Value on top at a fixed position, the label of any length beneath it. */
   .is-grid dd {
-    margin: auto 0 8px;
+    order: -1;
+    margin: 0 0 14px;
     color: var(--heading);
     font-size: clamp(34px, 3.4vw, 46px);
     font-weight: 600;

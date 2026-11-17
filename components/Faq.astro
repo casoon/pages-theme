@@ -12,9 +12,11 @@ interface Props {
 
 const s = t(config.lang);
 const { items, heading = s.faqHeading, size = 'section' } = Astro.props;
-// Two columns, filled top to bottom.
-const half = Math.ceil(items.length / 2);
-const columns = [items.slice(0, half), items.slice(half)].filter((col) => col.length > 0);
+// Two columns, filled top to bottom. An odd count would leave an empty field in the frame, so
+// it stays one column.
+const half = items.length / 2;
+const columns =
+  items.length > 1 && items.length % 2 === 0 ? [items.slice(0, half), items.slice(half)] : [items];
 ---
 
 <section style={size === 'sub' ? '--h-size: var(--h-sub)' : undefined} class="faq">
