@@ -6,6 +6,8 @@ site renders.
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-11-17
+
 ### Added
 
 - **Compare:** Two to four columns: `columns` as a list of `{ title, label?, badge? }`, rows as `{ topic, cells }`, `highlight` for the index of the raised column (none when left out). A row with one cell spans all columns; cells take inline Markdown. The two-column form (`columns: [string, string]`, `other`/`own`) stays valid and keeps its last column raised.
