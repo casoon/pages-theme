@@ -6,6 +6,8 @@ site renders.
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-11-20
+
 ### Added
 
 - **Figure:** `zoom` turns the image into a button that opens it at full size over the page, as a native popover without a script; Esc, the close button or a click outside closes it.
