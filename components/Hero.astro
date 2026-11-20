@@ -10,7 +10,7 @@
  * `tone="invert"` puts any of them on a dark brand ground.
  */
 import config from 'virtual:casoon-pages/config';
-import { t } from '../lib/i18n';
+import { eyebrow as eyebrowFor } from '../lib/i18n';
 
 interface Props {
   title: string;
@@ -30,7 +30,7 @@ interface Props {
 const {
   title,
   lead,
-  eyebrow = t(config.lang).heroEyebrow,
+  eyebrow = eyebrowFor(config.lang, config.license),
   layout = 'split',
   command,
   tone = 'plain',

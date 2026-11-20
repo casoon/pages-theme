@@ -6,6 +6,12 @@ site renders.
 
 ## [Unreleased]
 
+## [0.16.1] - 2026-11-20
+
+### Fixed
+
+- **OG image, Hero:** A project with `license: false` is no longer called open source: the eyebrow of the OG image and the default eyebrow of `Hero` read "CASOON" instead of "CASOON Open Source".
+
 ## [0.16.0] - 2026-11-20
 
 ### Added
