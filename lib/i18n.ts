@@ -63,6 +63,8 @@ const en = {
     `Each example shows real output produced by ${name} itself, from files in the project repository. Input on the left, output on the right.`,
   faqHeading: 'Frequently asked questions',
   newIn: (version: string) => `New in v${version}`,
+  zoomImage: (alt: string) => (alt ? `Enlarge image: ${alt}` : 'Enlarge image'),
+  close: 'Close',
 };
 
 export type Strings = typeof en;
@@ -129,6 +131,8 @@ const de: Strings = {
     `Jedes Beispiel zeigt echte Ausgabe, die ${name} selbst erzeugt hat, aus Dateien im Projekt-Repository. Links die Eingabe, rechts die Ausgabe.`,
   faqHeading: 'Häufige Fragen',
   newIn: (version) => `Neu in v${version}`,
+  zoomImage: (alt) => (alt ? `Bild vergrößern: ${alt}` : 'Bild vergrößern'),
+  close: 'Schließen',
 };
 
 export const strings: Record<Lang, Strings> = { en, de };

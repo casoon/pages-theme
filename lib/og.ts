@@ -3,20 +3,22 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import type { ResolvedConfig } from '../index';
 
-/** Dark theme tokens (styles/tokens.css): the card looks like the site at night. */
-const BG = '#101010';
-const HEADING = '#f4f4f4';
-const TEXT = '#c3c7c7';
-const MUTED = '#8c9090';
-const ACCENT = 'rgb(58 206 222)';
+/** Light theme tokens (styles/tokens.css) and the logo's petrol: the card follows casoon.de. */
+const BG = '#f4f1eb';
+const HEADING = '#11100e';
+const TEXT = '#44423f';
+const MUTED = '#5c5a56';
+const BRAND = '#028baa';
 
 const WIDTH = 1200;
 const HEIGHT = 630;
 const X = 88;
 
 const asset = (path: string) => fileURLToPath(new URL(path, import.meta.url));
-const SANS = asset('../fonts/onest-latin-wght-normal.woff2');
-const MONO = asset('../fonts/jetbrains-mono-latin-400-normal.woff2');
+// TrueType, not the site's woff2: Pango on Linux (the Pages runners) ignores a woff2 font file
+// and falls back to a system font.
+const SANS = asset('../fonts/onest-latin-wght-normal.ttf');
+const MONO = asset('../fonts/jetbrains-mono-latin-400-normal.ttf');
 
 const escapeMarkup = (text: string) => text.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
@@ -43,15 +45,8 @@ async function nameBlock(name: string, width: number): Promise<Buffer> {
 
 /** The project's 1200×630 Open Graph image: name, tagline and description, address. */
 export async function renderOgImage(config: ResolvedConfig, site: URL): Promise<Buffer> {
-  const accent = config.accent?.dark ?? ACCENT;
-  const background = Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}">` +
-      `<rect width="100%" height="100%" fill="${BG}"/>` +
-      `<rect width="12" height="100%" fill="${accent}"/>` +
-      `<rect x="${X}" y="${HEIGHT - 128}" width="${WIDTH - 2 * X}" height="1" fill="${MUTED}" opacity="0.4"/>` +
-      '</svg>'
-  );
-  const logo = await sharp(await readFile(asset('../assets/casoon-logo-dark.svg')), {
+  const accent = config.accent?.light ?? BRAND;
+  const logo = await sharp(await readFile(asset('../assets/casoon-logo.svg')), {
     density: 300,
   })
     .resize({ width: 176 })
@@ -71,18 +66,26 @@ export async function renderOgImage(config: ResolvedConfig, site: URL): Promise<
       SANS,
       WIDTH - 2 * X
     ),
-    text(span(MUTED, address), 'JetBrains Mono 24', MONO, 640),
+    text(span(accent, address), 'JetBrains Mono 24', MONO, 640),
   ]);
   const size = async (image: Buffer) => sharp(image).metadata();
-  const nameBottom = 128 + ((await size(name)).height ?? 0) + 16;
-  const taglineHeight = tagline ? ((await size(tagline)).height ?? 0) + 24 : 0;
+  // A short rule under the name, as on casoon.de, then tagline and description.
+  const ruleTop = 128 + ((await size(name)).height ?? 0) + 20;
+  const textTop = ruleTop + 4 + 32;
+  const taglineHeight = tagline ? ((await size(tagline)).height ?? 0) + 20 : 0;
+  const background = Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}">` +
+      `<rect width="100%" height="100%" fill="${BG}"/>` +
+      `<rect x="${X}" y="${ruleTop}" width="200" height="4" rx="2" fill="${accent}"/>` +
+      '</svg>'
+  );
 
   return sharp(background)
     .composite([
       { input: eyebrow, left: X, top: 76 },
       { input: name, left: X, top: 128 },
-      ...(tagline ? [{ input: tagline, left: X, top: nameBottom }] : []),
-      { input: description, left: X, top: nameBottom + taglineHeight },
+      ...(tagline ? [{ input: tagline, left: X, top: textTop }] : []),
+      { input: description, left: X, top: textTop + taglineHeight },
       { input: logo, left: X, top: HEIGHT - 92 },
       { input: host, left: WIDTH - X - ((await size(host)).width ?? 0), top: HEIGHT - 80 },
     ])

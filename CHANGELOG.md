@@ -6,6 +6,20 @@ site renders.
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-11-20
+
+### Added
+
+- **Figure:** `zoom` turns the image into a button that opens it at full size over the page, as a native popover without a script; Esc, the close button or a click outside closes it.
+
+### Changed
+
+- **OG image:** Light instead of dark, after the card of casoon.de: sand ground, name with a short petrol rule beneath, the light logo, the address in petrol. The project's light `accent` replaces the petrol where it is set.
+
+### Fixed
+
+- **OG image:** Built on Linux (the Pages runners), the card used a system font instead of Onest and JetBrains Mono; the renderer now reads TrueType copies of both fonts.
+
 ## [0.15.0] - 2026-11-17
 
 ### Added

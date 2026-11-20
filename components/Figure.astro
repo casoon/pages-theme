@@ -6,9 +6,13 @@
  * file's pixels) so the page does not jump while it loads; for a drawing (inline SVG, see the
  * `--diagram-*` tokens) put it in the default slot, which is then the figure. `ground="sand"`
  * sets the frame on the sand colour (`--bg-deep`) with padding, the usual ground of a diagram.
- * `caption` takes the changelog's inline Markdown subset.
+ * `caption` takes the changelog's inline Markdown subset. `zoom` makes the image a button that
+ * opens it at full size over the page – a native popover, no script; Esc or a click outside
+ * closes it.
  */
+import config from 'virtual:casoon-pages/config';
 import { inlineMarkdown } from '../lib/changelog';
+import { t } from '../lib/i18n';
 
 interface Props {
   /** The image. Left out: the default slot is the figure. */
@@ -24,6 +28,8 @@ interface Props {
   ground?: 'surface' | 'sand';
   /** Load the image straight away (above the fold). Default: lazy. */
   eager?: boolean;
+  /** Click opens the image at full size. Only for an image (`src`). */
+  zoom?: boolean;
 }
 
 const {
@@ -35,15 +41,33 @@ const {
   height,
   ground = 'surface',
   eager = false,
+  zoom = false,
 } = Astro.props;
 const padded = ground === 'sand' || Boolean(title) || !src;
+const s = t(config.lang);
+// Stable per image, so a rebuild yields the same markup.
+const zoomId =
+  zoom && src
+    ? `zoom-${[...src].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7).toString(36)}`
+    : '';
 ---
 
 <figure class="figure">
   <div class:list={['frame', ground === 'sand' && 'is-sand', padded && 'is-padded']}>
     {title && <p class="title">{title}</p>}
     {
-      src ? (
+      src && zoomId ? (
+        <button type="button" class="zoom" popovertarget={zoomId} aria-label={s.zoomImage(alt)}>
+          <img
+            src={src}
+            alt=""
+            width={width}
+            height={height}
+            loading={eager ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </button>
+      ) : src ? (
         <img
           src={src}
           alt={alt}
@@ -58,6 +82,16 @@ const padded = ground === 'sand' || Boolean(title) || !src;
     }
   </div>
   {caption && <figcaption set:html={inlineMarkdown(caption)} />}
+  {
+    zoomId && (
+      <div id={zoomId} popover class="lightbox">
+        <button type="button" class="close" popovertarget={zoomId} popovertargetaction="hide">
+          {s.close}
+        </button>
+        <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+      </div>
+    )
+  }
 </figure>
 
 <style>
@@ -97,6 +131,73 @@ const padded = ground === 'sand' || Boolean(title) || !src;
     max-width: 100%;
     height: auto;
     margin-inline: auto;
+  }
+  .zoom {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+  }
+  .zoom img {
+    transition: transform 0.2s ease;
+  }
+  .zoom:hover img {
+    transform: scale(1.015);
+  }
+  .zoom:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .zoom img {
+      transition: none;
+    }
+  }
+  .lightbox {
+    max-width: min(96vw, 1800px);
+    max-height: 94vh;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-step);
+    background: var(--surface);
+    box-shadow: 0 24px 64px rgb(0 0 0 / 0.35);
+    overflow: auto;
+  }
+  .lightbox::backdrop {
+    background: rgb(0 0 0 / 0.7);
+  }
+  .lightbox img {
+    width: auto;
+    max-width: 100%;
+    max-height: calc(94vh - 72px);
+    margin-inline: auto;
+    border-radius: 8px;
+  }
+  /* On a phone the full-size image is wider than the screen: it scrolls inside the frame. */
+  @media (max-width: 720px) {
+    .lightbox img {
+      width: 900px;
+      max-width: none;
+      max-height: none;
+    }
+  }
+  .close {
+    display: block;
+    margin: 0 0 10px auto;
+    padding: 6px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--heading);
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
   figcaption {
     margin-top: 12px;

@@ -148,7 +148,7 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Tradeoffs` | Lowered panel for honest limits |
 | `Section` | Neutral section frame: heading, lead, slot, `links`, `width` (`narrow`, `default`, `wide`); the theme's spacing |
 | `LinkRow` | A row of text links with an arrow, the quiet way on from a section; `Split` and `Section` use it for `links` |
-| `Figure` | Image or drawing (default slot) in a frame with title and caption, `ground="sand"` for a diagram; fills its container (full section width, or the medium of a `Split`) |
+| `Figure` | Image or drawing (default slot) in a frame with title and caption, `ground="sand"` for a diagram; fills its container (full section width, or the medium of a `Split`); `zoom` opens the image at full size on click (popover, no script) |
 | `SpecList` | Term/value rows over the full width between hairlines (`<dl>`), for the data sheet of a page |
 | `Flow` | 3–5 stages from input to result, each with its artifact (`index.md`, `dist/`) in a mono chip |
 | `Integrations` | Grid of what the project plugs into: icon tile, name, category |
@@ -265,7 +265,8 @@ in `astro.config.mjs`.
   Without `tagline` the start page is `<name> | CASOON`. Keep the tagline to a few words, so the
   title stays under about 60 characters; `description` remains the meta description.
 - **OG image:** `og.png` (1200×630) is rendered at build time from name, tagline, description
-  and address, in the theme's fonts and the dark theme, with the project's dark `accent` as edge.
+  and address, in the theme's fonts on the light sand ground, with a short rule and the address
+  in petrol (the project's light `accent` when set).
 - **Sitemap:** `sitemap.xml` lists every built page except 404, linked from the head. A project
   that writes its own — `@casoon/astro-site-files` does — keeps it: the theme skips the file when
   it already exists. That works only when the project's integration is listed before
