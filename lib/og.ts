@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import type { ResolvedConfig } from '../index';
+import { eyebrow as eyebrowText } from './i18n';
 
 /** Light theme tokens (styles/tokens.css) and the logo's petrol: the card follows casoon.de. */
 const BG = '#f4f1eb';
@@ -57,7 +58,7 @@ export async function renderOgImage(config: ResolvedConfig, site: URL): Promise<
     `<span foreground="${color}">${escapeMarkup(content)}</span>`;
 
   const [eyebrow, name, tagline, description, host] = await Promise.all([
-    text(span(MUTED, 'CASOON Open Source'), 'JetBrains Mono 26', MONO, 1000),
+    text(span(MUTED, eyebrowText(config.lang, config.license)), 'JetBrains Mono 26', MONO, 1000),
     nameBlock(config.name, WIDTH - 2 * X),
     config.tagline && text(span(HEADING, config.tagline), 'Onest 44', SANS, WIDTH - 2 * X),
     text(

@@ -32,6 +32,8 @@ const en = {
   docsFor: (version: string) => `Docs for v${version}`,
   onThisPage: 'On this page',
   heroEyebrow: 'CASOON Open Source',
+  /** Eyebrow of a project without an open-source license (`license: false`). */
+  heroEyebrowClosed: 'CASOON',
   installLabel: 'Package manager',
   callout: { note: 'Note', tip: 'Tip', caution: 'Caution', deprecated: 'Deprecated' },
   buildOutputHeading: 'Generated at build time',
@@ -99,6 +101,7 @@ const de: Strings = {
   docsFor: (version) => `Doku für v${version}`,
   onThisPage: 'Auf dieser Seite',
   heroEyebrow: 'CASOON Open Source',
+  heroEyebrowClosed: 'CASOON',
   installLabel: 'Paketmanager',
   callout: { note: 'Hinweis', tip: 'Tipp', caution: 'Achtung', deprecated: 'Veraltet' },
   buildOutputHeading: 'Beim Build erzeugt',
@@ -138,3 +141,7 @@ const de: Strings = {
 export const strings: Record<Lang, Strings> = { en, de };
 
 export const t = (lang: Lang): Strings => strings[lang];
+
+/** "CASOON Open Source" only for a project with an open-source license; `license: false` is not. */
+export const eyebrow = (lang: Lang, license: string | false): string =>
+  license ? strings[lang].heroEyebrow : strings[lang].heroEyebrowClosed;
