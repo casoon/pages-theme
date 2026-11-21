@@ -6,6 +6,12 @@ site renders.
 
 ## [Unreleased]
 
+## [0.16.2] - 2026-11-21
+
+### Fixed
+
+- **StatBand:** The band now keeps the section spacing below it like every other section, so a heading that follows (`Features`, `Section`) no longer sits directly on its rule.
+
 ## [0.16.1] - 2026-11-20
 
 ### Fixed
