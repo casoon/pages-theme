@@ -12,9 +12,15 @@ const nav = [
   ...(config.hasShowcase ? [{ label: s.showcase, href: url('showcase/') }] : []),
   ...(config.changelog ? [{ label: s.changelog, href: url('changelog/') }] : []),
 ];
+const wide = Boolean(websiteHost || nav.length >= 4);
+const compact = !wide && nav.length <= 2;
 ---
 
-<header class="header" data-wide={websiteHost || config.demo ? '' : undefined}>
+<header
+  class="header"
+  data-wide={wide ? '' : undefined}
+  data-compact={compact ? '' : undefined}
+>
   <div class="inner">
     <a class="home" href={url()}>
       <span class="name">{config.name}</span>
@@ -235,72 +241,136 @@ const nav = [
   :global([data-theme='dark']) .icon-moon {
     display: none;
   }
-  /* Narrow screens: name and theme toggle on the first row, the links on a second row that
-     stays one line and scrolls sideways when it does not fit — no wrapped labels, nothing cut
-     off. A header with a website pill or a demo entry needs the second row earlier. The website
-     pill is dropped from that row: it repeats in the footer's "Project" column, and it was the
-     single widest entry, pushing GitHub out of view. */
+  /* Narrow screens: compact headers (up to 2 nav links, no website pill) stay on one single
+     row down to 480 px with tighter spacing instead of wrapping early into an almost empty
+     second row. Wider headers wrap cleanly at 640 px (or 860 px with 4+ links / website pill),
+     dropping the website pill (repeated in the footer) and keeping the links on one scrollable
+     row without clipping or wrapped labels. */
   @media (max-width: 640px) {
-    :global(:root) {
-      --header-h: 92px;
-    }
     .header {
-      padding: 8px 8px 0;
+      padding: 8px 12px 0;
     }
-    .inner {
+    [data-compact] .inner {
+      gap: 10px;
+      padding: 0 8px 0 16px;
+    }
+    [data-compact] .links {
+      gap: 8px;
+    }
+    [data-compact] .sep {
+      margin: 0 4px;
+    }
+    [data-compact] nav a {
+      min-height: 36px;
+      padding: 0 10px;
+      font-size: 14px;
+    }
+    [data-compact] nav a.cta {
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 3px 0 12px;
+    }
+    [data-compact] .arrow {
+      width: 30px;
+      height: 30px;
+    }
+    [data-compact] .theme {
+      margin-left: -4px;
+    }
+    :global(:root:has(.header:not([data-compact]))) {
+      --header-h: 96px;
+    }
+    .header:not([data-compact]) .inner {
       flex-wrap: wrap;
       align-content: center;
-      gap: 2px 8px;
-      height: var(--header-h);
-      padding: 0 16px;
+      gap: 6px 8px;
+      height: auto;
+      min-height: var(--header-h);
+      padding: 10px 16px;
       border-radius: 24px;
     }
-    .links {
+    .header:not([data-compact]) .links {
       flex: 0 0 calc(100% + 32px);
       order: 3;
       gap: 8px;
       margin: 0 -16px;
       /* Room for the focus outline, which the scroll container would clip. */
-      padding: 3px 8px;
+      padding: 3px 16px;
       overflow-x: auto;
       scrollbar-width: none;
     }
-    .website {
+    .header:not([data-compact]) .website {
       display: none;
     }
-    .theme {
+    .header:not([data-compact]) .theme {
       margin-left: auto;
     }
-    nav {
+    .header:not([data-compact]) nav {
       margin-left: 0;
     }
-    .sep {
+    .header:not([data-compact]) .sep {
       display: none;
     }
-    nav a {
+    .header:not([data-compact]) nav a {
       min-height: 36px;
       padding: 0 10px;
     }
-    nav a.cta {
+    .header:not([data-compact]) nav a.cta {
       gap: 8px;
       min-height: 36px;
       padding: 0 3px 0 12px;
     }
-    .arrow {
+    .header:not([data-compact]) .arrow {
       width: 30px;
       height: 30px;
     }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 480px) {
+    :global(:root) {
+      --header-h: 96px;
+    }
+    .header {
+      padding: 8px 8px 0;
+    }
+    [data-compact] .inner {
+      flex-wrap: wrap;
+      align-content: center;
+      gap: 6px 8px;
+      height: auto;
+      min-height: var(--header-h);
+      padding: 10px 16px;
+      border-radius: 24px;
+    }
+    [data-compact] .links {
+      flex: 0 0 calc(100% + 32px);
+      order: 3;
+      margin: 0 -16px;
+      padding: 3px 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    [data-compact] .theme {
+      margin-left: auto;
+    }
+    [data-compact] nav {
+      margin-left: 0;
+    }
+    [data-compact] .sep {
+      display: none;
+    }
+  }
+  @media (max-width: 860px) {
     :global(:root:has(.header[data-wide])) {
-      --header-h: 92px;
+      --header-h: 96px;
     }
     [data-wide] .inner {
       flex-wrap: wrap;
       align-content: center;
-      gap: 2px 8px;
-      height: var(--header-h);
-      padding: 0 16px;
+      gap: 6px 8px;
+      height: auto;
+      min-height: var(--header-h);
+      padding: 10px 16px;
+      border-radius: 24px;
     }
     [data-wide] .links {
       flex: 0 0 calc(100% + 32px);
@@ -308,7 +378,7 @@ const nav = [
       gap: 8px;
       margin: 0 -16px;
       /* Room for the focus outline, which the scroll container would clip. */
-      padding: 3px 8px;
+      padding: 3px 16px;
       overflow-x: auto;
       scrollbar-width: none;
     }

@@ -6,6 +6,13 @@ site renders.
 
 ## [Unreleased]
 
+## [0.16.3] - 2026-11-22
+
+### Fixed
+
+- **Header:** Compact headers (up to two nav links without a website pill) stay on one single row down to 480 px instead of wrapping early at 640 px. Wrapped two-row headers now use `height: auto`, consistent `border-radius: 24px` (including wide headers between 640 and 860 px), and balanced padding so links never crowd or clip.
+- **Compare:** Switches to the stacked card layout at 860 px (previously 700 px) to prevent horizontal clipping on narrow desktop and tablet viewports, adds `overflow-wrap: break-word` on cells, and removes the bottom border seam on the highlighted header cell.
+
 ## [0.16.2] - 2026-11-21
 
 ### Fixed

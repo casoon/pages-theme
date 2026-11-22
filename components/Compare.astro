@@ -167,6 +167,7 @@ const body = cellRows.map((row, i) => ({
   th,
   td {
     vertical-align: top;
+    overflow-wrap: break-word;
   }
   thead th {
     border-bottom: 1px solid var(--border-strong);
@@ -202,6 +203,7 @@ const body = cellRows.map((row, i) => ({
   }
   .col.hl {
     padding: 18px 24px;
+    border-bottom-color: transparent;
     border-radius: var(--r-card) var(--r-card) 0 0;
     background: var(--ink);
     color: var(--bg);
@@ -259,8 +261,8 @@ const body = cellRows.map((row, i) => ({
     color: var(--accent);
   }
 
-  /* Phones: one block per topic instead of a table. */
-  @media (max-width: 700px) {
+  /* Narrow viewports & tablets: one block per topic instead of a horizontally cramped table. */
+  @media (max-width: 860px) {
     .scroll {
       display: none;
     }
