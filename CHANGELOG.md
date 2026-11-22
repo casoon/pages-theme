@@ -6,6 +6,12 @@ site renders.
 
 ## [Unreleased]
 
+## [0.16.4] - 2026-11-22
+
+### Changed
+
+- **Hero (`split`):** The eyebrow and `<h1>` now span the full width across both columns so longer titles stay on 1–2 lines instead of stacking tall on the left. Underneath, the description, install box, optional context text, and badges align at the same top edge as the visual output (`castwright`, `chartlet`, or terminal) with consistent vertical spacing.
+
 ## [0.16.3] - 2026-11-22
 
 ### Fixed

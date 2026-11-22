@@ -47,7 +47,7 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
   {
     layout === 'split' && (
       <div class="inner">
-        <div>
+        <div class="head">
           <p class:list={['eyebrow', family && 'family']}>
             {family ? (
               <>
@@ -64,8 +64,12 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
             )}
           </p>
           <h1>{title}</h1>
+        </div>
+        <div class="body">
           <p class="lead">{lead}</p>
-          <slot />
+          <div class="extras">
+            <slot />
+          </div>
         </div>
         <div class="output-col">
           <div class="output glow">
@@ -330,20 +334,54 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
     color: var(--accent);
   }
 
-  /* Text gets a little more than half and a slightly smaller title, so a title of about 40
-     characters fits on two lines at desktop width; in two equal halves it took three. */
+  /* Full-width headline across both columns so long titles stay on 1–2 lines instead of
+     stacking 4–5 lines tall on the left. Below it, lead + install/badges and the visual
+     output (castwright, chartlet, terminal) start at the exact same top edge. */
   .is-split .inner {
     display: grid;
-    gap: 44px;
-    align-items: center;
+    gap: 28px 48px;
+    align-items: start;
+  }
+  .is-split .head {
+    grid-column: 1 / -1;
+  }
+  .is-split .head h1 {
+    max-width: 22ch;
+    margin: 0;
+    font-size: clamp(38px, 5.2vw, 72px);
+    line-height: 1.03;
+    text-wrap: balance;
+  }
+  .is-split .body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+  }
+  .is-split .lead {
+    max-width: 34rem;
+    margin: 0;
+  }
+  .is-split .extras {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+  }
+  .is-split .extras :global(.badges) {
+    margin-top: 0;
+  }
+  .is-split .extras :global(p) {
+    max-width: 34rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.6;
   }
   @media (min-width: 900px) {
     .is-split .inner {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 48px;
-    }
-    .is-split h1 {
-      font-size: clamp(44px, 5.4vw, 80px);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+      gap: 36px 48px;
     }
   }
 
