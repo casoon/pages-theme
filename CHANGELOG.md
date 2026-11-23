@@ -6,6 +6,12 @@ site renders.
 
 ## [Unreleased]
 
+## [0.17.1] - 2026-11-23
+
+### Fixed
+
+- **Integrations:** The band keeps a section's gap below it, so the section that follows (`Tour`, `BuildOutput`, `Features`) no longer starts flush against its edge.
+
 ## [0.17.0] - 2026-11-23
 
 ### Added
