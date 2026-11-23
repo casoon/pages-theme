@@ -6,6 +6,8 @@ site renders.
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-11-23
+
 ### Added
 
 - **Use cases:** A site with `src/use-cases.ts` (option `useCases`) gets the page `/use-cases/` and a header entry: the first use case as a panel with steps beside a code block, the others as rows with a short data sheet, an optional closing `Tradeoffs`. Type `UseCase` from `@casoon/pages-theme/use-cases`.
