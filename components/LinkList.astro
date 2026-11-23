@@ -1,0 +1,177 @@
+---
+/**
+ * Linked rows of title, one sentence and an arrow, between hairlines — the entry page of the
+ * docs lists each sidebar group with it. `group` fills the list from a folder in docs/ (title
+ * and description of each page, in sidebar order); `items` sets it by hand. `layout="cards"`
+ * sets short links as a grid of cards with a tag, e.g. "By task" links to the use cases.
+ * `body` takes the changelog's inline Markdown subset.
+ */
+import { getCollection } from 'astro:content';
+import config from 'virtual:casoon-pages/config';
+import { inlineMarkdown } from '../lib/changelog';
+import { buildDocsNav } from '../lib/docs';
+
+interface Item {
+  title: string;
+  href: string;
+  body?: string;
+  tag?: string;
+}
+
+interface Props {
+  items?: Item[];
+  /** Folder in docs/, e.g. "getting-started". Its pages become the items. */
+  group?: string;
+  layout?: 'rows' | 'cards';
+}
+
+const { group, layout = 'rows' } = Astro.props;
+let items: Item[] = Astro.props.items ?? [];
+if (group) {
+  const entries = await getCollection('docs');
+  const groups = buildDocsNav(entries, config.docsGroups);
+  const label = config.docsGroups[group];
+  const nav =
+    groups.find((g) => g.label === label) ??
+    groups.find((g) => g.items[0]?.id.startsWith(`${group}/`));
+  items = (nav?.items ?? [])
+    .filter((item) => item.id !== 'index')
+    .map((item) => ({
+      title: item.label,
+      href: item.href,
+      body: entries.find((entry) => entry.id === item.id)?.data.description,
+    }));
+}
+---
+
+{
+  layout === 'cards' ? (
+    <ul class="linklist is-cards">
+      {items.map((item) => (
+        <li>
+          <a href={item.href}>
+            {item.title}
+            {item.tag && <span class="tag">{item.tag}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <ul class="linklist">
+      {items.map((item) => (
+        <li>
+          <a href={item.href}>
+            <span class="text">
+              <span class="title">{item.title}</span>
+              {item.body && <span class="body" set:html={inlineMarkdown(item.body)} />}
+            </span>
+            <svg class="arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" />
+            </svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .linklist {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 48px;
+    padding: 0;
+    list-style: none;
+  }
+  .linklist li {
+    margin: 0;
+  }
+  .linklist:not(.is-cards) a {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+  }
+  .text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .title {
+    color: var(--heading);
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .body {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .body :global(code) {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--code-bg);
+    font-size: 0.9em;
+  }
+  .arrow {
+    flex: none;
+    fill: none;
+    stroke: var(--heading);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: translate 0.2s;
+  }
+  a:hover .title {
+    color: var(--accent);
+  }
+  a:hover .arrow {
+    translate: 3px 0;
+  }
+  .is-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 12px;
+  }
+  .is-cards a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-sizing: border-box;
+    min-height: 56px;
+    height: 100%;
+    padding: 12px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--heading);
+    font-size: 15.5px;
+    font-weight: 500;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+  .is-cards a:hover {
+    border-color: var(--border-strong);
+    color: var(--heading);
+  }
+  .tag {
+    flex: none;
+    padding: 3px 9px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .arrow {
+      transition: none;
+    }
+  }
+</style>

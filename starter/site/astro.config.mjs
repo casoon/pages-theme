@@ -20,6 +20,7 @@ export default defineConfig({
         { label: 'npm', href: 'https://www.npmjs.com/package/@casoon/runemark' },
         { label: 'docs.rs', href: 'https://docs.rs/runemark' },
       ],
+      showcaseLayout: 'explorer',
       docsGroups: {
         'getting-started': 'Getting started',
         reference: 'Reference',

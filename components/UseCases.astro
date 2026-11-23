@@ -1,0 +1,166 @@
+---
+/**
+ * Use cases on the start page: rows between hairlines, each the title, one sentence, tags and
+ * an arrow in a circle, linked as a whole. `link` sits beside the heading (e.g. "All use cases"
+ * to the /use-cases/ page). `body` takes the changelog's inline Markdown subset.
+ */
+import { inlineMarkdown } from '../lib/changelog';
+import Badge from './Badge.astro';
+
+interface Props {
+  title: string;
+  items: { title: string; body: string; tags?: string[]; href: string }[];
+  link?: { label: string; href: string };
+}
+
+const { title, items, link } = Astro.props;
+---
+
+<section class="usecases">
+  <div class="head">
+    <h2>{title}</h2>
+    {link && <a class="all" href={link.href}>{link.label}</a>}
+  </div>
+  <ul>
+    {
+      items.map((item) => (
+        <li>
+          <a href={item.href}>
+            <span class="content">
+              <span class="title">{item.title}</span>
+              <span class="detail">
+                <span class="body" set:html={inlineMarkdown(item.body)} />
+                {item.tags && item.tags.length > 0 && (
+                  <span class="tags">
+                    {item.tags.map((tag) => (
+                      <Badge>{tag}</Badge>
+                    ))}
+                  </span>
+                )}
+              </span>
+            </span>
+            <span class="arrow" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="16" height="16">
+                <path d="M3 8h10M9 4l4 4-4 4" />
+              </svg>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .usecases {
+    box-sizing: border-box;
+    max-width: var(--max-wide);
+    margin: 0 auto;
+    padding: 0 var(--gutter) var(--section-y);
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px 32px;
+    margin-bottom: 36px;
+  }
+  h2 {
+    margin: 0;
+    color: var(--heading);
+    font-size: var(--h-section);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+  .all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .all::after {
+    content: '→';
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--border-strong);
+    list-style: none;
+  }
+  li a {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 0;
+    border-top: 1px solid var(--border-strong);
+    color: var(--text);
+  }
+  .content {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px 48px;
+    min-width: 0;
+  }
+  .title {
+    flex: 1 1 260px;
+    min-width: 0;
+    color: var(--heading);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  .detail {
+    display: flex;
+    flex: 1.2 1 260px;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+  .body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .arrow {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--heading);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .arrow svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  li a:hover .title {
+    color: var(--accent);
+  }
+  li a:hover .arrow {
+    background: var(--ink);
+    color: var(--bg);
+  }
+</style>

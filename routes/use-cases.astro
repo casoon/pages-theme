@@ -1,0 +1,339 @@
+---
+import config from 'virtual:casoon-pages/config';
+import { lead, tradeoffs, useCases } from 'virtual:casoon-pages/use-cases';
+import CodeBlock from '../components/CodeBlock.astro';
+import Tradeoffs from '../components/Tradeoffs.astro';
+import Base from '../layouts/Base.astro';
+import { inlineMarkdown } from '../lib/changelog';
+import { t } from '../lib/i18n';
+import { url } from '../lib/url';
+import type { UseCase } from '../lib/use-cases';
+
+const s = t(config.lang);
+const items = useCases as UseCase[];
+// The first use case with steps or code is set as the panel; the others follow as open rows.
+const featured = items.find((item) => item.steps?.length || item.code);
+const index = (item: UseCase) => String(items.indexOf(item) + 1).padStart(2, '0');
+const pageLead = lead ?? s.useCasesLead(config.name, items.length);
+---
+
+<Base title={s.useCases} description={pageLead}>
+  <section class="head">
+    <nav class="crumb" aria-label={s.breadcrumb}>
+      <ol>
+        <li><a href={url()}>{config.name}</a></li>
+        <li aria-current="page">{s.useCases}</li>
+      </ol>
+    </nav>
+    <div class="title-row">
+      <h1>{s.useCases}</h1>
+      <p class="lead">{pageLead}</p>
+    </div>
+  </section>
+
+  {
+    featured && (
+      <section class="featured" id={featured.slug}>
+        <div class="panel">
+          <div class="text">
+            <p class="eyebrow">
+              <span class="index">{index(featured)}</span>
+              {featured.eyebrow}
+            </p>
+            <h2>{featured.title}</h2>
+            <p class="body" set:html={inlineMarkdown(featured.body)} />
+            {featured.steps && featured.steps.length > 0 && (
+              <ol class="steps">
+                {featured.steps.map((step, i) => (
+                  <li>
+                    <span class="n" aria-hidden="true">
+                      {i + 1}
+                    </span>
+                    <span set:html={inlineMarkdown(step)} />
+                  </li>
+                ))}
+              </ol>
+            )}
+            {featured.links && featured.links.length > 0 && (
+              <div class="links">
+                {featured.links.map((link) => (
+                  <a href={link.href}>{link.label}</a>
+                ))}
+              </div>
+            )}
+          </div>
+          {featured.code && (
+            <div class="media">
+              <CodeBlock
+                code={featured.code.code}
+                lang={featured.code.lang}
+                title={featured.code.title}
+                label={featured.code.label}
+                marks={featured.code.marks}
+              />
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    items.some((item) => item !== featured) && (
+      <section class="rows">
+        {items
+          .filter((item) => item !== featured)
+          .map((item) => (
+            <article class="row" id={item.slug}>
+              <div class="text">
+                <p class="eyebrow">
+                  <span class="index">{index(item)}</span>
+                  {item.eyebrow}
+                </p>
+                <h2>{item.title}</h2>
+                <p class="body" set:html={inlineMarkdown(item.body)} />
+                {item.links && item.links.length > 0 && (
+                  <div class="links">
+                    {item.links.map((link) => (
+                      <a href={link.href}>{link.label}</a>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {item.specs && item.specs.length > 0 && (
+                <dl class="specs">
+                  {item.specs.map((spec) => (
+                    <div>
+                      <dt>{spec.term}</dt>
+                      <dd set:html={inlineMarkdown(spec.value)} />
+                    </div>
+                  ))}
+                </dl>
+              )}
+            </article>
+          ))}
+      </section>
+    )
+  }
+
+  {tradeoffs && <Tradeoffs {...tradeoffs} />}
+</Base>
+
+<style>
+  .head,
+  .rows {
+    box-sizing: border-box;
+    max-width: var(--max-wide);
+    margin: 0 auto;
+    padding: 72px var(--gutter) 56px;
+  }
+  .crumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .crumb li + li::before {
+    content: '/';
+    margin-right: 8px;
+  }
+  .crumb a {
+    color: var(--muted);
+  }
+  .crumb a:hover {
+    color: var(--heading);
+  }
+  .crumb [aria-current] {
+    color: var(--text);
+  }
+  .title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 20px 72px;
+  }
+  h1 {
+    flex: 1 1 380px;
+    margin: 0;
+    color: var(--heading);
+    font-size: clamp(44px, 6vw, 84px);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+  }
+  .lead {
+    flex: 1 1 380px;
+    margin: 0;
+    color: var(--heading);
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .featured {
+    box-sizing: border-box;
+    max-width: calc(var(--max-wide) + 80px);
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+  .panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px 64px;
+    padding: clamp(20px, 4.5vw, 64px);
+    border-radius: clamp(24px, 4vw, 48px);
+    background: var(--bg-deep);
+  }
+  .panel .text {
+    flex: 1 1 400px;
+    min-width: 0;
+  }
+  .media {
+    flex: 1.15 1 460px;
+    min-width: 0;
+  }
+  .media :global(.codeblock) {
+    margin: 0;
+  }
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
+    color: var(--heading);
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+  .index {
+    color: var(--accent);
+    font-family: var(--font-mono);
+  }
+  h2 {
+    margin: 0 0 20px;
+    color: var(--heading);
+    font-size: var(--h-sub);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+  .body {
+    margin: 0 0 24px;
+    font-size: 18px;
+  }
+  .body :global(code),
+  .steps :global(code),
+  dd :global(code) {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--code-bg);
+    font-size: 0.9em;
+  }
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 0 0 28px;
+    padding: 0;
+    list-style: none;
+  }
+  .steps li {
+    display: flex;
+    gap: 12px;
+  }
+  .n {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 28px;
+  }
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .links a::after {
+    content: '→';
+  }
+  .links a:hover {
+    color: var(--heading);
+  }
+  .rows {
+    padding-top: 0;
+    padding-bottom: var(--section-y);
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 28px 72px;
+    padding: 48px 0;
+    border-top: 1px solid var(--border-strong);
+  }
+  .row:last-child {
+    border-bottom: 1px solid var(--border-strong);
+  }
+  .row .text {
+    flex: 1 1 400px;
+    min-width: 0;
+  }
+  .row h2 {
+    margin-bottom: 16px;
+    font-size: clamp(26px, 2.6vw, 34px);
+    line-height: 1.15;
+  }
+  .row .body {
+    margin-bottom: 12px;
+    font-size: 17px;
+  }
+  .specs {
+    display: flex;
+    flex: 1 1 380px;
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+    font-size: 15.5px;
+  }
+  .specs div {
+    display: flex;
+    gap: 24px;
+    padding: 12px 0;
+  }
+  .specs div + div {
+    border-top: 1px solid var(--border);
+  }
+  dt {
+    flex: 0 0 110px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    line-height: 2.1;
+    text-transform: uppercase;
+  }
+  dd {
+    min-width: 0;
+    margin: 0;
+    color: var(--heading);
+    overflow-wrap: anywhere;
+  }
+</style>

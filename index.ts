@@ -23,7 +23,7 @@ export interface CasoonPagesOptions {
   tagline?: string;
   /** The project's own landing page, e.g. "https://example.com". Linked in header and footer. */
   website?: string;
-  /** Slug of the project's entry on casoon.dev (`#projekt-<slug>`), or false. Default: repository name. */
+  /** @deprecated No longer linked from the footer; kept so existing configs still build. */
   catalog?: string | false;
   /** GitHub repository as "owner/name". Omit for a private repository: no GitHub or edit links. */
   repo?: string;
@@ -46,6 +46,16 @@ export interface CasoonPagesOptions {
   changelog?: string | false;
   /** Module exporting `examples: ShowcaseExample[]`, relative to the site root, or false. Default: "./src/showcase.ts". */
   showcase?: string | false;
+  /**
+   * Overview of the showcase: `'list'` shows every example in turn, `'explorer'` a rail of
+   * examples beside one selected example with Output, Source and How-to tabs. Default: "list".
+   */
+  showcaseLayout?: 'list' | 'explorer';
+  /**
+   * Module exporting `useCases: UseCase[]`, relative to the site root, or false. Default:
+   * "./src/use-cases.ts" when that file exists. Adds the /use-cases/ page and its header entry.
+   */
+  useCases?: string | false;
   /**
    * Live demo: the header label linking to /demo/, or false for none. Default: false.
    *
@@ -70,13 +80,14 @@ export interface ResolvedConfig
   extends Required<
     Omit<
       CasoonPagesOptions,
-      'accent' | 'changelog' | 'showcase' | 'demo' | 'mdxComponents' | 'catalog'
+      'accent' | 'changelog' | 'showcase' | 'demo' | 'mdxComponents' | 'catalog' | 'useCases'
     >
   > {
   accent: { light: string; dark: string } | null;
   /** Absolute path to CHANGELOG.md, or null when disabled. */
   changelog: string | null;
   hasShowcase: boolean;
+  hasUseCases: boolean;
   /** Header label of the demo page, or an empty string when there is none. */
   demo: string;
   /** casoon.dev catalog slug, or an empty string when there is none. */
@@ -85,6 +96,7 @@ export interface ResolvedConfig
 
 const CONFIG_ID = 'virtual:casoon-pages/config';
 const SHOWCASE_ID = 'virtual:casoon-pages/showcase';
+const USE_CASES_ID = 'virtual:casoon-pages/use-cases';
 const MDX_COMPONENTS_ID = 'virtual:casoon-pages/mdx-components';
 
 export default function casoonPages(options: CasoonPagesOptions): AstroIntegration {
@@ -101,6 +113,15 @@ export default function casoonPages(options: CasoonPagesOptions): AstroIntegrati
           options.showcase === false
             ? null
             : resolve(root, options.showcase ?? './src/showcase.ts');
+        // Opt-in by file: a site without use cases keeps its header as it was.
+        const useCasesPath =
+          options.useCases === false
+            ? null
+            : options.useCases
+              ? resolve(root, options.useCases)
+              : existsSync(resolve(root, './src/use-cases.ts'))
+                ? resolve(root, './src/use-cases.ts')
+                : null;
 
         resolved = {
           name: options.name,
@@ -125,6 +146,8 @@ export default function casoonPages(options: CasoonPagesOptions): AstroIntegrati
               ? null
               : resolve(root, options.changelog ?? '../CHANGELOG.md'),
           hasShowcase: showcasePath !== null,
+          showcaseLayout: options.showcaseLayout ?? 'list',
+          hasUseCases: useCasesPath !== null,
           demo: options.demo === false || options.demo === undefined ? '' : options.demo,
           lang: options.lang ?? 'en',
           showcaseLead: options.showcaseLead ?? '',
@@ -137,6 +160,7 @@ export default function casoonPages(options: CasoonPagesOptions): AstroIntegrati
           route('/showcase', 'showcase/index.astro');
           route('/showcase/[slug]', 'showcase/[slug].astro');
         }
+        if (resolved.hasUseCases) route('/use-cases', 'use-cases.astro');
         if (resolved.changelog) route('/changelog', 'changelog.astro');
         route('/404', '404.astro');
 
@@ -145,6 +169,9 @@ export default function casoonPages(options: CasoonPagesOptions): AstroIntegrati
           [SHOWCASE_ID]: showcasePath
             ? `export { examples } from ${JSON.stringify(showcasePath)};`
             : 'export const examples = [];',
+          [USE_CASES_ID]: useCasesPath
+            ? `export * from ${JSON.stringify(useCasesPath)};`
+            : 'export const useCases = [];',
           [MDX_COMPONENTS_ID]: options.mdxComponents
             ? `export { components } from ${JSON.stringify(resolve(root, options.mdxComponents))};`
             : 'export const components = {};',

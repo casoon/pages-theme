@@ -378,11 +378,17 @@ const family = eyebrow.match(/^CASOON\b\s*(?:·\s*)?(.*)$/);
     font-size: 14.5px;
     line-height: 1.6;
   }
-  @media (min-width: 900px) {
+  /* Text column narrower, output wider (about 38 : 62), side by side down to 760 px. */
+  @media (min-width: 760px) {
     .is-split .inner {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
-      gap: 36px 48px;
+      grid-template-columns: minmax(0, 38fr) minmax(0, 62fr);
+      gap: 36px clamp(32px, 5vw, 72px);
     }
+  }
+  /* A terminal in the output scales with the viewport, so a 37-column line fits at 390 px. */
+  .is-split .output :global(.terminal pre) {
+    padding: clamp(14px, 2.2vw, 30px);
+    font-size: clamp(12px, 1.05vw, 14.5px);
   }
 
   .is-stack .head {

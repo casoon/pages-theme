@@ -1,0 +1,506 @@
+---
+/**
+ * The showcase overview in explorer layout (`showcaseLayout: 'explorer'`): a rail of examples
+ * under their group headings beside one selected example with Output, Source and How-to tabs.
+ * CSS-only: the rail is one radio group, each example carries its own tab group. Without
+ * `:has()` the first example and its first tab stay visible. A tab without data is left out.
+ */
+import { Code } from 'astro:components';
+import config from 'virtual:casoon-pages/config';
+import { inlineMarkdown } from '../lib/changelog';
+import { t } from '../lib/i18n';
+import { descriptionHtml, groupExamples, type ShowcaseExample } from '../lib/showcase';
+import { url } from '../lib/url';
+
+interface Props {
+  examples: ShowcaseExample[];
+}
+
+const { examples } = Astro.props;
+const s = t(config.lang);
+const groups = groupExamples(examples);
+const grouped = groups.some((g) => g.label !== '');
+// Rail order is group order; the panels follow the same order.
+const ordered = groups.flatMap((g) => g.items);
+const id = (i: number) => `cp-ex-${i}`;
+
+// One rule per example: the selected radio shows its panel. Generated, since the count varies.
+const css = [
+  ...ordered
+    .slice(1)
+    .map(
+      (_, n) => `.cp-explorer:has(#${id(n + 1)}:checked) .cp-ex[data-i="${n + 1}"]{display:block}`
+    ),
+  `.cp-explorer:has(.cp-rail input:not(#${id(0)}):checked) .cp-ex[data-i="0"]{display:none}`,
+].join('');
+---
+
+<div class="cp-explorer explorer">
+  <style is:inline set:html={css}></style>
+  <div class="cp-rail rail" role="radiogroup" aria-label={s.showcase}>
+    {
+      groups.map((group) => (
+        <>
+          {grouped && group.label && <p class="rail-group">{group.label}</p>}
+          {group.items.map((example) => {
+            const i = ordered.indexOf(example);
+            return (
+              <>
+                <input class="visually-hidden" type="radio" name="cp-ex" id={id(i)} value={i} checked={i === 0} />
+                <label for={id(i)}>
+                  <span class="rail-title">{example.title}</span>
+                  {example.tags?.[0] && <span class="rail-tag">{example.tags[0]}</span>}
+                </label>
+              </>
+            );
+          })}
+        </>
+      ))
+    }
+  </div>
+  <div class="main">
+    {
+      ordered.map((example, i) => {
+        const kind = example.output.kind ?? 'terminal';
+        const tabs = [
+          { key: 'output', label: s.output },
+          { key: 'source', label: s.source },
+          ...(example.steps?.length ? [{ key: 'howto', label: s.howTo }] : []),
+        ];
+        return (
+          <article class="cp-ex ex" data-i={i} aria-labelledby={`${id(i)}-title`}>
+            <header>
+              <div class="titles">
+                <h2 id={`${id(i)}-title`}>{example.title}</h2>
+                {example.description && (
+                  <p class="desc cp-inline-code" set:html={descriptionHtml(example.description)} />
+                )}
+              </div>
+              <ul class="meta">
+                {example.tags?.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+                <li class="file">{example.file}</li>
+              </ul>
+            </header>
+            <div class="tabs" role="radiogroup" aria-label={`${s.exampleView}: ${example.title}`}>
+              {tabs.map((tab, n) => (
+                <>
+                  <input
+                    class="visually-hidden"
+                    type="radio"
+                    name={`${id(i)}-tab`}
+                    id={`${id(i)}-tab-${n}`}
+                    value={n}
+                    checked={n === 0}
+                  />
+                  <label for={`${id(i)}-tab-${n}`}>{tab.label}</label>
+                </>
+              ))}
+            </div>
+            <div class="tab" data-t="0">
+              <div class:list={['pane', 'out', kind]}>
+                <p class="bar">
+                  <span>{s.output}</span>
+                  <span>{s.buildOutputHeading}</span>
+                </p>
+                {kind === 'terminal' ? (
+                  <pre tabindex="0" set:html={example.output.html} />
+                ) : (
+                  <div class="panel-out" set:html={example.output.html} />
+                )}
+              </div>
+              {example.notes && example.notes.length > 0 && (
+                <div class="pane notes">
+                  <p class="notes-title">{s.notes}</p>
+                  <dl>
+                    {example.notes.map((note) => (
+                      <div>
+                        <dt>{note.term}</dt>
+                        <dd>
+                          <span class="note-text">{note.text}</span>
+                          {note.result && <span class="note-result">{note.result}</span>}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              )}
+            </div>
+            <div class="tab" data-t="1">
+              <div class="pane code">
+                <p class="bar">
+                  <span>{example.file}</span>
+                  <span>{s.input}</span>
+                </p>
+                <Code code={example.input.code} lang={(example.input.lang ?? 'text') as never} theme="css-variables" />
+              </div>
+              {example.output.source && (
+                <div class="pane code">
+                  <p class="bar">
+                    <span>{s.produced}</span>
+                    <span>HTML</span>
+                  </p>
+                  <Code code={example.output.source} lang="html" theme="css-variables" />
+                </div>
+              )}
+            </div>
+            {example.steps && example.steps.length > 0 && (
+              <ol class="tab steps" data-t="2">
+                {example.steps.map((step, n) => (
+                  <li>
+                    <span class="n" aria-hidden="true">
+                      {n + 1}
+                    </span>
+                    <span class="step-title">{step.title}</span>
+                    <span class="step-body" set:html={inlineMarkdown(step.body)} />
+                    {step.code && <code class="step-code">{step.code}</code>}
+                  </li>
+                ))}
+              </ol>
+            )}
+            <a class="detail" href={url(`showcase/${example.slug}/`)}>
+              {s.openExample}
+              <span class="visually-hidden">: {example.title}</span>
+            </a>
+          </article>
+        );
+      })
+    }
+  </div>
+</div>
+
+<style>
+  .explorer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 32px 40px;
+    padding: clamp(20px, 3.5vw, 40px);
+    border-radius: clamp(24px, 4vw, 48px);
+    background: var(--bg-deep);
+  }
+  .rail {
+    display: flex;
+    flex: 0 0 220px;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .rail-group {
+    margin: 12px 14px 8px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .rail-group:first-child {
+    margin-top: 0;
+  }
+  .rail label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 46px;
+    box-sizing: border-box;
+    padding: 0 14px;
+    border-radius: 12px;
+    color: var(--heading);
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .rail label:hover {
+    background: color-mix(in srgb, var(--surface) 50%, transparent);
+  }
+  .rail input:checked + label {
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .rail input:focus-visible + label,
+  .tabs input:focus-visible + label {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .rail-tag {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .main {
+    flex: 1 1 520px;
+    min-width: 0;
+  }
+  .ex {
+    display: none;
+  }
+  .ex[data-i='0'] {
+    display: block;
+  }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-bottom: 24px;
+  }
+  .titles {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+  h2 {
+    margin: 0 0 6px;
+    color: var(--heading);
+    font-size: var(--h-sub);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+  }
+  .desc {
+    margin: 0;
+    font-size: 17px;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .meta li {
+    padding: 3px 9px;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .meta .file {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-bottom: 24px;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--bg-sunken);
+  }
+  .tabs label {
+    display: grid;
+    place-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    color: var(--heading);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .tabs input:checked + label {
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    display: none;
+  }
+  .tab[data-t='0'],
+  .ex:has(> .tabs input[value='1']:checked) > .tab[data-t='1'],
+  .ex:has(> .tabs input[value='2']:checked) > .tab[data-t='2'] {
+    display: grid;
+  }
+  .ex:has(> .tabs input:not([value='0']):checked) > .tab[data-t='0'] {
+    display: none;
+  }
+  .tab:not(.steps) {
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 20px;
+  }
+  .pane {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+  }
+  .bar {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .out.terminal {
+    border-color: var(--term-border);
+    background: var(--term-bg);
+    color: var(--term-text);
+  }
+  .out.terminal .bar {
+    border-color: var(--term-border);
+    color: var(--term-dim);
+  }
+  .out pre {
+    min-height: 12rem;
+    margin: 0;
+    padding: 18px;
+    overflow: auto;
+    font-size: 13px;
+    line-height: 1.85;
+  }
+  .panel-out {
+    padding: 18px;
+    overflow: auto;
+  }
+  .code :global(pre.astro-code) {
+    max-height: 24rem;
+    margin: 0;
+    padding: 18px;
+    border: 0;
+    border-radius: 0;
+    overflow: auto;
+    font-size: 13px;
+  }
+  .notes {
+    padding: 0 20px 8px;
+  }
+  .notes-title {
+    margin: 0;
+    padding: 18px 0 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .notes dl {
+    margin: 0;
+  }
+  .notes div {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+  }
+  .notes div + div {
+    border-top: 1px solid var(--border);
+  }
+  .notes dt {
+    flex: 0 0 auto;
+    min-width: 80px;
+  }
+  .notes dt {
+    color: var(--heading);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+  }
+  .notes dd {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    margin: 0;
+  }
+  .note-text {
+    color: var(--heading);
+    font-size: 15px;
+  }
+  .note-result {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .steps {
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .steps li {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    border-radius: 14px;
+    background: var(--bg);
+  }
+  .n {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .step-title {
+    margin-top: 6px;
+    color: var(--heading);
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .step-body {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .step-code {
+    display: block;
+    margin-top: auto;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--heading);
+    font-size: 12.5px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-top: 12px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .detail::after {
+    content: '→';
+  }
+  /* Narrow: the rail turns into a row of chips; group headings go. */
+  @media (max-width: 860px) {
+    .rail {
+      flex: 1 1 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .rail-group {
+      display: none;
+    }
+    .rail label {
+      min-height: 44px;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      font-size: 15px;
+    }
+    .rail input:checked + label {
+      border-color: var(--surface);
+    }
+    .rail-tag {
+      display: none;
+    }
+  }
+</style>

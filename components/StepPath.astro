@@ -1,0 +1,84 @@
+---
+/**
+ * A reading path of a few linked steps in one band on the sand ground, numbered, hairlines
+ * between them — "Start here" on the entry page of the docs. `body` takes the changelog's
+ * inline Markdown subset.
+ */
+import { inlineMarkdown } from '../lib/changelog';
+
+interface Props {
+  steps: { title: string; body: string; href: string }[];
+}
+
+const { steps } = Astro.props;
+---
+
+<ol class="steppath">
+  {
+    steps.map((step, i) => (
+      <li>
+        <a href={step.href}>
+          <span class="n" aria-hidden="true">
+            {i + 1}
+          </span>
+          <span class="title">{step.title}</span>
+          <span class="body" set:html={inlineMarkdown(step.body)} />
+        </a>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steppath {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    margin: 0 0 56px;
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--r-step);
+    background: var(--bg-deep);
+    list-style: none;
+  }
+  .steppath li {
+    display: flex;
+    /* Hairlines between the steps, whichever way the grid wraps: each step draws its left and
+       top edge, and the band clips the ones on its outer edge. */
+    margin: -1px 0 0 -1px;
+    border-top: 1px solid var(--border-strong);
+    border-left: 1px solid var(--border-strong);
+  }
+  .steppath a {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    padding: 22px 24px 24px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  a:hover .title {
+    color: var(--accent);
+  }
+  .n {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .title {
+    color: var(--heading);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .body {
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+</style>
