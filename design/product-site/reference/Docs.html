@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en"><head>
+<!-- Static snapshot of the design canvas (default state, no scripts). Reference only: not part of the theme. -->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<title>runemark – documentation overview</title>
+
+
+<style>
+@font-face{font-family:Inter;font-weight:400;src:url(../../../fonts/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:500;src:url(../../../fonts/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:600;src:url(../../../fonts/inter-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:400;src:url(../../../fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:500;src:url(../../../fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2")}
+</style>
+<style>
+body{margin:0}
+a{color:#ad3216;text-decoration:none}a:hover{color:#8a2811}
+@media (max-width:1180px){.docs-toc{display:none}}
+@media (max-width:860px){.docs-side{order:2;flex:1 0 100%!important;max-width:none!important;padding:32px 0 64px!important;border-top:1px solid #cac3b4}.docs-main{padding-bottom:48px!important}}
+.hd-links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.hd-tools{display:flex;align-items:center;gap:8px}
+@media (max-width:960px){.hd{flex-wrap:wrap;border-radius:24px!important;padding:8px 8px 4px 20px!important}.hd-tools{margin-left:auto}.hd-links{order:3;flex:1 0 100%;margin:0 0 0 -12px;padding-top:4px;border-top:1px solid #d7d1c4;overflow-x:auto}.hd-search span{display:none}.hd-search{padding:0!important;width:44px;justify-content:center}}
+@media (max-width:480px){.hd-wrap{padding:10px 12px 0!important}.hd{padding:6px 6px 4px 16px!important}.hd-links{margin-left:-8px}.hd-links a{padding:0 9px!important;font-size:13.5px!important}.hd-gh{padding:0 16px!important;min-height:44px!important}.hd-gh span{display:none!important}}
+@media (max-width:350px){.hd-ver{display:none}}
+</style>
+</head>
+<body>
+<x-dc>
+
+<div style="background: #f4f1eb; color: #44423f; font-family: Inter, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; text-wrap: pretty">
+
+<header class="hd-wrap" style="padding: 14px 24px 0">
+<div class="hd" style="display: flex; align-items: center; gap: 4px 20px; max-width: 1240px; min-height: 66px; box-sizing: border-box; margin: 0 auto; padding: 8px 8px 8px 24px; border: 1px solid #d7d1c4; border-radius: 40px; background: #fff; box-shadow: 0 16px 56px rgb(18 20 15 / 0.1)">
+<a href="Main.html" style="display: flex; align-items: center; gap: 10px; min-height: 44px; color: #11100e">
+<span style="font-size: 19px; font-weight: 500; letter-spacing: -0.01em">runemark</span>
+<span class="hd-ver" style="padding: 1px 7px; border: 1px solid #d7d1c4; border-radius: 999px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">v0.4.2</span>
+</a>
+<nav class="hd-links" aria-label="Main">
+<a href="UseCases.html" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Use cases</a>
+<a href="Docs.html" aria-current="page" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; background: rgb(17 16 14 / 0.06); color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Docs</a>
+<a href="Examples.html" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Examples</a>
+<a href="Main.html" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Changelog</a>
+</nav>
+<div class="hd-tools">
+<a class="hd-search" href="Docs.html" aria-label="Search" style="display: flex; align-items: center; gap: 8px; min-height: 44px; box-sizing: border-box; padding: 0 16px 0 14px; border-radius: 999px; background: #f4f1eb; color: #5c5a56; font-size: 14px">
+<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5 14 14"></path></svg>
+<span>Search</span>
+</a>
+<a class="hd-gh" href="https://github.com/casoon/runemark" style="display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 0 4px 0 18px; border-radius: 999px; background: linear-gradient(180deg, #e46140 0%, #d4421d 25%, #d4421d 100%); color: #fff; font-size: 14.5px; font-weight: 600">
+GitHub
+<span style="display: grid; place-items: center; width: 38px; height: 38px; border-radius: 999px; background: #fff; color: #d4421d"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></span>
+</a>
+</div>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0 48px; max-width: 1320px; box-sizing: border-box; margin: 0 auto; padding: 0 24px">
+
+<!-- Sidebar -->
+<nav class="docs-side" aria-label="Documentation" style="flex: 1 0 220px; max-width: 260px; padding: 40px 0 24px">
+<p style="margin: 0 0 10px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase">Getting started</p>
+<ul style="display: flex; flex-direction: column; gap: 1px; margin: 0 0 26px; padding: 0; list-style: none; font-size: 14px">
+<li><a href="Docs.html" aria-current="page" style="display: block; padding: 6px 10px; border-left: 2px solid #ad3216; border-radius: 0 7px 7px 0; background: rgb(173 50 22 / 0.1); color: #11100e">Overview</a></li>
+<li><a href="Docs.html" style="display: block; padding: 6px 10px; border-left: 2px solid transparent; color: #5c5a56">Installation</a></li>
+<li><a href="Docs.html" style="display: block; padding: 6px 10px; border-left: 2px solid transparent; color: #5c5a56">Quickstart</a></li>
+</ul>
+<p style="margin: 0 0 10px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase">Reference</p>
+<ul style="display: flex; flex-direction: column; gap: 1px; margin: 0 0 26px; padding: 0; list-style: none; font-size: 14px">
+<li><a href="Docs.html" style="display: block; padding: 6px 10px; border-left: 2px solid transparent; color: #5c5a56">API reference</a></li>
+<li><a href="Docs.html" style="display: block; padding: 6px 10px; border-left: 2px solid transparent; color: #5c5a56">Components</a></li>
+</ul>
+<p style="margin: 0 0 10px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase">Elsewhere</p>
+<ul style="display: flex; flex-direction: column; gap: 1px; margin: 0; padding: 0; list-style: none; font-size: 14px">
+<li><a href="UseCases.html" style="display: block; padding: 6px 10px; border-left: 2px solid transparent; color: #5c5a56">Use cases</a></li>
+<li><a href="Examples.html" style="display: block; padding: 6px 10px; border-left: 2px solid transparent; color: #5c5a56">Examples</a></li>
+</ul>
+</nav>
+
+<!-- Content -->
+<main class="docs-main" style="flex: 999 1 560px; min-width: 0; max-width: 780px; padding: 40px 0 96px">
+<p style="display: flex; gap: 8px; margin: 0 0 14px; color: #5c5a56; font-size: 13px"><a href="Main.html" style="color: #5c5a56">runemark</a><span>/</span><span style="color: #44423f">Docs</span></p>
+<h1 style="margin: 0 0 12px; color: #11100e; font-size: clamp(28px, 3.4vw, 38px); font-weight: 600; letter-spacing: -0.025em; line-height: 1.15">Documentation</h1>
+<p style="margin: 0 0 28px; font-size: 17.5px">What runemark does, where it stops, and how this documentation is organised.</p>
+
+<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 48px; padding: 0 8px 0 18px; border: 1px solid #cac3b4; border-radius: 14px; background: #fff; box-shadow: 0 4px 8px rgb(0 0 0 / 0.08)">
+<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5 14 14"></path></svg>
+<label for="docs-search" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search the documentation</label>
+<input id="docs-search" type="search" placeholder="Search the documentation" style="flex: 1 1 0%; min-width: 0px; height: 54px; border: 0px; background: none; color: rgb(17, 16, 14); font: 16px Inter, sans-serif; outline-offset: 4px;">
+<span style="padding: 3px 9px; border: 1px solid #d7d1c4; border-radius: 6px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">/</span>
+</div>
+
+<!-- Start here: a path of three pages -->
+<h2 id="start" style="margin: 0 0 18px; color: #11100e; font-size: 25px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25">Start here</h2>
+<ol style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 0; margin: 0 0 56px; padding: 0; list-style: none; overflow: hidden; border-radius: 16px; background: #e4ded2">
+<li style="display: flex"><a href="Docs.html" style="display: flex; flex-direction: column; gap: 8px; flex: 1; padding: 22px 24px 24px; color: #44423f">
+<span style="display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #11100e; color: #f4f1eb; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">1</span>
+<span style="color: #11100e; font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Install</span>
+<span style="font-size: 14.5px; line-height: 1.5">The crate or the Node binding. Both wrap the same renderer.</span>
+</a></li>
+<li style="display: flex; border-left: 1px solid #cac3b4"><a href="Docs.html" style="display: flex; flex-direction: column; gap: 8px; flex: 1; padding: 22px 24px 24px; color: #44423f">
+<span style="display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #11100e; color: #f4f1eb; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">2</span>
+<span style="color: #11100e; font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Render a first stream</span>
+<span style="font-size: 14.5px; line-height: 1.5">From a captured ANSI file to an HTML fragment on a page.</span>
+</a></li>
+<li style="display: flex; border-left: 1px solid #cac3b4"><a href="Docs.html" style="display: flex; flex-direction: column; gap: 8px; flex: 1; padding: 22px 24px 24px; color: #44423f">
+<span style="display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #11100e; color: #f4f1eb; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">3</span>
+<span style="color: #11100e; font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Set the options</span>
+<span style="font-size: 14.5px; line-height: 1.5">Theme, wrap width, strict contrast: every default in the reference.</span>
+</a></li>
+</ol>
+
+<h2 id="getting-started" style="margin: 0 0 6px; color: #11100e; font-size: 25px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25">Getting started</h2>
+<div style="display: flex; flex-direction: column; margin-bottom: 48px">
+<a href="Docs.html" style="display: flex; align-items: center; gap: 24px; padding: 18px 0; border-bottom: 1px solid #d7d1c4; color: #44423f">
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="color: #11100e; font-size: 17px; font-weight: 600">Installation</span><span style="font-size: 15px; line-height: 1.5">runemark ships as a Rust crate and as a prebuilt Node binding. Output is byte-identical across ecosystems.</span></span>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#11100e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M3 8h10M9 4l4 4-4 4"></path></svg>
+</a>
+<a href="Docs.html" style="display: flex; align-items: center; gap: 24px; padding: 18px 0; border-bottom: 1px solid #d7d1c4; color: #44423f">
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="color: #11100e; font-size: 17px; font-weight: 600">Quickstart</span><span style="font-size: 15px; line-height: 1.5">Render a captured ANSI stream to an HTML fragment and put it on a page.</span></span>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#11100e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M3 8h10M9 4l4 4-4 4"></path></svg>
+</a>
+</div>
+
+<h2 id="reference" style="margin: 0 0 6px; color: #11100e; font-size: 25px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25">Reference</h2>
+<div style="display: flex; flex-direction: column; margin-bottom: 48px">
+<a href="Docs.html" style="display: flex; align-items: center; gap: 24px; padding: 18px 0; border-bottom: 1px solid #d7d1c4; color: #44423f">
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="color: #11100e; font-size: 17px; font-weight: 600">API reference</span><span style="font-size: 15px; line-height: 1.5">The surface is deliberately small. One renderer, one options struct, two helpers.</span></span>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#11100e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M3 8h10M9 4l4 4-4 4"></path></svg>
+</a>
+<a href="Docs.html" style="display: flex; align-items: center; gap: 24px; padding: 18px 0; border-bottom: 1px solid #d7d1c4; color: #44423f">
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="color: #11100e; font-size: 17px; font-weight: 600">Components</span><span style="font-size: 15px; line-height: 1.5">Every building block the template provides. Projects compose pages from these.</span></span>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#11100e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M3 8h10M9 4l4 4-4 4"></path></svg>
+</a>
+</div>
+
+<h2 id="by-task" style="margin: 0 0 16px; color: #11100e; font-size: 25px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25">By task</h2>
+<ul style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 12px; margin: 0 0 56px; padding: 0; list-style: none">
+<li><a href="UseCases.html" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; box-sizing: border-box; padding: 12px 18px; border: 1px solid #d7d1c4; border-radius: 12px; background: #fff; color: #11100e; font-size: 15.5px; font-weight: 500; line-height: 1.35">Publish a CI log as a page<span style="padding: 3px 9px; border: 1px solid #d7d1c4; border-radius: 6px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 400">CI</span></a></li>
+<li><a href="UseCases.html" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; box-sizing: border-box; padding: 12px 18px; border: 1px solid #d7d1c4; border-radius: 12px; background: #fff; color: #11100e; font-size: 15.5px; font-weight: 500; line-height: 1.35">Show command output in docs<span style="padding: 3px 9px; border: 1px solid #d7d1c4; border-radius: 6px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 400">Docs</span></a></li>
+<li><a href="UseCases.html" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; box-sizing: border-box; padding: 12px 18px; border: 1px solid #d7d1c4; border-radius: 12px; background: #fff; color: #11100e; font-size: 15.5px; font-weight: 500; line-height: 1.35">Catch rendering regressions<span style="padding: 3px 9px; border: 1px solid #d7d1c4; border-radius: 6px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 400">Testing</span></a></li>
+<li><a href="UseCases.html" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; box-sizing: border-box; padding: 12px 18px; border: 1px solid #d7d1c4; border-radius: 12px; background: #fff; color: #11100e; font-size: 15.5px; font-weight: 500; line-height: 1.35">Reports for screen readers<span style="padding: 3px 9px; border: 1px solid #d7d1c4; border-radius: 6px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 400">A11y</span></a></li>
+</ul>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+<p style="margin: 0; color: #5c5a56; font-size: 13.5px">Docs for v0.4.2 · <a href="https://github.com/casoon/runemark" style="text-decoration: underline; text-underline-offset: 2px">Edit this page</a></p>
+<a href="Docs.html" style="display: flex; flex-direction: column; min-width: 220px; padding: 14px 18px; border: 1px solid #d7d1c4; border-radius: 12px; color: #11100e; text-align: right"><span style="color: #5c5a56; font-size: 12.5px">Next</span><span style="font-size: 16px; font-weight: 600">Installation →</span></a>
+</div>
+</main>
+
+<!-- On this page -->
+<aside class="docs-toc" aria-label="On this page" style="flex: 0 0 180px; padding: 40px 0; font-size: 13.5px">
+<p style="margin: 0 0 10px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase">On this page</p>
+<ul style="display: flex; flex-direction: column; gap: 7px; margin: 0 0 32px; padding: 0 0 0 14px; border-left: 1px solid #d7d1c4; list-style: none">
+<li><a href="#start" style="color: #5c5a56">Start here</a></li>
+<li><a href="#getting-started" style="color: #5c5a56">Getting started</a></li>
+<li><a href="#reference" style="color: #5c5a56">Reference</a></li>
+<li><a href="#by-task" style="color: #5c5a56">By task</a></li>
+</ul>
+<p style="margin: 0 0 10px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase">Generated API docs</p>
+<ul style="display: flex; flex-direction: column; gap: 7px; margin: 0; padding: 0 0 0 14px; border-left: 1px solid #d7d1c4; list-style: none">
+<li><a href="https://docs.rs/runemark">docs.rs ↗</a></li>
+<li><a href="https://www.npmjs.com/package/@casoon/runemark">TypeDoc ↗</a></li>
+</ul>
+</aside>
+</div>
+
+<!-- Footer -->
+<footer style="background: #e4ded2; color: #44423f; font-size: 15px">
+<div style="max-width: 1240px; box-sizing: border-box; margin: 0 auto; padding: 36px clamp(24px, 3vw, 40px) 24px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 48px; padding-bottom: 28px">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px">
+<a href="Main.html" style="color: #11100e; font-size: 30px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1">runemark<span style="color: #d4421d">.</span></a>
+<span style="max-width: 64ch; font-size: 15.5px; line-height: 1.5">Renders ANSI terminal output as accessible, script-free HTML.</span>
+</div>
+<nav aria-label="Packages" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="https://github.com/casoon/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">GitHub <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+<a href="https://crates.io/crates/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">crates.io <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+<a href="https://www.npmjs.com/package/@casoon/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">npm <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+<a href="https://docs.rs/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">docs.rs <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+</nav>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 32px; padding-top: 20px; border-top: 1px solid #cac3b4; color: #5c5a56; font-size: 13.5px">
+<a href="https://www.casoon.de/" style="display: inline-flex; align-items: center; gap: 14px; min-height: 44px; color: #5c5a56">
+<img src="../../../assets/casoon-logo.svg" alt="CASOON" width="104" height="28" style="display: block; width: 104px; height: auto">
+<span>A CASOON project · Jörn Seidel</span>
+</a>
+<span style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px">
+<span>MIT · © 2026</span>
+<a href="https://casoon.dev/en/" style="display: inline-flex; align-items: center; min-height: 44px; color: #5c5a56">All projects</a>
+<a href="https://www.casoon.de/impressum/" style="display: inline-flex; align-items: center; min-height: 44px; color: #5c5a56">Imprint</a>
+<a href="https://www.casoon.de/datenschutz/" style="display: inline-flex; align-items: center; min-height: 44px; color: #5c5a56">Privacy policy</a>
+</span>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+
+
+
+</body></html>

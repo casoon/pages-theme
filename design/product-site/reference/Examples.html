@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en"><head>
+<!-- Static snapshot of the design canvas (default state, no scripts). Reference only: not part of the theme. -->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<title>runemark – examples</title>
+
+
+<style>
+@font-face{font-family:Inter;font-weight:400;src:url(../../../fonts/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:500;src:url(../../../fonts/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:600;src:url(../../../fonts/inter-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:400;src:url(../../../fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:500;src:url(../../../fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2")}
+</style>
+<style>
+body{margin:0}
+a{color:#ad3216;text-decoration:none}a:hover{color:#8a2811}
+.ln{white-space:pre}
+.hd-links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.hd-tools{display:flex;align-items:center;gap:8px}
+@media (max-width:960px){.hd{flex-wrap:wrap;border-radius:24px!important;padding:8px 8px 4px 20px!important}.hd-tools{margin-left:auto}.hd-links{order:3;flex:1 0 100%;margin:0 0 0 -12px;padding-top:4px;border-top:1px solid #d7d1c4;overflow-x:auto}.hd-search span{display:none}.hd-search{padding:0!important;width:44px;justify-content:center}}
+@media (max-width:480px){.hd-wrap{padding:10px 12px 0!important}.hd{padding:6px 6px 4px 16px!important}.hd-links{margin-left:-8px}.hd-links a{padding:0 9px!important;font-size:13.5px!important}.hd-gh{padding:0 16px!important;min-height:44px!important}.hd-gh span{display:none!important}}
+@media (max-width:350px){.hd-ver{display:none}}
+.ex-rail{flex:1 0 220px;max-width:260px;display:flex;flex-direction:column;gap:6px}
+.ex-rail .ex-group{margin-top:14px!important}.ex-rail .ex-group:first-child{margin-top:4px!important}
+@media (max-width:860px){.ex-rail{flex:1 0 100%;max-width:none;flex-direction:row;flex-wrap:wrap;gap:8px}.ex-rail .ex-group{display:none}.ex-rail button{border-color:#cac3b4!important}.ex-rail button span+span{display:none}}
+</style>
+</head>
+<body>
+<x-dc>
+
+<div style="background: #f4f1eb; color: #44423f; font-family: Inter, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; text-wrap: pretty">
+
+<header class="hd-wrap" style="padding: 14px 24px 0">
+<div class="hd" style="display: flex; align-items: center; gap: 4px 20px; max-width: 1240px; min-height: 66px; box-sizing: border-box; margin: 0 auto; padding: 8px 8px 8px 24px; border: 1px solid #d7d1c4; border-radius: 40px; background: #fff; box-shadow: 0 16px 56px rgb(18 20 15 / 0.1)">
+<a href="Main.html" style="display: flex; align-items: center; gap: 10px; min-height: 44px; color: #11100e">
+<span style="font-size: 19px; font-weight: 500; letter-spacing: -0.01em">runemark</span>
+<span class="hd-ver" style="padding: 1px 7px; border: 1px solid #d7d1c4; border-radius: 999px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">v0.4.2</span>
+</a>
+<nav class="hd-links" aria-label="Main">
+<a href="UseCases.html" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Use cases</a>
+<a href="Docs.html" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Docs</a>
+<a href="Examples.html" aria-current="page" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; background: rgb(17 16 14 / 0.06); color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Examples</a>
+<a href="Main.html" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Changelog</a>
+</nav>
+<div class="hd-tools">
+<a class="hd-search" href="Docs.html" aria-label="Search" style="display: flex; align-items: center; gap: 8px; min-height: 44px; box-sizing: border-box; padding: 0 16px 0 14px; border-radius: 999px; background: #f4f1eb; color: #5c5a56; font-size: 14px">
+<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5 14 14"></path></svg>
+<span>Search</span>
+</a>
+<a class="hd-gh" href="https://github.com/casoon/runemark" style="display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 0 4px 0 18px; border-radius: 999px; background: linear-gradient(180deg, #e46140 0%, #d4421d 25%, #d4421d 100%); color: #fff; font-size: 14.5px; font-weight: 600">
+GitHub
+<span style="display: grid; place-items: center; width: 38px; height: 38px; border-radius: 999px; background: #fff; color: #d4421d"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></span>
+</a>
+</div>
+</div>
+</header>
+
+<!-- Page head -->
+<section style="max-width: 1240px; box-sizing: border-box; margin: 0 auto; padding: 72px 40px 48px">
+<p style="display: flex; gap: 8px; margin: 0 0 14px; color: #5c5a56; font-size: 13px"><a href="Main.html" style="color: #5c5a56">runemark</a><span>/</span><span style="color: #44423f">Examples</span></p>
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px 72px">
+<h1 style="flex: 1 1 380px; margin: 0; color: #11100e; font-size: clamp(44px, 6vw, 84px); font-weight: 600; letter-spacing: -0.035em; line-height: 0.98">Examples</h1>
+<p style="flex: 1 1 380px; margin: 0; color: #11100e; font-size: 20px; line-height: 1.5">Every example is rendered by the package during the build, from the same fixtures the test suite uses.</p>
+</div>
+</section>
+
+<!-- Explorer: pick an example, switch between output, source and the way there -->
+<section style="max-width: 1320px; box-sizing: border-box; margin: 0 auto; padding: 0 24px 96px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px 40px; padding: clamp(16px, 3vw, 40px); border-radius: clamp(24px, 3.4vw, 44px); background: #e4ded2">
+
+<div class="ex-rail" role="group" aria-label="Examples">
+
+<p class="ex-group" style="margin: 0; padding: 0 14px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase">Cursor movement</p>
+<button type="button" aria-pressed="true" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 8px 14px; border: 1px solid #cac3b4; border-radius: 14px; background: #ffffff; box-shadow: 0 4px 8px rgb(0 0 0 / 0.12); color: #11100e; font: 500 15.5px Inter, sans-serif; text-align: left; cursor: pointer"><span>Progress frames</span><span style="color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11.5px; font-weight: 400">\r</span></button>
+
+<p class="ex-group" style="margin: 0; padding: 0 14px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase">Reports and diffs</p>
+<button type="button" aria-pressed="false" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 8px 14px; border: 1px solid transparent; border-radius: 14px; background: transparent; box-shadow: none; color: #11100e; font: 500 15.5px Inter, sans-serif; text-align: left; cursor: pointer"><span>Test report</span><span style="color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11.5px; font-weight: 400">sgr</span></button>
+
+
+<button type="button" aria-pressed="false" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 8px 14px; border: 1px solid transparent; border-radius: 14px; background: transparent; box-shadow: none; color: #11100e; font: 500 15.5px Inter, sans-serif; text-align: left; cursor: pointer"><span>Unified diff</span><span style="color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11.5px; font-weight: 400">diff</span></button>
+
+</div>
+
+<div style="flex: 999 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 32px">
+<div style="flex: 1 1 360px; min-width: 0">
+<h2 style="margin: 0 0 8px; color: #11100e; font-size: clamp(26px, 2.8vw, 36px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.12">Progress frames</h2>
+<p style="max-width: 36rem; margin: 0; font-size: 17px; line-height: 1.5">Carriage returns overwrite the line; only the final frame remains.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; color: #44423f; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">
+<span style="padding: 3px 9px; border: 1px solid #cac3b4; border-radius: 6px">cursor</span><span style="padding: 3px 9px; border: 1px solid #cac3b4; border-radius: 6px">carriage-return</span>
+<span style="padding: 3px 9px; border-radius: 6px; background: #11100e; color: #f4f1eb">examples/progress.ansi</span>
+</div>
+</div>
+
+<div role="group" aria-label="View" style="display: flex; flex-wrap: wrap; gap: 4px; align-self: flex-start; padding: 4px; border-radius: 999px; background: #dcd7cc">
+<button type="button" aria-pressed="true" style="min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: #ffffff; box-shadow: 0 1px 3px rgb(0 0 0 / 0.18); color: #11100e; font: 500 14.5px Inter, sans-serif; cursor: pointer">Output</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: transparent; box-shadow: none; color: #11100e; font: 500 14.5px Inter, sans-serif; cursor: pointer">Source</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: transparent; box-shadow: none; color: #11100e; font: 500 14.5px Inter, sans-serif; cursor: pointer">How to</button>
+</div>
+
+
+<div style="display: flex; flex-wrap: wrap; align-items: stretch; gap: 20px; min-height: 250px">
+<figure style="flex: 1.25 1 300px; min-width: 0; display: flex; flex-direction: column; margin: 0; overflow: hidden; border: 1px solid #d7d1c4; border-radius: 14px; background: #15171a; color: #d8dde2">
+<figcaption style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid rgb(255 255 255 / 0.08); color: #8b9297; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px"><span>Output</span><span>rendered at build time</span></figcaption>
+<div style="flex: 1; padding: 18px; overflow: auto; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13.5px; line-height: 1.9">
+<div class="ln"><span style="color: #d8dde2; font-weight: 400">building</span></div><div class="ln"><span style="color: #d8dde2; font-weight: 400">[##########] 100%</span></div>
+</div>
+</figure>
+<div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; box-sizing: border-box; padding: 16px 20px 8px; border-radius: 14px; background: #f4f1eb">
+<p style="margin: 0 0 6px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase">What the renderer did</p>
+<dl style="display: flex; flex-direction: column; margin: 0">
+
+<div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #d7d1c4">
+<dt style="flex: 0 0 84px"><code style="display: inline-block; padding: 2px 7px; border-radius: 6px; background: #11100e; color: #f4f1eb; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">\r</code></dt>
+<dd style="flex: 1; min-width: 0; margin: 0; display: flex; flex-direction: column; font-size: 14.5px; line-height: 1.4"><span style="color: #11100e">Back to column 0</span><span style="color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; line-height: 1.7">the next frame overwrites the line</span></dd>
+</div>
+
+<div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #d7d1c4">
+<dt style="flex: 0 0 84px"><code style="display: inline-block; padding: 2px 7px; border-radius: 6px; background: #11100e; color: #f4f1eb; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">3 frames</code></dt>
+<dd style="flex: 1; min-width: 0; margin: 0; display: flex; flex-direction: column; font-size: 14.5px; line-height: 1.4"><span style="color: #11100e">Written one after another</span><span style="color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; line-height: 1.7">1 line in the output</span></dd>
+</div>
+
+<div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #d7d1c4">
+<dt style="flex: 0 0 84px"><code style="display: inline-block; padding: 2px 7px; border-radius: 6px; background: #11100e; color: #f4f1eb; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">0 spans</code></dt>
+<dd style="flex: 1; min-width: 0; margin: 0; display: flex; flex-direction: column; font-size: 14.5px; line-height: 1.4"><span style="color: #11100e">No colour in this stream</span><span style="color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; line-height: 1.7">plain text</span></dd>
+</div>
+
+</dl>
+</div>
+</div>
+
+
+
+
+
+
+</div>
+</div>
+</section>
+
+<!-- The way on -->
+<section style="max-width: 1240px; box-sizing: border-box; margin: 0 auto; padding: 0 40px 112px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 48px; padding: 32px 0; border-top: 1px solid #cac3b4; border-bottom: 1px solid #cac3b4">
+<p style="flex: 1 1 380px; margin: 0; color: #11100e; font-size: 22px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.3">Render your own output the same way.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 28px">
+<a href="Docs.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 500">Quickstart <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+<a href="UseCases.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 500">Use cases <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer style="background: #e4ded2; color: #44423f; font-size: 15px">
+<div style="max-width: 1240px; box-sizing: border-box; margin: 0 auto; padding: 36px clamp(24px, 3vw, 40px) 24px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 48px; padding-bottom: 28px">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px">
+<a href="Main.html" style="color: #11100e; font-size: 30px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1">runemark<span style="color: #d4421d">.</span></a>
+<span style="max-width: 64ch; font-size: 15.5px; line-height: 1.5">Renders ANSI terminal output as accessible, script-free HTML.</span>
+</div>
+<nav aria-label="Packages" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="https://github.com/casoon/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">GitHub <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+<a href="https://crates.io/crates/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">crates.io <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+<a href="https://www.npmjs.com/package/@casoon/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">npm <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+<a href="https://docs.rs/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">docs.rs <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+</nav>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 32px; padding-top: 20px; border-top: 1px solid #cac3b4; color: #5c5a56; font-size: 13.5px">
+<a href="https://www.casoon.de/" style="display: inline-flex; align-items: center; gap: 14px; min-height: 44px; color: #5c5a56">
+<img src="../../../assets/casoon-logo.svg" alt="CASOON" width="104" height="28" style="display: block; width: 104px; height: auto">
+<span>A CASOON project · Jörn Seidel</span>
+</a>
+<span style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px">
+<span>MIT · © 2026</span>
+<a href="https://casoon.dev/en/" style="display: inline-flex; align-items: center; min-height: 44px; color: #5c5a56">All projects</a>
+<a href="https://www.casoon.de/impressum/" style="display: inline-flex; align-items: center; min-height: 44px; color: #5c5a56">Imprint</a>
+<a href="https://www.casoon.de/datenschutz/" style="display: inline-flex; align-items: center; min-height: 44px; color: #5c5a56">Privacy policy</a>
+</span>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+
+
+
+</body></html>

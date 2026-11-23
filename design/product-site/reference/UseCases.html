@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en"><head>
+<!-- Static snapshot of the design canvas (default state, no scripts). Reference only: not part of the theme. -->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<title>runemark – use cases</title>
+
+
+<style>
+@font-face{font-family:Inter;font-weight:400;src:url(../../../fonts/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:500;src:url(../../../fonts/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:600;src:url(../../../fonts/inter-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:400;src:url(../../../fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:500;src:url(../../../fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2")}
+</style>
+<style>
+body{margin:0}
+a{color:#ad3216;text-decoration:none}a:hover{color:#8a2811}
+.ln{white-space:pre}
+.hd-links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.hd-tools{display:flex;align-items:center;gap:8px}
+@media (max-width:960px){.hd{flex-wrap:wrap;border-radius:24px!important;padding:8px 8px 4px 20px!important}.hd-tools{margin-left:auto}.hd-links{order:3;flex:1 0 100%;margin:0 0 0 -12px;padding-top:4px;border-top:1px solid #d7d1c4;overflow-x:auto}.hd-search span{display:none}.hd-search{padding:0!important;width:44px;justify-content:center}}
+@media (max-width:480px){.hd-wrap{padding:10px 12px 0!important}.hd{padding:6px 6px 4px 16px!important}.hd-links{margin-left:-8px}.hd-links a{padding:0 9px!important;font-size:13.5px!important}.hd-gh{padding:0 16px!important;min-height:44px!important}.hd-gh span{display:none!important}}
+@media (max-width:350px){.hd-ver{display:none}}
+</style>
+</head>
+<body>
+<x-dc>
+
+<div style="background: #f4f1eb; color: #44423f; font-family: Inter, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; text-wrap: pretty">
+
+<header class="hd-wrap" style="padding: 14px 24px 0">
+<div class="hd" style="display: flex; align-items: center; gap: 4px 20px; max-width: 1240px; min-height: 66px; box-sizing: border-box; margin: 0 auto; padding: 8px 8px 8px 24px; border: 1px solid #d7d1c4; border-radius: 40px; background: #fff; box-shadow: 0 16px 56px rgb(18 20 15 / 0.1)">
+<a href="Main.html" style="display: flex; align-items: center; gap: 10px; min-height: 44px; color: #11100e">
+<span style="font-size: 19px; font-weight: 500; letter-spacing: -0.01em">runemark</span>
+<span class="hd-ver" style="padding: 1px 7px; border: 1px solid #d7d1c4; border-radius: 999px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">v0.4.2</span>
+</a>
+<nav class="hd-links" aria-label="Main">
+<a href="UseCases.html" aria-current="page" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; background: rgb(17 16 14 / 0.06); color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Use cases</a>
+<a href="Docs.html" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Docs</a>
+<a href="Examples.html" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Examples</a>
+<a href="Main.html" style="display: grid; place-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500; letter-spacing: -0.012em; white-space: nowrap">Changelog</a>
+</nav>
+<div class="hd-tools">
+<a class="hd-search" href="Docs.html" aria-label="Search" style="display: flex; align-items: center; gap: 8px; min-height: 44px; box-sizing: border-box; padding: 0 16px 0 14px; border-radius: 999px; background: #f4f1eb; color: #5c5a56; font-size: 14px">
+<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5 14 14"></path></svg>
+<span>Search</span>
+</a>
+<a class="hd-gh" href="https://github.com/casoon/runemark" style="display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 0 4px 0 18px; border-radius: 999px; background: linear-gradient(180deg, #e46140 0%, #d4421d 25%, #d4421d 100%); color: #fff; font-size: 14.5px; font-weight: 600">
+GitHub
+<span style="display: grid; place-items: center; width: 38px; height: 38px; border-radius: 999px; background: #fff; color: #d4421d"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></span>
+</a>
+</div>
+</div>
+</header>
+
+<!-- Page head -->
+<section style="max-width: 1240px; box-sizing: border-box; margin: 0 auto; padding: 72px 40px 56px">
+<p style="display: flex; gap: 8px; margin: 0 0 14px; color: #5c5a56; font-size: 13px"><a href="Main.html" style="color: #5c5a56">runemark</a><span>/</span><span style="color: #44423f">Use cases</span></p>
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px 72px; margin-bottom: 40px">
+<h1 style="flex: 1 1 380px; margin: 0; color: #11100e; font-size: clamp(44px, 6vw, 84px); font-weight: 600; letter-spacing: -0.035em; line-height: 0.98">Use cases</h1>
+<p style="flex: 1 1 380px; margin: 0; color: #11100e; font-size: 20px; line-height: 1.5">Four jobs runemark gets hired for. Each one names what you need and where to start.</p>
+</div>
+<div role="group" aria-label="Filter by topic" style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" aria-pressed="true" style="min-height: 44px; padding: 0 18px; border: 1px solid #11100e; border-radius: 999px; background: #11100e; color: #f4f1eb; font: 500 14.5px Inter, sans-serif; cursor: pointer">All 4</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; padding: 0 18px; border: 1px solid #cac3b4; border-radius: 999px; background: none; color: #11100e; font: 500 14.5px Inter, sans-serif; cursor: pointer">CI</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; padding: 0 18px; border: 1px solid #cac3b4; border-radius: 999px; background: none; color: #11100e; font: 500 14.5px Inter, sans-serif; cursor: pointer">Docs</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; padding: 0 18px; border: 1px solid #cac3b4; border-radius: 999px; background: none; color: #11100e; font: 500 14.5px Inter, sans-serif; cursor: pointer">Testing</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; padding: 0 18px; border: 1px solid #cac3b4; border-radius: 999px; background: none; color: #11100e; font: 500 14.5px Inter, sans-serif; cursor: pointer">Accessibility</button>
+</div>
+</section>
+
+<!-- Featured use case -->
+<section style="max-width: 1320px; box-sizing: border-box; margin: 0 auto; padding: 0 24px 96px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 40px 64px; padding: clamp(16px, 4.5vw, 64px); border-radius: clamp(24px, 4vw, 48px); background: #e4ded2">
+<div style="flex: 1 1 400px; min-width: 0">
+<p style="display: flex; align-items: center; gap: 10px; margin: 0 0 16px; color: #11100e; font-size: 14px; text-transform: uppercase"><span style="color: #ad3216; font-family: 'JetBrains Mono', ui-monospace, monospace">01</span>CI · GitHub Actions</p>
+<h2 style="margin: 0 0 20px; color: #11100e; font-size: clamp(28px, 3.1vw, 40px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.12; text-wrap: balance">Publish a CI log as a readable page</h2>
+<p style="margin: 0 0 24px; font-size: 18px">The coloured log of a job is gone once the run page is closed. Rendered, it is a static page anyone can open, search and link to.</p>
+<ol style="display: flex; flex-direction: column; gap: 14px; margin: 0 0 28px; padding: 0; list-style: none; color: #44423f">
+<li style="display: flex; gap: 12px"><span style="flex: none; display: grid; place-items: center; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; background: #11100e; color: #f4f1eb; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px">1</span><span>Write the job's output to a file, colours included.</span></li>
+<li style="display: flex; gap: 12px"><span style="flex: none; display: grid; place-items: center; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; background: #11100e; color: #f4f1eb; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px">2</span><span>Render it; a colour pair below 4.5:1 fails the step.</span></li>
+<li style="display: flex; gap: 12px"><span style="flex: none; display: grid; place-items: center; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; background: #11100e; color: #f4f1eb; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px">3</span><span>Upload the page with the rest of your site.</span></li>
+</ol>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 28px">
+<a href="Docs.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 500">Quickstart <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+<a href="Examples.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 500">Example: test report <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+</div>
+</div>
+<figure style="flex: 1.15 1 460px; min-width: 0; margin: 0; overflow: hidden; border: 1px solid #d7d1c4; border-radius: 14px; background: #fff; box-shadow: 0 4px 8px rgb(0 0 0 / 0.15)">
+<figcaption style="display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #d7d1c4; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px"><span>.github/workflows/report.yml</span><span>YAML</span></figcaption>
+<div style="padding: clamp(14px, 1.6vw, 18px); overflow: auto; color: #44423f; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: clamp(12px, 0.95vw, 13px); line-height: 1.8">
+<div class="ln">- <span style="color: #ad3216">name</span>: Run the checks <span style="display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #11100e; color: #f4f1eb; font-size: 10px">1</span></div>
+<div class="ln">  <span style="color: #ad3216">run</span>: [YOUR COMMAND] &gt; report.ansi</div>
+<div class="ln"> </div>
+<div class="ln">- <span style="color: #ad3216">name</span>: Render the log <span style="display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #11100e; color: #f4f1eb; font-size: 10px">2</span></div>
+<div class="ln">  <span style="color: #ad3216">run</span>: &gt;</div>
+<div class="ln">    runemark render</div>
+<div class="ln">    --strict-contrast</div>
+<div class="ln"> </div>
+<div class="ln">- <span style="color: #ad3216">name</span>: Publish <span style="display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #11100e; color: #f4f1eb; font-size: 10px">3</span></div>
+<div class="ln">  <span style="color: #ad3216">uses</span>: actions/upload-pages-artifact</div>
+</div>
+</figure>
+</div>
+</section>
+
+<!-- Further use cases as open rows -->
+<section style="max-width: 1240px; box-sizing: border-box; margin: 0 auto; padding: 0 40px 112px">
+<div style="display: flex; flex-direction: column; border-bottom: 1px solid #cac3b4">
+
+<article style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px 72px; padding: 48px 0; border-top: 1px solid #cac3b4">
+<div style="flex: 1 1 400px; min-width: 0">
+<p style="display: flex; align-items: center; gap: 10px; margin: 0 0 14px; color: #11100e; font-size: 14px; text-transform: uppercase"><span style="color: #ad3216; font-family: 'JetBrains Mono', ui-monospace, monospace">02</span>Docs · Build time</p>
+<h2 style="margin: 0 0 16px; color: #11100e; font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15">Show real command output in your docs</h2>
+<p style="margin: 0 0 12px; font-size: 17px">Capture the command once, commit the file, render it in the build. The page shows what the tool printed, not a screenshot of it.</p>
+<a href="Docs.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 500">Quickstart <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+</div>
+<dl style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; margin: 0; font-size: 15.5px">
+<div style="display: flex; gap: 24px; padding: 12px 0; border-bottom: 1px solid #d7d1c4"><dt style="flex: 0 0 110px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; line-height: 2.1; text-transform: uppercase">Input</dt><dd style="margin: 0; color: #11100e">ANSI text from a file, a pipe or a string</dd></div>
+<div style="display: flex; gap: 24px; padding: 12px 0; border-bottom: 1px solid #d7d1c4"><dt style="flex: 0 0 110px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; line-height: 2.1; text-transform: uppercase">Runs</dt><dd style="margin: 0; color: #11100e">Once, in your build</dd></div>
+<div style="display: flex; gap: 24px; padding: 12px 0"><dt style="flex: 0 0 110px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; line-height: 2.1; text-transform: uppercase">Ships</dt><dd style="margin: 0; color: #11100e">Static HTML, one stylesheet, 0 scripts</dd></div>
+</dl>
+</article>
+
+<article style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px 72px; padding: 48px 0; border-top: 1px solid #cac3b4">
+<div style="flex: 1 1 400px; min-width: 0">
+<p style="display: flex; align-items: center; gap: 10px; margin: 0 0 14px; color: #11100e; font-size: 14px; text-transform: uppercase"><span style="color: #ad3216; font-family: 'JetBrains Mono', ui-monospace, monospace">03</span>Testing · CI</p>
+<h2 style="margin: 0 0 16px; color: #11100e; font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15">Catch rendering regressions</h2>
+<p style="margin: 0 0 12px; font-size: 17px">Identical input produces identical bytes. Commit the rendered fixtures and let CI diff them on every build.</p>
+<a href="Examples.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 500">The fixtures as examples <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+</div>
+<dl style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; margin: 0; font-size: 15.5px">
+<div style="display: flex; gap: 24px; padding: 12px 0; border-bottom: 1px solid #d7d1c4"><dt style="flex: 0 0 110px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; line-height: 2.1; text-transform: uppercase">Fixtures</dt><dd style="margin: 0; color: #11100e">Shared with the test suite</dd></div>
+<div style="display: flex; gap: 24px; padding: 12px 0; border-bottom: 1px solid #d7d1c4"><dt style="flex: 0 0 110px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; line-height: 2.1; text-transform: uppercase">Compared</dt><dd style="margin: 0; color: #11100e">Byte for byte</dd></div>
+<div style="display: flex; gap: 24px; padding: 12px 0"><dt style="flex: 0 0 110px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; line-height: 2.1; text-transform: uppercase">Bindings</dt><dd style="margin: 0; color: #11100e">Rust and Node run the same set</dd></div>
+</dl>
+</article>
+
+<article style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px 72px; padding: 48px 0; border-top: 1px solid #cac3b4">
+<div style="flex: 1 1 400px; min-width: 0">
+<p style="display: flex; align-items: center; gap: 10px; margin: 0 0 14px; color: #11100e; font-size: 14px; text-transform: uppercase"><span style="color: #ad3216; font-family: 'JetBrains Mono', ui-monospace, monospace">04</span>Accessibility</p>
+<h2 style="margin: 0 0 16px; color: #11100e; font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15">Reports a screen reader can read</h2>
+<p style="margin: 0 0 12px; font-size: 17px">Terminal output is read as plain text. A report with columns is a table, not aligned spaces.</p>
+<a href="Docs.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 500">Contrast rules <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+</div>
+<dl style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; margin: 0; font-size: 15.5px">
+<div style="display: flex; gap: 24px; padding: 12px 0; border-bottom: 1px solid #d7d1c4"><dt style="flex: 0 0 110px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; line-height: 2.1; text-transform: uppercase">Markup</dt><dd style="margin: 0; color: #11100e; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 14px; line-height: 1.9">&lt;pre&gt;, &lt;table&gt;</dd></div>
+<div style="display: flex; gap: 24px; padding: 12px 0; border-bottom: 1px solid #d7d1c4"><dt style="flex: 0 0 110px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; line-height: 2.1; text-transform: uppercase">Contrast</dt><dd style="margin: 0; color: #11100e">Every colour pair checked against 4.5:1</dd></div>
+<div style="display: flex; gap: 24px; padding: 12px 0"><dt style="flex: 0 0 110px; color: #5c5a56; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.09em; line-height: 2.1; text-transform: uppercase">Flag</dt><dd style="margin: 0; color: #11100e; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 14px; line-height: 1.9">--strict-contrast</dd></div>
+</dl>
+</article>
+
+</div>
+</section>
+
+<!-- Honest limits -->
+<section style="max-width: 1320px; box-sizing: border-box; margin: 0 auto; padding: 0 24px 112px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px 72px; padding: clamp(16px, 4.5vw, 64px); border-radius: clamp(24px, 4vw, 48px); background: #dcd7cc">
+<div style="flex: 1 1 340px; min-width: 0">
+<p style="display: flex; align-items: center; gap: 10px; margin: 0 0 16px; color: #11100e; font-size: 14px; text-transform: uppercase"><span style="width: 6px; height: 6px; border-radius: 50%; background: #d4421d"></span>The price</p>
+<h2 style="margin: 0 0 16px; color: #11100e; font-size: clamp(28px, 3.1vw, 40px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.12">What it is not for</h2>
+<p style="margin: 0; font-size: 17px">This design has a price, and it is better read here than found later.</p>
+</div>
+<ul style="flex: 1.3 1 420px; min-width: 0; display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; color: #11100e; font-size: 18px; line-height: 1.5">
+<li style="padding: 16px 0; border-bottom: 1px solid #cac3b4">It is not a terminal: no alternate screen, no mouse reporting.</li>
+<li style="padding: 16px 0; border-bottom: 1px solid #cac3b4">The page shows a frame, not a live session.</li>
+<li style="padding: 16px 0">Wide glyphs are measured by a table that is updated with Unicode.</li>
+</ul>
+</div>
+</section>
+
+<!-- Footer -->
+<footer style="background: #e4ded2; color: #44423f; font-size: 15px">
+<div style="max-width: 1240px; box-sizing: border-box; margin: 0 auto; padding: 36px clamp(24px, 3vw, 40px) 24px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 48px; padding-bottom: 28px">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px">
+<a href="Main.html" style="color: #11100e; font-size: 30px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1">runemark<span style="color: #d4421d">.</span></a>
+<span style="max-width: 64ch; font-size: 15.5px; line-height: 1.5">Renders ANSI terminal output as accessible, script-free HTML.</span>
+</div>
+<nav aria-label="Packages" style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="https://github.com/casoon/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">GitHub <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+<a href="https://crates.io/crates/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">crates.io <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+<a href="https://www.npmjs.com/package/@casoon/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">npm <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+<a href="https://docs.rs/runemark" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid #cac3b4; border-radius: 999px; color: #11100e; font-size: 14.5px; font-weight: 500">docs.rs <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#5c5a56" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"></path></svg></a>
+</nav>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 32px; padding-top: 20px; border-top: 1px solid #cac3b4; color: #5c5a56; font-size: 13.5px">
+<a href="https://www.casoon.de/" style="display: inline-flex; align-items: center; gap: 14px; min-height: 44px; color: #5c5a56">
+<img src="../../../assets/casoon-logo.svg" alt="CASOON" width="104" height="28" style="display: block; width: 104px; height: auto">
+<span>A CASOON project · Jörn Seidel</span>
+</a>
+<span style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px">
+<span>MIT · © 2026</span>
+<a href="https://casoon.dev/en/" style="display: inline-flex; align-items: center; min-height: 44px; color: #5c5a56">All projects</a>
+<a href="https://www.casoon.de/impressum/" style="display: inline-flex; align-items: center; min-height: 44px; color: #5c5a56">Imprint</a>
+<a href="https://www.casoon.de/datenschutz/" style="display: inline-flex; align-items: center; min-height: 44px; color: #5c5a56">Privacy policy</a>
+</span>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+
+
+
+</body></html>
