@@ -1,5 +1,6 @@
 ---
 import config from 'virtual:casoon-pages/config';
+import logo from '../assets/casoon-logo.svg';
 import logoDark from '../assets/casoon-logo-dark.svg';
 import { t } from '../lib/i18n';
 import { CASOON_URL, catalogUrl, url } from '../lib/url';
@@ -8,208 +9,177 @@ const s = t(config.lang);
 const IMPRESSUM = `${CASOON_URL}impressum/`;
 const DATENSCHUTZ = `${CASOON_URL}datenschutz/`;
 
-const projectLinks = [
-  ...(config.website ? [{ label: s.website(config.name), href: config.website }] : []),
-  { label: s.documentation, href: url('docs/') },
-  ...(config.demo ? [{ label: config.demo, href: url('demo/') }] : []),
-  ...(config.hasShowcase ? [{ label: s.showcase, href: url('showcase/') }] : []),
-  ...(config.changelog ? [{ label: s.changelog, href: url('changelog/') }] : []),
-];
 const packageLinks = [
   ...(config.repo ? [{ label: 'GitHub', href: `https://github.com/${config.repo}` }] : []),
   ...config.packages,
 ];
-// A "Project" column of one entry reads as a gap: its link joins "Packages", one column.
-const merged = projectLinks.length <= 1;
-
-const columns = [
-  ...(merged
-    ? [{ title: s.footerProject, links: [...projectLinks, ...packageLinks] }]
-    : [
-        { title: s.footerProject, links: projectLinks },
-        { title: s.footerPackages, links: packageLinks },
-      ]),
-  {
-    title: 'CASOON',
-    links: [
-      { label: 'casoon.de', href: CASOON_URL },
-      ...(config.catalog
-        ? [{ label: s.catalogEntry(config.name), href: catalogUrl(config.lang, config.catalog) }]
-        : []),
-      // Only a public GitHub project is actually part of the open-source catalog.
-      ...(config.repo ? [{ label: s.allProjects, href: catalogUrl(config.lang) }] : []),
-    ],
-  },
-];
 ---
 
 <footer class="footer">
-  <div class="top">
-    <div class="intro">
-      <p class="name">{config.name}</p>
-      <p class="description">{config.description}</p>
-    </div>
-    <div class="cols">
+  <div class="inner">
+    <div class="top">
+      <div class="intro">
+        <a class="name" href={url('')}>{config.name}<span aria-hidden="true">.</span></a>
+        <span class="description">{config.description}</span>
+      </div>
       {
-        columns.filter((col) => col.links.length > 0).map((col) => (
-          <nav aria-label={col.title}>
-            <p class="title">{col.title}</p>
-            <ul>
-              {col.links.map((link) => (
-                <li>
-                  <a href={link.href}>{link.label}</a>
-                </li>
-              ))}
-            </ul>
+        packageLinks.length > 0 && (
+          <nav class="packages" aria-label={s.footerPackages}>
+            {packageLinks.map((link) => (
+              <a href={link.href}>{link.label}</a>
+            ))}
           </nav>
-        ))
+        )
       }
     </div>
-  </div>
-  <div class="bottom">
-    <a class="by" href={CASOON_URL}>
-      <img src={logoDark.src} width="150" height="41" alt="CASOON" />
-      <span>{s.footerBy} · Jörn Seidel</span>
-    </a>
-    <span class="legal">
-      <span>{config.license && `${s.license(config.license)} · `}© {new Date().getFullYear()}</span>
-      <a href={IMPRESSUM}>{s.imprint}</a>
-      <a href={DATENSCHUTZ}>{s.privacyPolicy}</a>
-    </span>
+    <div class="bottom">
+      <a class="by" href={CASOON_URL}>
+        <img class="logo-light" src={logo.src} width="104" height="28" alt="CASOON" />
+        <img class="logo-dark" src={logoDark.src} width="104" height="28" alt="CASOON" />
+        <span>{s.footerBy} · Jörn Seidel</span>
+      </a>
+      <span class="legal">
+        <span>{config.license && `${s.license(config.license)} · `}© {new Date().getFullYear()}</span>
+        {config.repo && <a href={catalogUrl(config.lang)}>{s.allProjects}</a>}
+        <a href={IMPRESSUM}>{s.imprint}</a>
+        <a href={DATENSCHUTZ}>{s.privacyPolicy}</a>
+      </span>
+    </div>
   </div>
 </footer>
 
 <style>
-  /* Black footer in both themes. */
   .footer {
-    --text: #b4b1ac;
-    --muted: #8f8b85;
-    --heading: #fff;
-    --border: rgb(255 255 255 / 0.12);
-
-    background: #11100e;
+    background: var(--bg-deep);
     color: var(--text);
     font-size: 15px;
   }
-  .top {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: 48px 64px;
-    max-width: var(--max);
+  .inner {
+    box-sizing: border-box;
+    max-width: var(--max-wide);
     margin: 0 auto;
-    padding: 96px 24px 72px;
+    padding: 36px var(--gutter) 24px;
   }
-  .intro p {
-    margin: 0;
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 48px;
+    padding-bottom: 28px;
+  }
+  .intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 22px;
   }
   .name {
     color: var(--heading);
-    font-size: clamp(36px, 4.5vw, 56px);
+    font-size: 30px;
     font-weight: 600;
     letter-spacing: -0.03em;
-    line-height: 1;
+    line-height: 1.1;
+    text-decoration: none;
   }
-  .name::after {
-    content: '.';
+  .name span {
     color: var(--accent-fill);
   }
-  .intro .description {
-    max-width: 34ch;
-    margin-top: 20px;
-    color: var(--text);
-    font-size: 17px;
+  .description {
+    max-width: 64ch;
+    font-size: 15.5px;
     line-height: 1.5;
     text-wrap: pretty;
   }
-  .cols {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 32px;
-  }
-  .title {
-    margin: 0 0 18px;
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  ul {
+  .packages {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    flex-wrap: wrap;
+    gap: 8px;
   }
-  ul a {
+  .packages a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    box-sizing: border-box;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
     color: var(--heading);
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 4px;
-    transition: text-decoration-color 0.2s;
+    font-size: 14.5px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.2s;
   }
-  ul a:hover {
-    text-decoration-color: currentColor;
+  .packages a:hover {
+    border-color: var(--heading);
   }
   /* Small arrow drawn as a mask: the ↗ glyph of the text fonts sits thin and off the baseline. */
-  ul a[href^='http']::after {
+  .packages a::after {
     content: '';
     display: inline-block;
-    width: 0.6em;
-    height: 0.6em;
-    margin-left: 0.4em;
+    width: 10px;
+    height: 10px;
     background: var(--muted);
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 8 8 2M3.5 2H8v4.5'/%3E%3C/svg%3E")
       center / contain no-repeat;
-    vertical-align: 0.05em;
-    transition: background-color 0.2s;
-  }
-  ul a[href^='http']:hover::after {
-    background: currentColor;
   }
   .bottom {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 16px 32px;
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 24px 24px 40px;
-    border-top: 1px solid var(--border);
+    gap: 14px 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-strong);
     color: var(--muted);
-    font-size: 13px;
+    font-size: 13.5px;
   }
   .by {
     display: inline-flex;
     align-items: center;
     gap: 14px;
+    min-height: 44px;
     color: var(--muted);
+    text-decoration: none;
   }
   .by img {
     display: block;
-    width: 96px;
+    width: 104px;
     height: auto;
   }
-  .by:hover {
-    color: var(--heading);
+  .logo-dark {
+    display: none !important;
+  }
+  :global([data-theme='dark']) .logo-light {
+    display: none !important;
+  }
+  :global([data-theme='dark']) .logo-dark {
+    display: block !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .logo-light {
+      display: none !important;
+    }
+    :global(:root:not([data-theme='light'])) .logo-dark {
+      display: block !important;
+    }
   }
   .legal {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 20px;
+    align-items: center;
+    gap: 4px 22px;
   }
   .legal a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--muted);
+    text-decoration: none;
   }
+  .by:hover,
   .legal a:hover {
     color: var(--heading);
-  }
-  @media (max-width: 760px) {
-    .top {
-      grid-template-columns: 1fr;
-      padding-top: 72px;
-    }
   }
 </style>

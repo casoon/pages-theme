@@ -16,7 +16,7 @@ const { items, label } = Astro.props;
 ---
 
 <section class="statband" aria-label={label ?? t(config.lang).keyFacts}>
-  <dl>
+  <dl class:list={[items.length === 4 && 'is-four']}>
     {
       items.map((item) => (
         <div>
@@ -57,16 +57,47 @@ const { items, label } = Astro.props;
     padding-right: 0;
   }
   @media (max-width: 520px) {
-    dl {
+    dl:not(.is-four) {
       grid-template-columns: 1fr;
     }
-    div,
-    div:first-child,
-    div:last-child {
+    dl:not(.is-four) div,
+    dl:not(.is-four) div:first-child,
+    dl:not(.is-four) div:last-child {
       padding: 28px 0;
     }
-    div + div {
+    dl:not(.is-four) div + div {
       border-left: 0;
+      border-top: 1px solid var(--border-strong);
+    }
+  }
+  /* Four items never break 3 + 1: four columns, two by two below 720 px, one below 330 px. */
+  dl.is-four {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  @media (max-width: 720px) {
+    dl.is-four {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .is-four div:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .is-four div:nth-child(even) {
+      padding-right: 0;
+    }
+    .is-four div:nth-child(n + 3) {
+      border-top: 1px solid var(--border-strong);
+    }
+  }
+  @media (max-width: 330px) {
+    dl.is-four {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .is-four div {
+      padding: 24px 0;
+      border-left: 0;
+    }
+    .is-four div + div {
       border-top: 1px solid var(--border-strong);
     }
   }

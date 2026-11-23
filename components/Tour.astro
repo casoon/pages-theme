@@ -1,0 +1,240 @@
+---
+/**
+ * The presentation of the start page: three to five steps on the left, one stage on the right
+ * showing what the selected step produces. One named slot per step (`step-1` …) for the stage
+ * content: `Terminal`, `CodeBlock`, `Figure`. CSS-only: the steps are the labels of one radio
+ * group; without `:has()` the first stage stays visible. `lead` takes the changelog's inline
+ * Markdown subset.
+ */
+import { inlineMarkdown } from '../lib/changelog';
+
+interface Props {
+  title: string;
+  steps: { title: string; body: string }[];
+  eyebrow?: string;
+  lead?: string;
+  /** Text link with an arrow below the steps. */
+  link?: { label: string; href: string };
+  /** Anchor for links to the section, e.g. "tour". */
+  id?: string;
+}
+
+const { title, steps, eyebrow, lead, link, id } = Astro.props;
+let hash = 5381;
+for (const ch of title) hash = ((hash * 33) ^ ch.charCodeAt(0)) >>> 0;
+const uid = `tour-${hash.toString(36)}`;
+const stages = await Promise.all(steps.map((_, i) => Astro.slots.render(`step-${i + 1}`)));
+---
+
+<section class="tour" id={id}>
+  <div class="intro">
+    <div class="heading">
+      {
+        eyebrow && (
+          <p class="eyebrow">
+            <span class="dot" aria-hidden="true" />
+            {eyebrow}
+          </p>
+        )
+      }
+      <h2>{title}</h2>
+    </div>
+    {lead && <p class="lead" set:html={inlineMarkdown(lead)} />}
+  </div>
+  <div class="body">
+    <div class="steps">
+      <div class="group" role="radiogroup" aria-label={title}>
+        {
+          steps.map((step, i) => (
+            <>
+              <input
+                class="visually-hidden"
+                type="radio"
+                name={uid}
+                id={`${uid}-${i}`}
+                value={i}
+                checked={i === 0}
+              />
+              <label for={`${uid}-${i}`}>
+                <span class="index">{String(i + 1).padStart(2, '0')}</span>
+                <span class="text">
+                  <span class="title">{step.title}</span>
+                  <span class="step-body" set:html={inlineMarkdown(step.body)} />
+                </span>
+              </label>
+            </>
+          ))
+        }
+      </div>
+      {link && <a class="link" href={link.href}>{link.label}</a>}
+    </div>
+    <div class="stage">
+      {stages.map((html, i) => <div class="panel" data-i={i} set:html={html} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tour {
+    box-sizing: border-box;
+    max-width: var(--max-wide);
+    margin: 0 auto;
+    padding: 0 var(--gutter) var(--section-y);
+  }
+  .intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 20px 72px;
+    margin-bottom: 48px;
+  }
+  .heading {
+    flex: 1 1 420px;
+    min-width: 0;
+  }
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
+    color: var(--heading);
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-fill);
+  }
+  h2 {
+    margin: 0;
+    color: var(--heading);
+    font-size: var(--h-section);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+  .lead {
+    flex: 1 1 380px;
+    margin: 0;
+    font-size: 18px;
+  }
+  .lead :global(strong) {
+    color: var(--heading);
+    font-weight: 600;
+  }
+  .body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 32px 48px;
+  }
+  .steps {
+    display: flex;
+    flex: 1 1 300px;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  label {
+    display: flex;
+    gap: 14px;
+    padding: 16px 20px;
+    border: 1px solid transparent;
+    border-radius: var(--r-card);
+    color: var(--text);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+  label:hover {
+    border-color: var(--border);
+  }
+  input:checked + label {
+    border-color: var(--border-strong);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  input:focus-visible + label {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .index {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.9;
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .title {
+    color: var(--heading);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .step-body {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .step-body :global(code) {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--code-bg);
+    font-size: 0.9em;
+  }
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    min-height: 44px;
+    margin-top: 4px;
+    padding-left: 20px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .link::after {
+    content: '→';
+  }
+  .stage {
+    flex: 1.5 1 400px;
+    min-width: 0;
+  }
+  .panel {
+    display: none;
+  }
+  .panel > :global(*) {
+    margin-top: 0;
+  }
+  .panel > :global(:last-child) {
+    margin-bottom: 0;
+  }
+  .panel[data-i='0'],
+  .tour:has(.group input[value='1']:checked) .panel[data-i='1'],
+  .tour:has(.group input[value='2']:checked) .panel[data-i='2'],
+  .tour:has(.group input[value='3']:checked) .panel[data-i='3'],
+  .tour:has(.group input[value='4']:checked) .panel[data-i='4'] {
+    display: block;
+  }
+  .tour:has(.group input:not([value='0']):checked) .panel[data-i='0'] {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    label {
+      transition: none;
+    }
+  }
+</style>

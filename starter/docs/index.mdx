@@ -1,0 +1,42 @@
+---
+title: Documentation
+sidebarLabel: Overview
+description: What runemark does, where it stops, and how this documentation is organised.
+order: 0
+---
+
+runemark turns ANSI terminal output into static HTML. It resolves colour and cursor sequences at
+render time, so the page needs no JavaScript and screen readers get plain text in reading order.
+It renders output that already exists; it does not run commands or emulate a full terminal.
+
+## Start here
+
+<StepPath
+  steps={[
+    { title: 'Install', body: 'The crate or the Node binding. Both wrap the same renderer.', href: 'getting-started/installation/' },
+    { title: 'Render a first stream', body: 'From a captured ANSI file to an HTML fragment on a page.', href: 'getting-started/quickstart/' },
+    { title: 'Set the options', body: 'Theme, wrap width, strict contrast: every default in the reference.', href: 'reference/api/' },
+  ]}
+/>
+
+## Getting started
+
+<LinkList group="getting-started" />
+
+## Reference
+
+Item-level documentation lives on [docs.rs](https://docs.rs/runemark).
+
+<LinkList group="reference" />
+
+## By task
+
+<LinkList
+  layout="cards"
+  items={[
+    { title: 'Publish a CI log as a page', tag: 'CI', href: '../use-cases/#ci-logs' },
+    { title: 'Show command output in docs', tag: 'Docs', href: '../use-cases/#docs-output' },
+    { title: 'Catch rendering regressions', tag: 'Testing', href: '../use-cases/#regressions' },
+    { title: 'Reports for screen readers', tag: 'A11y', href: '../use-cases/#screen-readers' },
+  ]}
+/>

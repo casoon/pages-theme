@@ -49,7 +49,7 @@ const id = `code-${hash.toString(36)}`;
   {
     (title || label || copy) && (
       <figcaption>
-        <span>{title}</span>
+        <span class="title">{title}</span>
         <span class="right">
           {label}
           {copy && (
@@ -83,8 +83,14 @@ const id = `code-${hash.toString(36)}`;
     font-family: var(--font-mono);
     font-size: 12px;
   }
+  /* A long file name breaks instead of pushing label and copy button out of the bar. */
+  .title {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
   .right {
     display: flex;
+    flex: none;
     align-items: center;
     gap: 12px;
   }

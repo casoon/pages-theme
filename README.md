@@ -13,6 +13,7 @@ Projects supply content, examples and configuration.
 │   └── src/
 │       ├── pages/index.astro   # start page, composed from theme components
 │       ├── showcase.ts         # exports `examples`
+│       ├── use-cases.ts        # exports `useCases` (optional)
 │       └── content.config.ts   # docs collection
 ├── docs/                 # Markdown / MDX, versioned with the code
 ├── examples/             # fixtures, shared with the test suite
@@ -72,8 +73,8 @@ export const collections = { docs: docsCollection() };
 | --- | --- | --- |
 | `name`, `description`, `repo` | – | Header, meta tags, GitHub links, JSON-LD |
 | `tagline` | – | A few words for the start page's `<title>` and the OG image; see „Search engines" |
-| `website` | – | The project's landing page (`https://example.com`): header, footer, JSON-LD `sameAs` |
-| `catalog` | repository name | Slug of the project's entry on casoon.dev (`#projekt-<slug>`), linked in the footer; `false` for none |
+| `website` | – | The project's landing page (`https://example.com`): header, JSON-LD `sameAs` |
+| `catalog` | repository name | Deprecated, no longer linked; kept so existing configs still build |
 | `version` | the project's manifest | Header badge, "Docs for vX"; see „Version" | 
 | `license` | `MIT` | SPDX id for footer and JSON-LD; `false` for proprietary code names no licence, and the OG image and `Hero` read "CASOON" instead of "CASOON Open Source" |
 | `branch` | `main` | "Edit this page" links |
@@ -82,6 +83,8 @@ export const collections = { docs: docsCollection() };
 | `docsGroups` | `{}` | Sidebar groups: folder in `docs/` → label, in order. Root pages join the first group |
 | `changelog` | `../CHANGELOG.md` | Path relative to `site/`, or `false` |
 | `showcase` | `./src/showcase.ts` | Module exporting `examples: ShowcaseExample[]`, or `false` |
+| `showcaseLayout` | `list` | Showcase overview: `list` (every example in turn) or `explorer`; see „Showcase explorer" |
+| `useCases` | `./src/use-cases.ts` if it exists | Module exporting `useCases: UseCase[]` (and optionally `lead`, `tradeoffs`), or `false`; see „Use cases" |
 | `demo` | `false` | Header label of a live demo page; the project supplies `src/pages/demo.astro` |
 | `mdxComponents` | – | Module exporting `components` for docs MDX, next to the theme's; see „Docs frontmatter" |
 | `lang` | `en` | `en` or `de`: `<html lang>` and the theme's own UI strings (`lib/i18n.ts`); props passed by the project win |
@@ -104,8 +107,9 @@ with neither manifest. Those pass `version` themselves, and `false` shows none a
 | Route | Source |
 | --- | --- |
 | `/` | the project's `src/pages/index.astro` |
-| `/docs/…` | `docs/**/*.{md,mdx}`; `docs/index.md` becomes `/docs/` |
-| `/showcase/`, `/showcase/<slug>/` | `examples` from the showcase module |
+| `/docs/…` | `docs/**/*.{md,mdx}`; `docs/index.mdx` becomes `/docs/` (an entry page with `StepPath` and `LinkList`) |
+| `/use-cases/` | `useCases` from the use-cases module, linked first in the header |
+| `/showcase/`, `/showcase/<slug>/` | `examples` from the showcase module, labelled "Examples" |
 | `/changelog/` | `CHANGELOG.md` (`## [x.y.z] - YYYY-MM-DD`, `### Added` …, `### Breaking`) |
 | `/demo/` | the project's `src/pages/demo.astro`, linked once `demo` is set |
 | `/404` | theme |
@@ -136,7 +140,9 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Facts` | Verifiable key figures; `layout="grid"` (tiles) or `"list"` (spec sheet) |
 | `Features` | Core points; `layout="numbered"` (3–5 items) or `"grid"` (an icon-tile catalog) |
 | `Spotlight` | Repeatable two-column feature section — eyebrow, title, lead, bullets, links, beside a media slot |
-| `StatBand` | Key figures as one row with hairlines, under the hero; the lighter sibling of `Facts layout="grid"` |
+| `StatBand` | Key figures as one row with hairlines, under the hero; the lighter sibling of `Facts layout="grid"`; four items stay four, two by two or one column, never 3 + 1 |
+| `Tour` | Presentation of three to five steps beside one stage; one named slot per step (`step-1` …) with a `Terminal`, `CodeBlock` or `Figure`; CSS-only |
+| `UseCases` | Use cases on the start page: linked rows of title, sentence, tags and an arrow |
 | `SectionIntro` | Section head: `h2` left, a placing paragraph right |
 | `Split` | Repeatable open row: text with index, note, ticked or `numbered` points and links beside a medium; `reverse` swaps sides, `align="start"` tops text and a tall medium |
 | `FlowPanel` | A branch as a medium for `Split`: one start, two to four ways, one result |
@@ -148,6 +154,8 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `Tradeoffs` | Lowered panel for honest limits |
 | `Section` | Neutral section frame: heading, lead, slot, `links`, `width` (`narrow`, `default`, `wide`); the theme's spacing |
 | `LinkRow` | A row of text links with an arrow, the quiet way on from a section; `Split` and `Section` use it for `links` |
+| `LinkList` | Linked rows of title, sentence and arrow between hairlines; `group` fills it from a folder in `docs/`, `layout="cards"` sets short links with a tag as cards |
+| `StepPath` | A reading path of a few numbered, linked steps in one sand band, for the docs entry page |
 | `Figure` | Image or drawing (default slot) in a frame with title and caption, `ground="sand"` for a diagram; fills its container (full section width, or the medium of a `Split`); `zoom` opens the image at full size on click (popover, no script) |
 | `SpecList` | Term/value rows over the full width between hairlines (`<dl>`), for the data sheet of a page |
 | `Flow` | 3–5 stages from input to result, each with its artifact (`index.md`, `dist/`) in a mono chip |
@@ -196,8 +204,9 @@ files.
 | Colour field | `tone="invert"` on any layout | `Terminal`, or whatever the project shows |
 | Editorial | `layout="editorial"` | `FileSet view="rail"` — names and one line each; with `bleed` the output runs down out of the hero (no bottom padding, corners or border, a 72 px fade into `--surface`) |
 
-The split layout gives the text column a little more than half from 900 px up, with a title
-size that fits about 40 characters on two lines at 1440 px; below 900 px text and output stack.
+The split layout sets the title across the full width, then the text column and the output at
+about 38 : 62 from 760 px up; below that they stack. A `Terminal` in the output scales its
+padding and font size with the viewport, so a 37-column line fits at 390 px.
 
 The stack layout reads as a pipeline from top to bottom: the `source` slot (usually a
 `CodeBlock` with the configuration), the `command` pill, then the output — each over the full
@@ -231,6 +240,26 @@ A showcase with many examples gets two optional fields per `ShowcaseExample`:
 - `preview`: HTML for a small preview, typically a lazily loaded image. An example with a preview
   appears on the overview as a card (title, description, preview, link to the detail page);
   input and output stay on the detail page. Without it the overview shows the full panel as before.
+
+## Use cases
+
+A site with `src/use-cases.ts` (or another module named by `useCases`) gets the page
+`/use-cases/` and a "Use cases" entry first in the header. The module exports
+`useCases: UseCase[]` (type from `@casoon/pages-theme/use-cases`): `slug` (the anchor), `title`,
+`body`, and optionally `eyebrow`, `tags`, `steps`, `code` (with `marks` matching the steps),
+`specs` and `links`. The first use case with `steps` or `code` is set as a sand panel with the
+code block beside its numbered steps; the others follow as open rows with their `specs` beside
+the text. Optional exports: `lead` beside the page title, and `tradeoffs` (the props of
+`Tradeoffs`) as a closing panel. On the start page, `UseCases` lists them as linked rows.
+
+## Showcase explorer
+
+With `showcaseLayout: 'explorer'` the overview shows a rail of the examples under their `group`
+headings beside one selected example, with up to three tabs: Output (the rendered result beside
+`notes`), Source (the input beside `output.source`, the produced markup as text) and How to
+(`steps`). A tab without data is left out. Below 860 px the rail becomes a row of chips. It
+works without a script; the detail pages stay. Suits a handful of examples; a large showcase
+keeps the list.
 
 ## Live demo
 
@@ -271,9 +300,8 @@ in `astro.config.mjs`.
   that writes its own — `@casoon/astro-site-files` does — keeps it: the theme skips the file when
   it already exists. That works only when the project's integration is listed before
   `casoonPages()` in `astro.config.mjs`, because the hooks run in that order.
-- **Links out:** the header shows `website` next to the project name; the footer links
-  `website`, the project's catalog entry on casoon.dev and the catalog itself, all with
-  descriptive text in the page's `lang`.
+- **Links out:** the header shows `website` after its links; the footer links the catalog on
+  casoon.dev, in the page's `lang`.
 
 The root `https://casoon.github.io/` comes from the repository `casoon/casoon.github.io`: an
 overview of the project sites, the only `robots.txt` crawlers read for the domain (one `Sitemap:`
@@ -294,9 +322,10 @@ to it as well.
 - No external requests: fonts are bundled (Inter, Onest, JetBrains Mono, Latin subset; licence
   in `fonts/OFL.txt`), no CDNs, embeds, analytics or cookies.
 - JavaScript: two small inline scripts (theme before first paint; theme toggle and copy
-  buttons). Tabs work without JavaScript. The one exception is a `Demo` stage, see above.
-- Footer on every page, in the site's language (`lang`): "A CASOON project · Jörn Seidel",
-  licence, imprint and privacy policy (casoon.de), the project catalog on casoon.dev.
+  buttons). Tabs, `Tour` and the showcase explorer work without JavaScript. The one exception is a `Demo` stage, see above.
+- Footer on every page, in the site's language (`lang`): name and description, GitHub and
+  `packages` as pills, "A CASOON project · Jörn Seidel", licence, the project catalog on
+  casoon.dev, imprint and privacy policy (casoon.de).
 - Light and dark theme, following `prefers-color-scheme` until the visitor chooses.
 
 ## Maintaining

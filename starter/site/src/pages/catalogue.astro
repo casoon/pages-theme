@@ -1,0 +1,500 @@
+---
+import { readFile } from 'node:fs/promises';
+import config from 'virtual:casoon-pages/config';
+import {
+  AnchorGrid,
+  AudienceList,
+  Badge,
+  Badges,
+  BarCompare,
+  BuildOutput,
+  CallToAction,
+  CodeBlock,
+  Compare,
+  ElementList,
+  Facts,
+  Faq,
+  Features,
+  Figure,
+  Flow,
+  FlowPanel,
+  Hero,
+  Install,
+  Integrations,
+  Keymap,
+  Quickstart,
+  ReleaseHighlights,
+  Section,
+  SectionIntro,
+  Showcase,
+  SpecList,
+  Split,
+  Spotlight,
+  StatBand,
+  Terminal,
+  Tradeoffs,
+} from '@casoon/pages-theme/components';
+import Base from '@casoon/pages-theme/layouts/Base.astro';
+import { parseChangelog } from '@casoon/pages-theme/lib/changelog';
+import { url } from '@casoon/pages-theme/url';
+import check from '../../../examples/check.ansi?raw';
+import report from '../../../examples/report.ansi?raw';
+
+// Skip "Unreleased": it has no version to show as "New in v…" yet.
+const latestRelease = config.changelog
+  ? parseChangelog(await readFile(config.changelog, 'utf8')).find(
+      (r) => r.version.toLowerCase() !== 'unreleased'
+    )
+  : undefined;
+
+const mainRs = `use runemark::{Renderer, Options};
+
+fn main() -> anyhow::Result<()> {
+    let ansi = std::fs::read_to_string("report.ansi")?;
+    let html = Renderer::new(Options {
+        theme: "auto".into(),
+        wrap:  true,
+        ..Default::default()
+    })
+    .render(&ansi)?;
+
+    std::fs::write("out.html", html)?;
+    Ok(())
+}`;
+---
+
+<!-- Every component of the theme with a living example. The start page shows the product-site set. -->
+<Base title="Component catalogue">
+  <Hero
+    title="Terminal output that survives the browser."
+    lead="runemark renders ANSI streams — status, reports, diffs, errors — as accessible, script-free HTML. Same renderer in Rust and Node."
+  >
+    <Install
+      commands={[
+        { label: 'cargo', command: 'cargo add runemark' },
+        { label: 'npm', command: 'npm i @casoon/runemark' },
+        { label: 'brew', command: 'brew install casoon/tap/runemark' },
+      ]}
+    />
+    <Badges>
+      <Badge>MIT</Badge>
+      <Badge>crates.io 0.4.2</Badge>
+      <Badge>npm 0.4.2</Badge>
+      <Badge>0 runtime deps</Badge>
+    </Badges>
+    <Terminal slot="output" title="runemark check ./report" dots ansi={check} />
+    <a slot="caption" href={url('showcase/')}>See more output in the showcase →</a>
+  </Hero>
+
+  <AnchorGrid
+    items={[
+      {
+        label: 'Rust',
+        title: 'Render from a crate',
+        body: 'Add runemark to Cargo.toml and render ANSI straight from your own binary or test harness.',
+        href: url('docs/getting-started/installation/'),
+        tone: 'accent',
+      },
+      {
+        label: 'Node',
+        title: 'Render from npm',
+        body: 'The same renderer, compiled to a native addon, behind one call in @casoon/runemark.',
+        href: url('docs/getting-started/installation/'),
+        tone: 'accent',
+      },
+      {
+        label: 'CI',
+        title: 'Catch rendering regressions',
+        body: 'Golden fixtures are rendered on every build and diffed byte for byte — see one below.',
+        href: '#build-output',
+        tone: 'brand',
+      },
+      {
+        label: 'Reference',
+        title: 'Every option, documented',
+        body: 'Theme, wrap width, link detection — the full Options reference with defaults.',
+        href: url('docs/reference/api/'),
+        tone: 'brand',
+      },
+    ]}
+  />
+
+  <Facts
+    items={[
+      { value: '0 kB', label: 'client JavaScript on rendered pages' },
+      { value: '142', label: 'golden fixtures in the test suite' },
+      { value: 'AA', label: 'contrast verified in both themes' },
+      { value: '2', label: 'ecosystems, one renderer' },
+    ]}
+  />
+
+  <Features
+    items={[
+      {
+        title: 'ANSI to semantic HTML',
+        body: 'SGR sequences, cursor moves and carriage returns resolve into a flat, screen-reader friendly structure — not a soup of nested spans.',
+      },
+      {
+        title: 'Themeable without inline styles',
+        body: 'Colours map to CSS custom properties, so the same fragment reads correctly in light and dark surroundings.',
+      },
+      {
+        title: 'Deterministic output',
+        body: 'Identical input produces identical bytes. Rendered fixtures are committed and diffed in CI.',
+      },
+      {
+        title: 'Contrast checks built in',
+        body: 'The renderer reports colour pairs below 4.5:1 instead of quietly emitting unreadable output.',
+      },
+    ]}
+  />
+
+  <Spotlight
+    eyebrow="How it resolves"
+    title="One pass, four checks"
+    lead="**runemark walks the stream once.** Every SGR sequence, cursor move and carriage return folds into a flat frame before anything touches HTML."
+    points={[
+      '**Wide glyphs.** Emoji and CJK characters are measured, not assumed to be one column wide.',
+      '**Contrast.** Every colour pair is checked against the background at 4.5:1 before it ships.',
+      '**Determinism.** The same input always walks the same path — no timing-dependent output.',
+    ]}
+    links={[
+      { label: 'Rendering pipeline', href: url('docs/reference/api/') },
+      { label: 'Contrast rules', href: url('docs/reference/components/') },
+    ]}
+  >
+    <Terminal title="runemark check ./report" dots ansi={check} />
+  </Spotlight>
+
+  <Flow
+    eyebrow="From stream to page"
+    title="Captured once, readable everywhere."
+    lead="runemark sits between the command that prints colours and the page that shows them. **Nothing runs in the reader's browser.**"
+    stages={[
+      { label: 'Capture', artifact: 'report.ansi', title: 'Record the output', body: 'Pipe any command into a file, colours and cursor moves included.' },
+      { label: 'Render', artifact: 'runemark render', title: 'Turn it into HTML', body: 'One pass resolves every escape sequence into a flat fragment.' },
+      { label: 'Embed', artifact: 'out.html', title: 'Drop it in a page', body: 'Static markup plus one stylesheet, themed by CSS custom properties.' },
+      { label: 'Read', artifact: 'your-docs.com', title: 'Open in a browser', body: 'Accessible, searchable text — no terminal emulator, no `<canvas>`.' },
+    ]}
+  />
+
+  <div id="build-output">
+    <BuildOutput
+      caption="Every example on this site is produced by the package itself during the build. No stock imagery, no stale screenshots."
+      file="examples/report.ansi"
+    >
+      <Terminal ansi={report} />
+    </BuildOutput>
+  </div>
+
+  <Integrations
+    heading="Renders the colored output of"
+    items={[
+      { icon: 'gh', name: 'GitHub Actions', category: 'CI logs' },
+      { icon: 'gl', name: 'GitLab CI', category: 'CI logs' },
+      { icon: 'rs', name: 'cargo test', category: 'Test runner' },
+      { icon: 'vt', name: 'Vitest', category: 'Test runner' },
+      { icon: 'py', name: 'pytest', category: 'Test runner' },
+      { icon: 'cl', name: 'Clippy', category: 'Linter' },
+    ]}
+  />
+
+  <Features
+    layout="grid"
+    heading="Also in the box"
+    items={[
+      { icon: 'rs', title: 'Rust and Node parity', body: 'One renderer, two bindings, the same golden fixtures.' },
+      { icon: 'λ', title: 'Zero runtime deps', body: 'Nothing to audit downstream of the renderer itself.' },
+      { icon: 'wasm', title: 'WASM fallback', body: 'For targets neither native binding reaches.' },
+      { icon: '✓', title: '142 golden fixtures', body: 'Rendered and diffed on every build, in CI.' },
+      { icon: '⌘', title: 'CLI and library', body: 'Same renderer behind `runemark check` and `render()`.' },
+      { icon: '◐', title: 'Light and dark', body: 'CSS custom properties, no duplicate markup per theme.' },
+    ]}
+  />
+
+  <StatBand
+    label="runemark in numbers"
+    items={[
+      { value: '142', label: 'golden fixtures, diffed on every build' },
+      { value: '2', label: 'bindings: Rust and Node' },
+      { value: '0', label: 'runtime dependencies' },
+      { value: '4.5:1', label: 'minimum contrast, checked per colour pair' },
+    ]}
+  />
+
+  <SectionIntro
+    title="One renderer. Every place the output ends up."
+    lead="Most tools colour a terminal and leave the page to guess. runemark starts from the other end: **a flat frame first, HTML second.**"
+  />
+
+  <Split
+    index="01"
+    eyebrow="Rendering"
+    title="The CLI and the library agree."
+    lead="Both call the same renderer, so a report looks the same in CI, in a docs page and in a test."
+    note="Pass `--strict-contrast` and a pair below 4.5:1 fails the build."
+    links={[{ label: 'Rendering pipeline', href: url('docs/reference/api/') }]}
+  >
+    <FlowPanel
+      start={{ title: 'ANSI stream', body: 'a file, a pipe or a string' }}
+      paths={[
+        { label: 'CLI', title: 'runemark render', body: 'In a build step or a CI job.' },
+        { label: 'Library', title: 'Rust or Node', body: 'In your own program.' },
+        { label: 'WASM', title: 'The fallback', body: 'Where no native binding reaches.' },
+      ]}
+      result="Every path has to produce the same bytes as the golden fixtures."
+    />
+  </Split>
+
+  <Split
+    index="02"
+    reverse
+    eyebrow="Cost"
+    title="Rendered once, not in the reader's browser."
+    lead="The work happens in the build. The page ships static markup and one stylesheet."
+    points={[
+      '**No script.** Nothing runs when the page loads.',
+      '**Small.** The output is text with a few spans.',
+    ]}
+  >
+    <BarCompare
+      title="Page weight for one report"
+      series={['runemark', 'A terminal emulator in the page']}
+      rows={[
+        { label: 'Transferred', values: [4, 310], display: ['4 KiB', '310 KiB'] },
+        { label: 'Scripted at load', values: [0, 180], display: ['0 ms', '180 ms'] },
+      ]}
+      facts={[
+        { label: 'Scripts on the page', value: '0' },
+        { label: 'Requests', value: '2' },
+        { label: 'Stylesheet', value: '3 KiB' },
+        { label: 'Fonts', value: 'system' },
+        { label: 'Cookies', value: '0' },
+      ]}
+    >
+      Sample figures for the starter site only.
+    </BarCompare>
+  </Split>
+
+  <Split
+    index="03"
+    reverse
+    numbered
+    eyebrow="Usage"
+    title="Three lines from file to page."
+    lead="The renderer takes options once and renders as often as you like."
+    points={[
+      'Read the ANSI text.',
+      'Render it with the options.',
+      'Write the file.',
+    ]}
+  >
+    <CodeBlock
+      code={mainRs}
+      lang="rust"
+      title="src/main.rs"
+      marks={[
+        { line: 4, n: 1 },
+        { line: 10, n: 2 },
+        { line: 12, n: 3 },
+      ]}
+    />
+  </Split>
+
+  <Split
+    index="04"
+    align="start"
+    eyebrow="Markup"
+    title="A table where a table is meant."
+    lead="Output keeps its structure, so a reader with a screen reader gets real elements."
+  >
+    <ElementList
+      items={[
+        { term: '<pre>', body: 'Terminal output is **read**: plain text, copy and paste, browser find.' },
+        { term: '<table>', body: 'A report with columns is **a table**, not aligned spaces.' },
+      ]}
+    />
+  </Split>
+
+  <Showcase
+    eyebrow="Showcase"
+    title="A page that is only output."
+    lead="Every example on this site is produced by the package itself during the build."
+    link={{ label: 'See the showcase', href: url('showcase/') }}
+  >
+    <Terminal ansi={report} />
+  </Showcase>
+
+  <Compare
+    title="Next to an emulator in the page"
+    lead="The differences in one table."
+    columns={['A terminal emulator in the page', 'runemark']}
+    rows={[
+      { topic: 'Where it runs', other: 'In the reader\'s browser', own: 'In your build' },
+      { topic: 'Output', other: 'A canvas or nested divs', own: 'Text a screen reader can read' },
+      { topic: 'Colours', other: 'Whatever the stream says', own: 'Checked against 4.5:1' },
+    ]}
+    link={{ label: 'What sets it apart', href: url('docs/') }}
+  />
+
+  <AudienceList
+    heading="Who it is for"
+    items={[
+      { title: 'Docs authors', body: 'Show real command output without screenshots that go stale.' },
+      { title: 'CI maintainers', body: 'Publish a coloured log as a readable page.' },
+      { title: 'Readers with a screen reader', body: 'Output that is text, not pixels.' },
+    ]}
+  />
+
+  <Tradeoffs
+    eyebrow="The price"
+    title="What you give up"
+    lead="This design has a price, and it is better read here than found later."
+    items={[
+      'It is not a terminal: no alternate screen, no mouse reporting.',
+      'The page shows a frame, not a live session.',
+      'Wide glyphs are measured by a table that is updated with Unicode.',
+    ]}
+  />
+
+  <Section
+    title="Where the work happens"
+    lead="`Compare` takes two to four columns. One of them can be raised, and a row with one cell spans all of them."
+    links={[
+      { label: 'Rendering pipeline', href: url('docs/reference/api/') },
+      { label: 'Editorial hero with bleed', href: url('editorial/') },
+    ]}
+  >
+    <Compare
+      size="sub"
+      columns={[
+        { title: 'Your build', label: 'Build' },
+        { title: 'The page', label: 'Browser' },
+        { title: 'Both', label: 'Split', badge: 'Start here' },
+      ]}
+      highlight={2}
+      rows={[
+        { topic: 'Where it runs', cells: ['**Once**, in CI', 'Every visit', 'Render in CI, hydrate nothing'] },
+        { topic: 'Cost to the reader', cells: ['0 ms', '**180 ms** of script', '0 ms'] },
+        { topic: 'Editing', cells: ['Edit the ANSI file and rebuild; the same holds for all three.'] },
+      ]}
+    />
+    <Figure
+      ground="sand"
+      title="One report, from stream to page"
+      caption="The path of one report. Colours come from the `--diagram-*` tokens, so the drawing follows the theme."
+    >
+      <svg viewBox="0 0 720 120" role="img" aria-label="report.ansi goes through runemark render to out.html, which is embedded in the page">
+        <g fill="var(--diagram-node)" stroke="var(--diagram-line)" stroke-width="1.5">
+          <rect x="8" y="30" width="180" height="60" rx="12" />
+          <rect x="270" y="30" width="180" height="60" rx="12" />
+          <rect x="532" y="30" width="180" height="60" rx="12" stroke="var(--diagram-accent)" stroke-width="2" />
+        </g>
+        <g stroke="var(--diagram-line)" stroke-width="1.5" fill="none">
+          <path d="M188 60h72m-10 -6l10 6l-10 6" />
+          <path d="M450 60h72m-10 -6l10 6l-10 6" />
+        </g>
+        <g fill="var(--heading)" font-family="var(--font-mono)" font-size="15" text-anchor="middle">
+          <text x="98" y="66">report.ansi</text>
+          <text x="360" y="66">runemark render</text>
+          <text x="622" y="66">out.html</text>
+        </g>
+      </svg>
+    </Figure>
+  </Section>
+
+  <Section
+    id="sheet"
+    title="One page of facts"
+    lead={`\`Section\` frames what no other block fits; \`Figure\` and \`SpecList\` fill it. More on the [rules page](${url('rules/')}).`}
+    size="sub"
+  >
+    <Figure
+      src={url('sample-output.svg')}
+      alt="A terminal showing three check results"
+      caption="Output as the renderer prints it: **142 fixtures**, one warning."
+      width={960}
+      height={400}
+    />
+    <SpecList
+      items={[
+        { term: 'Input', value: 'ANSI text from a file, a pipe or a string' },
+        { term: 'Output', value: 'Static HTML, one stylesheet, `0` scripts' },
+        { term: 'Determinism', value: 'Identical input gives identical bytes' },
+      ]}
+    />
+  </Section>
+
+  <Quickstart
+    lead="Three steps from install to a rendered page. The full walkthrough lives in the documentation."
+    steps={[
+      'Add the crate or the npm package to your project.',
+      'Pipe any ANSI stream into <code>render()</code>.',
+      'Drop the returned fragment into your page and ship the stylesheet.',
+    ]}
+  >
+    <CodeBlock code={mainRs} lang="rust" title="main.rs" label="Rust" />
+  </Quickstart>
+
+  <Keymap
+    heading="CLI reference"
+    groups={[
+      {
+        heading: 'render',
+        items: [
+          { label: 'Theme', keys: ['--theme'] },
+          { label: 'Wrap width', keys: ['--max-width'] },
+          { label: 'Fail below 4.5:1', keys: ['--strict-contrast'] },
+        ],
+      },
+      {
+        heading: 'check',
+        items: [
+          { label: 'Machine-readable report', keys: ['--format', 'json'] },
+          { label: 'Exit non-zero on warnings', keys: ['--strict'] },
+          { label: 'Suppress the summary', keys: ['--quiet'] },
+        ],
+      },
+    ]}
+  />
+
+  <Facts
+    layout="list"
+    label="Specifications"
+    items={[
+      { label: 'License', value: 'MIT' },
+      { label: 'Rust', value: '1.74 or newer' },
+      { label: 'Node', value: '18 or newer' },
+      { label: 'Platforms', value: 'macOS, Linux, Windows' },
+    ]}
+  />
+
+  {latestRelease && <ReleaseHighlights release={latestRelease} />}
+
+  <Faq
+    items={[
+      {
+        q: 'Do the Rust and Node packages render identically?',
+        a: 'Yes. Node calls the same renderer through a native addon, byte for byte — the golden fixtures in the test suite run against both.',
+      },
+      {
+        q: 'Does it work outside a terminal, on arbitrary ANSI text?',
+        a: 'Yes, as long as it is SGR sequences and cursor movement. runemark does not emulate a full terminal — no alternate screen, no mouse reporting.',
+      },
+      {
+        q: 'What happens to colours that fail contrast?',
+        a: 'By default they render with a warning in the CLI output. --strict-contrast turns that warning into a build failure instead.',
+      },
+      {
+        q: 'Is the output stable across versions?',
+        a: 'Within a major version, yes — identical input produces identical bytes, and that is itself tested in CI.',
+      },
+    ]}
+  />
+
+  <CallToAction
+    title="Render your first report in a minute."
+    href={url('docs/getting-started/quickstart/')}
+    label="Read the quickstart"
+  />
+</Base>

@@ -6,6 +6,30 @@ site renders.
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-11-23
+
+### Added
+
+- **Use cases:** A site with `src/use-cases.ts` (option `useCases`) gets the page `/use-cases/` and a header entry: the first use case as a panel with steps beside a code block, the others as rows with a short data sheet, an optional closing `Tradeoffs`. Type `UseCase` from `@casoon/pages-theme/use-cases`.
+- **UseCases:** Use cases on the start page as linked rows of title, sentence, tags and an arrow.
+- **Tour:** A presentation of three to five steps beside one stage showing what the selected step produces, without a script.
+- **Showcase:** `showcaseLayout: 'explorer'` shows a rail of examples beside one selected example with Output, Source and How-to tabs, without a script. `ShowcaseExample` takes `notes`, `steps` and `output.source` for them. The default stays `list`.
+- **StepPath, LinkList:** Building blocks for the docs entry page: a numbered reading path, and linked rows per docs folder (`group`) or as cards (`layout="cards"`).
+
+### Changed
+
+- **Footer:** Compact and light on every site: name, description and package pills in one row, CASOON line, licence, catalog and legal links below; the dark logo in the dark theme. The Project column and the link to the project's catalog entry are gone.
+- **Header:** Use cases come first. Below 960 px every header uses two rows, name and tools above, the links under a hairline; below 480 px the links get smaller and scroll sideways, the GitHub button drops its arrow, and below 350 px the version badge goes. The theme toggle is 44 px.
+- **Header, Footer:** The showcase is labelled "Examples" (German "Beispiele").
+- **Hero (`split`):** Text and output sit side by side down to 760 px at about 38 : 62; a `Terminal` in the output scales padding and font size with the viewport.
+- **StatBand:** Four items no longer break 3 + 1: four columns, two by two below 720 px, one below 330 px.
+- **Docs:** The table of contents hides below 1180 px; below 860 px the page comes first and the menu follows under a hairline.
+- **CodeBlock:** A long file name in the bar breaks instead of pushing the label and copy button out.
+
+### Deprecated
+
+- **Options:** `catalog` has no effect any more, since the footer no longer links a catalog entry.
+
 ## [0.16.4] - 2026-11-22
 
 ### Changed

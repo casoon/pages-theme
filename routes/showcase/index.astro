@@ -2,34 +2,37 @@
 import config from 'virtual:casoon-pages/config';
 import { examples } from 'virtual:casoon-pages/showcase';
 import ExamplePanel from '../../components/ExamplePanel.astro';
+import ShowcaseExplorer from '../../components/ShowcaseExplorer.astro';
 import Base from '../../layouts/Base.astro';
 import { t } from '../../lib/i18n';
-import { descriptionHtml, type ShowcaseExample } from '../../lib/showcase';
+import { descriptionHtml, groupExamples, type ShowcaseExample } from '../../lib/showcase';
 import { url } from '../../lib/url';
 
 const s = t(config.lang);
 
-// Examples in groups (in the order of each group's first example); without groups one list.
-const groups: { label: string; id: string; items: ShowcaseExample[] }[] = [];
-for (const example of examples as ShowcaseExample[]) {
-  const label = example.group ?? '';
-  let group = groups.find((g) => g.label === label);
-  if (!group) {
-    const id = `group-${
-      label
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '') || 'all'
-    }`;
-    group = { label, id, items: [] };
-    groups.push(group);
-  }
-  group.items.push(example);
-}
+const groups = groupExamples(examples as ShowcaseExample[]);
 const grouped = groups.some((g) => g.label !== '');
 ---
 
 <Base title={s.showcase} description={s.showcaseDescription(config.name)}>
+  {
+    config.showcaseLayout === 'explorer' ? (
+      <div class="explorer-page">
+        <nav class="crumb" aria-label={s.breadcrumb}>
+          <ol>
+            <li>
+              <a href={url()}>{config.name}</a>
+            </li>
+            <li aria-current="page">{s.showcase}</li>
+          </ol>
+        </nav>
+        <div class="title-row">
+          <h1>{s.showcase}</h1>
+          <p class="lead">{config.showcaseLead || s.showcaseLead(config.name)}</p>
+        </div>
+        <ShowcaseExplorer examples={examples as ShowcaseExample[]} />
+      </div>
+    ) : (
   <div class="page">
     <h1>{s.showcase}</h1>
     <p class="lead">{config.showcaseLead || s.showcaseLead(config.name)}</p>
@@ -80,9 +83,65 @@ const grouped = groups.some((g) => g.label !== '');
       ))
     }
   </div>
+    )
+  }
 </Base>
 
 <style>
+  .explorer-page {
+    box-sizing: border-box;
+    max-width: calc(var(--max-wide) + 80px);
+    margin: 0 auto;
+    padding: 72px 24px var(--section-y);
+  }
+  .explorer-page .crumb,
+  .title-row {
+    padding: 0 calc(var(--gutter) - 24px);
+  }
+  .crumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .crumb li + li::before {
+    content: '/';
+    margin-right: 8px;
+  }
+  .crumb a {
+    color: var(--muted);
+  }
+  .crumb a:hover {
+    color: var(--heading);
+  }
+  .crumb [aria-current] {
+    color: var(--text);
+  }
+  .title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 20px 72px;
+    margin-bottom: 48px;
+  }
+  .title-row h1 {
+    flex: 1 1 380px;
+    margin: 0;
+    font-size: clamp(44px, 6vw, 84px);
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+  }
+  .title-row .lead {
+    flex: 1 1 380px;
+    margin: 0;
+    color: var(--heading);
+    font-size: 20px;
+    line-height: 1.5;
+  }
   .page {
     max-width: var(--max);
     margin: 0 auto;
