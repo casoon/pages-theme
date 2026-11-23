@@ -15,9 +15,13 @@
  * its regular content, which a `Demo` stage would withdraw from axe. Other origins stay forbidden.
  * A site lists such pages once in site/package.json: `"casoonPagesCheck": { "allowScript": [...] }`.
  *
+ * `--skip <path>` (repeatable, `"skip": [...]` in the same place) leaves a page out that the theme
+ * does not render: a standalone app the site serves from public/, such as a playground a `Demo`
+ * stage embeds. Links to it are still checked for status 200; the page is not crawled.
+ *
  *   node scripts/check-site.cjs <project-repo>/site/dist        serves the build itself
  *   node scripts/check-site.cjs http://localhost:4321/<repo>/   a running preview
- *   [--allow-script <path>]...
+ *   [--allow-script <path>]... [--skip <path>]...
  *
  * Uses @playwright/test and @axe-core/playwright from this repository (pnpm install; once:
  * pnpm exec playwright install chromium).
@@ -35,11 +39,17 @@ for (let i = args.indexOf('--allow-script'); i !== -1; i = args.indexOf('--allow
   scriptPages.push(args[i + 1]);
   args.splice(i, 2);
 }
+const skipPages = [];
+for (let i = args.indexOf('--skip'); i !== -1; i = args.indexOf('--skip')) {
+  skipPages.push(args[i + 1]);
+  args.splice(i, 2);
+}
 const target = args[0] ?? 'http://localhost:4321/';
 const ALLOWED_SCRIPTS = 2; // theme init + toggle/copy; JSON-LD is not counted
 let start;
 let basePath;
 let scriptPaths;
+let skipPaths;
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -129,7 +139,9 @@ async function checkPage(page, pageUrl, externals) {
     const dist = resolve(target);
     const pkg = join(dirname(dist), 'package.json');
     if (existsSync(pkg)) {
-      scriptPages.push(...(JSON.parse(readFileSync(pkg, 'utf8')).casoonPagesCheck?.allowScript ?? []));
+      const own = JSON.parse(readFileSync(pkg, 'utf8')).casoonPagesCheck ?? {};
+      scriptPages.push(...(own.allowScript ?? []));
+      skipPages.push(...(own.skip ?? []));
     }
     let url;
     ({ server, url } = await serve(dist));
@@ -137,6 +149,7 @@ async function checkPage(page, pageUrl, externals) {
   }
   basePath = start.pathname.endsWith('/') ? start.pathname : `${start.pathname}/`;
   scriptPaths = new Set(scriptPages.map((path) => `${basePath}${path.replace(/^\//, '')}`));
+  skipPaths = skipPages.map((path) => `${basePath}${path.replace(/^\//, '')}`);
 
   const browser = await chromium.launch();
   const pages = new Set([normalize(start.href), `${start.origin}${basePath}404.html`]);
@@ -168,7 +181,11 @@ async function checkPage(page, pageUrl, externals) {
           broken.add(`${href} (${status}, linked from ${pageUrl})`);
           continue;
         }
-        if (!(res.headers()['content-type'] ?? '').includes('text/html')) {
+        const path = new URL(href).pathname;
+        if (
+          !(res.headers()['content-type'] ?? '').includes('text/html') ||
+          skipPaths.some((skip) => path.startsWith(skip))
+        ) {
           files.add(href);
           continue;
         }

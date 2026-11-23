@@ -76,8 +76,11 @@ node scripts/check-site.cjs ~/GitHub/<repo>/site/dist
 
 Serves the build under its base path and crawls every page. A page that runs one own script on
 purpose (a browser module of the project on its regular content) is listed in the site's
-`site/package.json`: `"casoonPagesCheck": { "allowScript": ["interactive/"] }`. Once per
-machine: `pnpm exec playwright install chromium`.
+`site/package.json`: `"casoonPagesCheck": { "allowScript": ["interactive/"] }`. A page the
+theme does not render, such as a standalone playground the site serves from `public/` and a
+`Demo` stage embeds, goes under `"skip": ["playground/"]` in the same place: its links are still
+checked for status 200, the page itself is not crawled. Once per machine:
+`pnpm exec playwright install chromium`.
 
 ## New project site
 
