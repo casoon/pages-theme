@@ -169,7 +169,7 @@ Import from `@casoon/pages-theme/components` in `.astro` files; available direct
 | `CodeBlock` | Build-time highlighting (Shiki, theme-aware), copy button; `marks` sets numbered dots at line ends to go with `Split numbered`; `wrap` wraps long lines |
 | `Terminal` | `ansi` prop (converted at build time) or pre-rendered HTML as slot |
 | `Callout` | `note`, `tip`, `caution`, `deprecated` |
-| `Tabs` | CSS-only tabs, one named slot per tab id |
+| `Tabs` | CSS-only tabs, one named slot per tab id; `bare` drops the panel frame for scenes and screenshots |
 | `ApiEntry` | API overview entry; item-level docs stay on docs.rs / TypeDoc |
 | `Swatch` | Colour token preview |
 | `ExamplePanel` | Input next to output; used by the showcase routes |

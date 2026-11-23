@@ -6,6 +6,12 @@ site renders.
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-11-23
+
+### Added
+
+- **Tabs:** `bare` drops the panel's frame and background, for tabs that show a terminal scene or a screenshot with a frame of its own.
+
 ## [0.17.1] - 2026-11-23
 
 ### Fixed
