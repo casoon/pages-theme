@@ -3,7 +3,7 @@ import config from 'virtual:casoon-pages/config';
 import logo from '../assets/casoon-logo.svg';
 import logoDark from '../assets/casoon-logo-dark.svg';
 import { t } from '../lib/i18n';
-import { CASOON_URL, catalogUrl, url } from '../lib/url';
+import { AUTHOR_URL, CASOON_URL, catalogUrl, url } from '../lib/url';
 
 const s = t(config.lang);
 const IMPRESSUM = `${CASOON_URL}impressum/`;
@@ -33,11 +33,15 @@ const packageLinks = [
       }
     </div>
     <div class="bottom">
-      <a class="by" href={CASOON_URL}>
-        <img class="logo-light" src={logo.src} width="104" height="28" alt="CASOON" />
-        <img class="logo-dark" src={logoDark.src} width="104" height="28" alt="CASOON" />
-        <span>{s.footerBy} · Jörn Seidel</span>
-      </a>
+      <span class="by">
+        <a href={CASOON_URL}>
+          <img class="logo-light" src={logo.src} width="104" height="28" alt="CASOON" />
+          <img class="logo-dark" src={logoDark.src} width="104" height="28" alt="CASOON" />
+          <span>{s.footerBy}</span>
+        </a>
+        <span aria-hidden="true">·</span>
+        <a href={AUTHOR_URL}>Jörn Seidel</a>
+      </span>
       <span class="legal">
         <span>{config.license && `${s.license(config.license)} · `}© {new Date().getFullYear()}</span>
         {config.repo && <a href={catalogUrl(config.lang)}>{s.allProjects}</a>}
@@ -137,10 +141,17 @@ const packageLinks = [
   }
   .by {
     display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 8px;
+    color: var(--muted);
+  }
+  .by a {
+    display: inline-flex;
     align-items: center;
     gap: 14px;
     min-height: 44px;
-    color: var(--muted);
+    color: inherit;
     text-decoration: none;
   }
   .by img {
@@ -178,7 +189,7 @@ const packageLinks = [
     color: var(--muted);
     text-decoration: none;
   }
-  .by:hover,
+  .by a:hover,
   .legal a:hover {
     color: var(--heading);
   }

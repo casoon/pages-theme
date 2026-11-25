@@ -6,6 +6,13 @@ site renders.
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-11-25
+
+### Changed
+
+- **Footer:** The author's name links to the author profile on casoon.de; the CASOON logo still links to casoon.de.
+- **Structured data:** `author` and `publisher` carry the `@id` that casoon.de gives the person and the company, and `author.url` is the profile page.
+
 ## [0.18.0] - 2026-11-23
 
 ### Added

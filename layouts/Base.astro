@@ -7,7 +7,7 @@ import favicon from '../assets/favicon.svg';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { t } from '../lib/i18n';
-import { CASOON_URL, url } from '../lib/url';
+import { AUTHOR_URL, CASOON_URL, ORGANIZATION_ID, PERSON_ID, url } from '../lib/url';
 
 interface Props {
   /** Page title; the project name is appended. Omit on the home page. */
@@ -44,8 +44,9 @@ const structuredData = {
   ...(config.repo && { codeRepository: `https://github.com/${config.repo}` }),
   ...(config.license && { license: `https://spdx.org/licenses/${config.license}.html` }),
   ...(config.version && { version: config.version }),
-  author: { '@type': 'Person', name: 'Jörn Seidel', url: CASOON_URL },
-  publisher: { '@type': 'Organization', name: 'CASOON', url: CASOON_URL },
+  // Same ids as on casoon.de, so the project is attributed to that person and company.
+  author: { '@type': 'Person', '@id': PERSON_ID, name: 'Jörn Seidel', url: AUTHOR_URL },
+  publisher: { '@type': 'Organization', '@id': ORGANIZATION_ID, name: 'CASOON', url: CASOON_URL },
 };
 ---
 
