@@ -10,6 +10,11 @@ export function url(path = ''): string {
 /** casoon.de, canonical host. */
 export const CASOON_URL = 'https://www.casoon.de/';
 
+/** The author's profile on casoon.de and the schema.org ids casoon.de gives person and company. */
+export const AUTHOR_URL = `${CASOON_URL}joern-seidel/`;
+export const PERSON_ID = `${AUTHOR_URL}#person`;
+export const ORGANIZATION_ID = `${CASOON_URL}#organization`;
+
 /** The project catalog on casoon.dev (canonical host), or one project's entry in it. */
 export function catalogUrl(lang: Lang, slug = ''): string {
   return `https://casoon.dev/${lang === 'en' ? 'en/' : ''}${slug && `#projekt-${slug}`}`;
